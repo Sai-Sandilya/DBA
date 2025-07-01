@@ -1,0 +1,83 @@
+# DBA-GPT Configuration Example
+# Copy this file to config.yaml and customize for your environment
+
+# AI Model Configuration
+ai:
+  model: "llama2:13b"  # Available models: llama2:13b, codellama:13b, mistral:7b
+  temperature: 0.7     # Controls response creativity (0.0-1.0)
+  max_tokens: 2048     # Maximum tokens in response
+  context_window: 4096 # Context window size
+  ollama_host: "http://localhost:11434"  # Ollama server URL
+  system_prompt: "You are DBA-GPT, an expert database administrator AI assistant."
+
+# Monitoring Configuration
+monitoring:
+  enabled: true        # Enable/disable monitoring
+  interval: 60         # Monitoring interval in seconds
+  metrics_retention_days: 30  # How long to keep metrics
+  auto_remediation: true      # Enable automatic issue resolution
+  alert_thresholds:
+    cpu_usage: 80.0           # CPU usage threshold (%)
+    memory_usage: 85.0        # Memory usage threshold (%)
+    disk_usage: 90.0          # Disk usage threshold (%)
+    slow_query_threshold: 5.0 # Slow query threshold (seconds)
+
+# Database Connections
+databases:
+  # PostgreSQL Example
+  postgresql:
+    host: "localhost"
+    port: 5432
+    database: "postgres"
+    username: "postgres"
+    password: ""  # Set your password here
+    db_type: "postgresql"
+    ssl_mode: "prefer"
+    connection_pool_size: 10
+    timeout: 30
+
+  # MySQL Example
+  mysql:
+    host: "localhost"
+    port: 3306
+    database: "mysql"
+    username: "root"
+    password: ""  # Set your password here
+    db_type: "mysql"
+    connection_pool_size: 10
+    timeout: 30
+
+  # MongoDB Example
+  mongodb:
+    host: "localhost"
+    port: 27017
+    database: "admin"
+    username: "admin"
+    password: ""  # Set your password here
+    db_type: "mongodb"
+    connection_pool_size: 10
+    timeout: 30
+
+  # Redis Example
+  redis:
+    host: "localhost"
+    port: 6379
+    database: "0"
+    username: ""
+    password: ""  # Set your password here
+    db_type: "redis"
+    connection_pool_size: 10
+    timeout: 30
+
+# Logging Configuration
+logging:
+  level: "INFO"        # Log level: DEBUG, INFO, WARNING, ERROR
+  file: "logs/dbagpt.log"  # Log file path
+  max_size: "10MB"     # Maximum log file size
+  backup_count: 5      # Number of backup files
+
+# Web Interface Configuration
+web:
+  host: "0.0.0.0"      # Web interface host
+  port: 8000           # API server port
+  web_port: 8501       # Streamlit web interface port 

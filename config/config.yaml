@@ -1,0 +1,48 @@
+# DBA-GPT Configuration
+# Using phi model which we confirmed works on your system
+
+# AI Model Configuration
+ai:
+  model: "phi"  # Using phi model that works with your memory
+  temperature: 0.7     # Controls response creativity (0.0-1.0)
+  max_tokens: 2048     # Maximum tokens in response
+  context_window: 4096 # Context window size
+  ollama_host: "http://localhost:11434"  # Ollama server URL
+  system_prompt: "You are DBA-GPT, an expert database administrator AI assistant. You provide professional database administration advice, monitoring insights, and automated remediation recommendations."
+
+# Monitoring Configuration
+monitoring:
+  enabled: true        # Enable/disable monitoring
+  interval: 60         # Monitoring interval in seconds
+  metrics_retention_days: 30  # How long to keep metrics
+  auto_remediation: true      # Enable automatic issue resolution
+  alert_thresholds:
+    cpu_usage: 80.0           # CPU usage threshold (%)
+    memory_usage: 85.0        # Memory usage threshold (%)
+    disk_usage: 90.0          # Disk usage threshold (%)
+    slow_query_threshold: 5.0 # Slow query threshold (seconds)
+
+# Database Connections
+databases:
+  mysql:
+    host: "localhost"
+    port: 3306
+    database: "DBT"
+    username: "sandy"
+    password: "sandy@123"
+    db_type: "mysql"
+    connection_pool_size: 10
+    timeout: 30
+
+# Logging Configuration
+logging:
+  level: "INFO"        # Log level: DEBUG, INFO, WARNING, ERROR
+  file: "logs/dbagpt.log"  # Log file path
+  max_size: "10MB"     # Maximum log file size
+  backup_count: 5      # Number of backup files
+
+# Web Interface Configuration
+web:
+  host: "0.0.0.0"      # Web interface host
+  port: 8000           # API server port
+  web_port: 8501       # Streamlit web interface port 

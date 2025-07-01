@@ -1,0 +1,66 @@
+{
+  "timestamp": 1750778651.5191174,
+  "error_count": 10,
+  "errors": [
+    {
+      "type": "TABLE_NOT_FOUND",
+      "code": "1146",
+      "message": "(1146, \"Table 'dbt.non_existent_table_ui_test' doesn't exist\")",
+      "timestamp": "2025-06-24T20:52:39.574160"
+    },
+    {
+      "type": "GENERAL",
+      "code": "1054",
+      "message": "(1054, \"Unknown column 'invalid_column' in 'field list'\")",
+      "timestamp": "2025-06-24T20:52:59.484177"
+    },
+    {
+      "type": "COLUMN_NOT_FOUND",
+      "code": "1054",
+      "message": "(1054, \"Unknown column 'invalid_column' in 'field list'\")",
+      "timestamp": "2025-06-24T20:52:59.487272"
+    },
+    {
+      "type": "COLUMN_NOT_FOUND",
+      "code": "1054",
+      "message": "(1054, \"Unknown column 'invalid_column' in 'field list'\")",
+      "timestamp": "2025-06-24T20:52:59.487272"
+    },
+    {
+      "type": "SYNTAX_ERROR",
+      "code": "1064",
+      "message": "(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE invalid syntax' at line 1\")",
+      "timestamp": "2025-06-24T20:53:14.387004"
+    },
+    {
+      "type": "SYNTAX_ERROR",
+      "code": "1064",
+      "message": "(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE invalid syntax' at line 1\")",
+      "timestamp": "2025-06-24T20:53:14.391012"
+    },
+    {
+      "type": "SYNTAX_ERROR",
+      "code": "1064",
+      "message": "(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE invalid syntax' at line 1\")",
+      "timestamp": "2025-06-24T20:53:14.391012"
+    },
+    {
+      "type": "TABLE_NOT_FOUND",
+      "code": "1146",
+      "message": "(1146, \"Table 'dbt.non_existent_table' doesn't exist\")",
+      "timestamp": "2025-06-24T20:53:41.737661"
+    },
+    {
+      "type": "TABLE_NOT_FOUND",
+      "code": "1146",
+      "message": "(1146, \"Table 'dbt.non_existent_table' doesn't exist\")",
+      "timestamp": "2025-06-24T20:53:41.741664"
+    },
+    {
+      "type": "TABLE_NOT_FOUND",
+      "code": "1146",
+      "message": "(1146, \"Table 'dbt.non_existent_table' doesn't exist\")",
+      "timestamp": "2025-06-24T20:53:41.741664"
+    }
+  ]
+}
