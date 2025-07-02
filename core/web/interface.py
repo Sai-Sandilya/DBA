@@ -553,27 +553,38 @@ def monitoring_interface(assistant: DBAAssistant):
                     if selected_error_db and custom_sql:
                         with st.spinner(f"Executing bad SQL in {selected_error_db}..."):
                             try:
-                                # This will either fail (old behavior) or return error info (new behavior)
+                                # Execute the SQL and capture any errors
                                 response = run_async_in_thread(
                                     assistant.chat,
                                     custom_sql,
                                     db_name=selected_error_db
                                 )
                                 
-                                # Check if response indicates an error was detected and processed
-                                if response and "🚨 Database Error Detected" in response:
-                                    st.success("✅ Real database error captured and auto-resolved! Check Recent Errors count above.")
-                                    st.markdown(response)
-                                    st.rerun()  # Refresh to update the counter
-                                elif response:
-                                    st.warning("Unexpectedly succeeded - no error generated!")
-                                    st.markdown(response)
+                                # Always show the response if we get one
+                                if response:
+                                    # Check if it contains error resolution content
+                                    if any(keyword in response.lower() for keyword in [
+                                        "emergency resolution", "database error", "auto-resolving", 
+                                        "🚨", "error detected", "resolution generated"
+                                    ]):
+                                        st.success("✅ Real database error captured and auto-resolved!")
+                                        st.markdown(response)
+                                    else:
+                                        st.info("Response received:")
+                                        st.markdown(response)
                                 else:
                                     st.warning("No response received from database query.")
+                                
+                                # Check if we have new errors in the recent_errors list
+                                if assistant.recent_errors:
+                                    st.success(f"✅ Error added to system! Total recent errors: {len(assistant.recent_errors)}")
+                                    
+                                st.rerun()  # Always refresh to update counters
                                     
                             except Exception as e:
-                                st.success(f"✅ Real database error captured! Check Recent Errors count above.")
-                                st.error(f"Database Error: {str(e)}")
+                                st.success(f"✅ Real database error captured and processed!")
+                                st.error(f"Database Error Details: {str(e)}")
+                                st.info("The error has been sent to the auto-resolution system. Check the Recent Errors section above for the resolution.")
                                 st.rerun()  # Refresh to update the counter
                     else:
                         st.error("Please select a database and enter SQL.")
@@ -588,30 +599,6 @@ def monitoring_interface(assistant: DBAAssistant):
         if assistant.recent_errors:
             if st.button("🔄 Refresh Error Count"):
                 st.rerun()
-            # Create a test error and add it to the assistant's recent_errors list
-            from core.database.connector import DatabaseError
-            test_error = DatabaseError(
-                error_type=test_error_type or "UNKNOWN",
-                error_code="TEST_001",
-                message=f"Simulated {test_error_type or 'UNKNOWN'} error for testing",
-                query=test_query if test_query else None,
-                table="test_table" if test_error_type and "TABLE" in test_error_type else None
-            )
-            
-            # Add error to assistant's recent errors list so it shows up in the counter
-            assistant.recent_errors.append(test_error)
-            if len(assistant.recent_errors) > assistant.max_stored_errors:
-                assistant.recent_errors = assistant.recent_errors[-assistant.max_stored_errors:]
-            
-            with st.spinner("Generating auto-resolution..."):
-                try:
-                    resolution = run_async_in_thread(assistant.get_auto_error_resolution, test_error.to_ai_prompt(), test_error)
-                    st.markdown("### 🚨 Auto-Generated Resolution")
-                    st.markdown(resolution)
-                    st.success(f"✅ Error added to Recent Errors! Total count: {len(assistant.recent_errors)}")
-                    st.rerun()  # Refresh to update the counter
-                except Exception as e:
-                    st.error(f"Failed to generate resolution: {e}")
     
     st.divider()
 

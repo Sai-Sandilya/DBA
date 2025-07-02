@@ -2507,64 +2507,68 @@ CREATE INDEX idx_name ON table_name (column_name);
                             
                     except Exception as sql_error:
                         logger.info(f"SQL execution failed as expected: {sql_error}")
-                        # This exception will be caught by the outer try-catch and processed as a database error
-                        raise sql_error
+                        
+                        # Process the error immediately instead of re-raising to avoid duplicate processing
+                        from core.database.connector import DatabaseError
                 
-                return None
-            
-        except Exception as e:
-            logger.error(f"Error in _handle_database_query: {e}")
-            
-            # Forward database errors to auto-error resolution system
-            try:
-                logger.info("Database error detected, sending to auto-resolution system...")
-                # Create a structured error and add it directly to recent_errors
-                from core.database.connector import DatabaseError
-                
-                # Determine error type from exception
-                error_type = "UNKNOWN"
-                error_code = "GENERAL"
-                if hasattr(e, 'args') and e.args:
-                    error_msg = str(e.args[0]) if e.args else str(e)
-                    if "1146" in error_msg or "doesn't exist" in error_msg.lower():
-                        error_type = "TABLE_NOT_FOUND"
-                        error_code = "1146"
-                    elif "1064" in error_msg or "syntax" in error_msg.lower():
-                        error_type = "SYNTAX_ERROR" 
-                        error_code = "1064"
-                    elif "1054" in error_msg or "unknown column" in error_msg.lower():
-                        error_type = "COLUMN_NOT_FOUND"
-                        error_code = "1054"
-                    elif "1305" in error_msg or "function" in error_msg.lower():
-                        error_type = "FUNCTION_ERROR"
-                        error_code = "1305"
-                
-                db_error = DatabaseError(
-                    error_type=error_type,
-                    error_code=error_code,
-                    message=str(e),
-                    query=message,
-                    table=None,
-                    context={"db_name": db_name, "db_type": db_config.db_type if db_config else "mysql"}
-                )
-                
-                # Add to recent errors list
-                self.recent_errors.append(db_error)
-                if len(self.recent_errors) > self.max_stored_errors:
-                    self.recent_errors = self.recent_errors[-self.max_stored_errors:]
-                
-                logger.info(f"Error added to recent_errors. Total errors: {len(self.recent_errors)}")
-                
-                # Trigger enhanced auto-resolution and get the resolution
-                resolution = await self.handle_auto_error_resolution(db_error)
-                
-                # Return a formatted response indicating error was detected and processed
-                return f"""## 🚨 Database Error Detected & Auto-Resolved
+                        # Determine error type from exception
+                        error_type = "UNKNOWN"
+                        error_code = "GENERAL"
+                        table_name = None
+                        
+                        if hasattr(sql_error, 'args') and sql_error.args:
+                            error_msg = str(sql_error.args[0]) if sql_error.args else str(sql_error)
+                            if "1146" in error_msg or "doesn't exist" in error_msg.lower():
+                                error_type = "TABLE_NOT_FOUND"
+                                error_code = "1146"
+                                # Extract table name from error message or query
+                                import re
+                                # Try to extract from error message like "Table 'db.table_name' doesn't exist"
+                                table_match = re.search(r"Table '([^']+)' doesn't exist", error_msg)
+                                if table_match:
+                                    table_name = table_match.group(1).split('.')[-1]  # Get just the table name
+                                else:
+                                    # Try to extract from SQL query
+                                    from_match = re.search(r'FROM\s+([^\s\;]+)', message, re.IGNORECASE)
+                                    if from_match:
+                                        table_name = from_match.group(1).strip('`')
+                            elif "1064" in error_msg or "syntax" in error_msg.lower():
+                                error_type = "SYNTAX_ERROR" 
+                                error_code = "1064"
+                            elif "1054" in error_msg or "unknown column" in error_msg.lower():
+                                error_type = "COLUMN_NOT_FOUND"
+                                error_code = "1054"
+                            elif "1305" in error_msg or "function" in error_msg.lower():
+                                error_type = "FUNCTION_ERROR"
+                                error_code = "1305"
+                        
+                        db_error = DatabaseError(
+                            error_type=error_type,
+                            error_code=error_code,
+                            message=str(sql_error),
+                            query=message,
+                            table=table_name,
+                            context={"db_name": db_name, "db_type": db_config.db_type if db_config else "mysql"}
+                        )
+                        
+                        # Add to recent errors list
+                        self.recent_errors.append(db_error)
+                        if len(self.recent_errors) > self.max_stored_errors:
+                            self.recent_errors = self.recent_errors[-self.max_stored_errors:]
+                        
+                        logger.info(f"Error added to recent_errors. Total errors: {len(self.recent_errors)}")
+                        
+                        try:
+                            # Trigger enhanced auto-resolution and get the resolution
+                            resolution = await self.handle_auto_error_resolution(db_error)
+                            
+                            # Return a formatted response indicating error was detected and processed
+                            return f"""## 🚨 Database Error Detected & Auto-Resolved
 
 **Error Type:** {error_type}  
 **Error Code:** {error_code}  
 **Query:** `{message}`  
-**Error Message:** {str(e)}
+**Error Message:** {str(sql_error)}
 
 ---
 
@@ -2576,22 +2580,34 @@ CREATE INDEX idx_name ON table_name (column_name);
 
 **📊 Error has been logged and added to Recent Errors for tracking and pattern analysis.**
 """
-                    
-            except Exception as auto_error:
-                logger.error(f"Failed to process database error: {auto_error}")
-                # Return error information even if auto-resolution fails
-                return f"""## 🚨 Database Error Detected
+                        except Exception as auto_error:
+                            logger.error(f"Failed to process database error in SQL execution: {auto_error}")
+                            # Return error information even if auto-resolution fails
+                            return f"""## 🚨 Database Error Detected
 
-**Error:** {str(e)}  
+**Error:** {str(sql_error)}  
 **Query:** `{message}`
 
 **⚠️ Auto-resolution system encountered an issue: {auto_error}**
 
 Please check the Recent Errors section and resolve manually.
 """
+                
+                return None
             
-            # This should not be reached due to the try-catch above, but keep as fallback
-            return f"Database error: {str(e)}"
+        except Exception as e:
+            # This should only catch non-database errors (like connection errors)
+            logger.error(f"Connection or system error in _handle_database_query: {e}")
+            
+            # Simple fallback for non-database errors
+            return f"""## 🚨 System Error
+
+**Error:** {str(e)}  
+**Query:** `{message}`
+
+**ℹ️ Error Details:** This appears to be a connection or system error rather than a database query error.
+Please check your database connection and try again.
+"""
             
         return None
 
@@ -2903,30 +2919,22 @@ GENERATE EMERGENCY RESOLUTION NOW:
 """
 
         try:
-            # Use direct LLM call instead of LangChain template to avoid template issues
-            from langchain.prompts import PromptTemplate
-            chain = LLMChain(
-                llm=self.llm, 
-                prompt=PromptTemplate(
-                    input_variables=[],
-                    template=complete_prompt
-                )
-            )
-            
+            # Use direct LLM call to avoid template issues
             try:
-                response_dict = await chain.ainvoke({})
+                # Direct LLM invocation without templates
+                response = await self.llm.ainvoke(complete_prompt)
                 
-                # Handle both old and new LangChain response formats
-                if isinstance(response_dict, dict):
-                    resolution = response_dict.get('text', '').strip()
-                elif hasattr(response_dict, 'content'):
-                    # New LangChain format
-                    resolution = response_dict.content.strip()
+                # Handle different response formats
+                if hasattr(response, 'content'):
+                    resolution = response.content.strip()
+                elif isinstance(response, str):
+                    resolution = response.strip()
                 else:
-                    # If it's not a dict, it might be the direct response
-                    resolution = str(response_dict).strip() if response_dict else ""
-            except Exception as chain_error:
-                logger.error(f"LangChain invocation error: {chain_error}")
+                    resolution = str(response).strip() if response else ""
+                    
+            except Exception as llm_error:
+                logger.error(f"LLM invocation error: {llm_error}")
+                # If LLM fails, use fallback resolution
                 return self._get_fallback_error_resolution(db_error)
             
             if not resolution:
