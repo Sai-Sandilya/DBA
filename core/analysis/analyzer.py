@@ -5,8 +5,11 @@ Performance analyzer for DBA-GPT
 import asyncio
 import psutil
 import time
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Optional, Tuple
 from datetime import datetime, timedelta
+import json
+import hashlib
+import re
 
 from core.config import Config, DatabaseConfig
 from core.database.connector import DatabaseConnector
@@ -22,6 +25,8 @@ class PerformanceAnalyzer:
         """Initialize Performance Analyzer"""
         self.config = config
         self.db_connector = DatabaseConnector(config)
+        # Optimizer utilities (initialized lazily to avoid circular/import cost)
+        self.optimizer = QueryOptimizer(config, self.db_connector)
         
     async def get_database_info(self, db_config: DatabaseConfig) -> Dict[str, Any]:
         """Get database schema and version information."""
@@ -417,7 +422,13 @@ class PerformanceAnalyzer:
             if db_config.db_type == "postgresql":
                 report["recommendations"].extend(await self._get_postgresql_recommendations(metrics))
             elif db_config.db_type == "mysql":
-                report["recommendations"].extend(await self._get_mysql_recommendations(metrics))
+                # Route to QueryOptimizer's MySQL recommendation helper if present
+                try:
+                    report["recommendations"].extend(await self.optimizer._get_mysql_recommendations(metrics))
+                except Exception:
+                    # Fallback to local method if available
+                    if hasattr(self, "_get_mysql_recommendations"):
+                        report["recommendations"].extend(await self._get_mysql_recommendations(metrics))
                 
         except Exception as e:
             logger.error(f"Error generating performance report: {e}")
@@ -448,6 +459,319 @@ class PerformanceAnalyzer:
                         
         return recommendations
         
+
+class QueryOptimizer:
+    """MySQL-focused query optimizer: slow query capture, EXPLAIN parsing, and suggestions."""
+
+    def __init__(self, config: Config, db_connector: DatabaseConnector):
+        self.config = config
+        self.db_connector = db_connector
+
+    # ---------- Public APIs ----------
+    async def capture_slow_queries(self, db_config: DatabaseConfig, window_minutes: int = 60, top_n: int = 10) -> List[Dict[str, Any]]:
+        """Return Top-N queries from MySQL Performance Schema ordered by total time.
+
+        Requires MySQL Performance Schema enabled. Gracefully degrades if unavailable.
+        Timers are returned in picoseconds by MySQL; convert to milliseconds.
+        """
+        if db_config.db_type.lower() != "mysql":
+            return []
+
+        try:
+            conn = await self.db_connector.get_connection(db_config)
+            # Filter by last seen within window; Performance Schema rows are cumulative.
+            # We will sort by SUM_TIMER_WAIT and take Top-N.
+            query = (
+                """
+                SELECT 
+                  DIGEST,
+                  DIGEST_TEXT,
+                  COUNT_STAR,
+                  SUM_TIMER_WAIT,
+                  AVG_TIMER_WAIT,
+                  SUM_ROWS_EXAMINED,
+                  SUM_ROWS_SENT,
+                  FIRST_SEEN,
+                  LAST_SEEN
+                FROM performance_schema.events_statements_summary_by_digest
+                WHERE DIGEST_TEXT IS NOT NULL
+                ORDER BY SUM_TIMER_WAIT DESC
+                LIMIT %s
+                """
+            )
+            rows = await conn.execute_query(query, (top_n,))
+            results: List[Dict[str, Any]] = []
+            for r in rows:
+                digest, text, count_star, sum_timer_ps, avg_timer_ps, rows_examined, rows_sent, first_seen, last_seen = r
+                results.append({
+                    "digest": digest,
+                    "query": text,
+                    "calls": int(count_star or 0),
+                    "total_time_ms": self._ps_to_ms(sum_timer_ps),
+                    "avg_time_ms": self._ps_to_ms(avg_timer_ps),
+                    "rows_examined": int(rows_examined or 0),
+                    "rows_sent": int(rows_sent or 0),
+                    "first_seen": str(first_seen) if first_seen is not None else None,
+                    "last_seen": str(last_seen) if last_seen is not None else None,
+                })
+            return results
+        except Exception as error:
+            logger.error(f"Failed to capture slow queries (MySQL): {error}")
+            return []
+
+    async def get_top_queries(self, db_config: DatabaseConfig, top_n: int = 10, sort_by: str = "total_time_ms") -> List[Dict[str, Any]]:
+        """Wrapper for capture_slow_queries; sort client-side by a given key if needed."""
+        items = await self.capture_slow_queries(db_config, top_n=top_n)
+        try:
+            return sorted(items, key=lambda x: x.get(sort_by, 0), reverse=True)[:top_n]
+        except Exception:
+            return items
+
+    async def explain_query(self, db_config: DatabaseConfig, sql: str, analyze: bool = False) -> Dict[str, Any]:
+        """Run EXPLAIN (FORMAT=JSON) for MySQL. If analyze=True, we still use EXPLAIN only for safety."""
+        if db_config.db_type.lower() != "mysql":
+            return {"error": "Only MySQL supported in this optimizer"}
+
+        try:
+            conn = await self.db_connector.get_connection(db_config)
+            explain_sql = f"EXPLAIN FORMAT=JSON {sql}"
+            result = await conn.execute_query(explain_sql)
+            # MySQL returns a single row with a JSON string in column 0
+            plan_json_str = result[0][0] if result and result[0] and len(result[0]) > 0 else "{}"
+            plan = json.loads(plan_json_str)
+            normalized = self._normalize_mysql_plan(plan)
+            normalized["plan_hash"] = self.plan_hash(plan)
+            return normalized
+        except Exception as error:
+            logger.error(f"EXPLAIN failed: {error}")
+            return {"error": str(error)}
+
+    async def analyze_query(self, db_config: DatabaseConfig, sql: str) -> Dict[str, Any]:
+        """Provide heuristics-based analysis combining EXPLAIN insights and SQL linting."""
+        plan = await self.explain_query(db_config, sql, analyze=False)
+        issues: List[str] = []
+        if plan.get("error"):
+            return {"issues": [f"EXPLAIN error: {plan['error']}"], "suggested_rewrites": [], "suggested_indexes": []}
+
+        issues.extend(self._find_plan_antipatterns(plan))
+        rewrites = self.suggest_rewrites(db_config, sql, plan)
+        indexes = await self.suggest_indexes(db_config, sql, plan)
+        return {"issues": issues, "suggested_rewrites": rewrites, "suggested_indexes": indexes, "plan": plan}
+
+    def suggest_rewrites(self, db_config: DatabaseConfig, sql: str, plan: Dict[str, Any] = None) -> List[str]:
+        """Static SQL lint rules for common MySQL issues. Returns human-readable suggestions."""
+        suggestions: List[str] = []
+        sql_compact = re.sub(r"\s+", " ", sql.strip()).lower()
+
+        # Leading wildcard LIKE
+        if re.search(r"like\s+'%[\w]", sql_compact):
+            suggestions.append("Avoid leading wildcard LIKE; consider full-text index or trigram search.")
+
+        # Functions on columns in WHERE (non-sargable)
+        if re.search(r"where\s+.*(lower\(|upper\(|date\(|substr\(|substring\(|cast\()", sql_compact):
+            suggestions.append("Avoid functions on indexed columns in WHERE; precompute or index computed value.")
+
+        # ORDER BY + LIMIT without covering index (hint via plan flags)
+        if plan:
+            for t in plan.get("tables", []):
+                if t.get("using_filesort") or t.get("using_temporary"):
+                    suggestions.append("ORDER BY/aggregation causes filesort/temp table; add suitable composite index.")
+                    break
+
+        # SELECT *
+        if re.search(r"select\s+\*\s", sql_compact):
+            suggestions.append("Avoid SELECT *; select only needed columns to enable covering indexes.")
+
+        # IN with many literals
+        if re.search(r"\sin\s*\((?:\s*\d+\s*,\s*){10,}\d+\s*\)", sql_compact):
+            suggestions.append("Large IN (...) list detected; consider temporary table join or batching.")
+
+        return suggestions
+
+    async def suggest_indexes(self, db_config: DatabaseConfig, sql: str, plan: Dict[str, Any] = None) -> List[Dict[str, Any]]:
+        """Suggest basic indexes from plan and WHERE/JOIN conditions.
+
+        Output: list of {ddl, reason, table, columns}
+        """
+        if db_config.db_type.lower() != "mysql":
+            return []
+
+        proposed: List[Dict[str, Any]] = []
+        conditions_by_table = self._extract_where_conditions(sql)
+        if plan:
+            for t in plan.get("tables", []):
+                table_name = t.get("table_name")
+                access_type = t.get("access_type")
+                used_key = t.get("key")
+                using_full_scan = (access_type or "").upper() == "ALL"
+                using_temp = bool(t.get("using_temporary"))
+                using_filesort = bool(t.get("using_filesort"))
+
+                cond_cols = conditions_by_table.get(table_name, [])
+                # If full scan and we have equality filter columns, propose index
+                if using_full_scan and cond_cols:
+                    ddl = self._build_index_ddl(table_name, cond_cols[:3])
+                    proposed.append({
+                        "table": table_name,
+                        "columns": cond_cols[:3],
+                        "ddl": ddl,
+                        "reason": "Full scan detected with filter; add index on filter columns",
+                    })
+
+                # ORDER BY/LIMIT hints
+                if using_filesort or using_temp:
+                    order_cols = self._extract_order_by_columns(sql)
+                    if order_cols:
+                        ddl = self._build_index_ddl(table_name, (cond_cols + order_cols)[:3])
+                        proposed.append({
+                            "table": table_name,
+                            "columns": (cond_cols + order_cols)[:3],
+                            "ddl": ddl,
+                            "reason": "Filesort/temp table; composite index with filter + order columns",
+                        })
+
+                # JOIN suggestions: if access_type ALL and attached_condition references equality on join col
+                join_cols = self._extract_join_columns(sql, table_name)
+                if using_full_scan and join_cols:
+                    ddl = self._build_index_ddl(table_name, join_cols[:3])
+                    proposed.append({
+                        "table": table_name,
+                        "columns": join_cols[:3],
+                        "ddl": ddl,
+                        "reason": "Join on unindexed columns; add index",
+                    })
+
+        # Deduplicate by DDL string
+        unique: Dict[str, Dict[str, Any]] = {}
+        for p in proposed:
+            unique[p["ddl"]] = p
+        return list(unique.values())
+
+    def plan_hash(self, plan_json: Dict[str, Any]) -> str:
+        """Stable hash for a MySQL plan by removing volatile fields."""
+        def strip(d: Any) -> Any:
+            if isinstance(d, dict):
+                clean = {}
+                for k, v in d.items():
+                    if k in {"query_cost", "cost_info", "est_prefix_rows", "est_rows", "r_loops", "r_total_time_ms"}:
+                        continue
+                    clean[k] = strip(v)
+                return clean
+            if isinstance(d, list):
+                return [strip(x) for x in d]
+            return d
+
+        normalized = json.dumps(strip(plan_json), sort_keys=True)
+        return hashlib.sha256(normalized.encode("utf-8")).hexdigest()[:16]
+
+    # ---------- Helpers ----------
+    def _ps_to_ms(self, picoseconds: Optional[int]) -> float:
+        try:
+            return (float(picoseconds) / 1_000_000_000_000.0) if picoseconds is not None else 0.0
+        except Exception:
+            return 0.0
+
+    def _normalize_mysql_plan(self, plan: Dict[str, Any]) -> Dict[str, Any]:
+        """Flatten MySQL EXPLAIN JSON into a friendly dict with table nodes."""
+        tables: List[Dict[str, Any]] = []
+
+        def visit(node: Any):
+            if isinstance(node, dict):
+                if "table_name" in node or "table" in node:
+                    tbl = node.get("table", node)
+                    if isinstance(tbl, dict) and (tbl.get("table_name") or node.get("table_name")):
+                        tinfo = tbl if "table_name" in tbl else node
+                        tables.append({
+                            "table_name": tinfo.get("table_name"),
+                            "access_type": tinfo.get("access_type"),
+                            "key": tinfo.get("key"),
+                            "possible_keys": tinfo.get("possible_keys"),
+                            "rows_examined_per_scan": tinfo.get("rows_examined_per_scan"),
+                            "rows_produced_per_join": tinfo.get("rows_produced_per_join"),
+                            "using_temporary": tinfo.get("using_temporary"),
+                            "using_filesort": tinfo.get("using_filesort"),
+                            "attached_condition": tinfo.get("attached_condition"),
+                            "used_key_parts": tinfo.get("used_key_parts"),
+                        })
+                for v in node.values():
+                    visit(v)
+            elif isinstance(node, list):
+                for item in node:
+                    visit(item)
+
+        visit(plan)
+        return {"tables": tables, "raw": plan}
+
+    def _extract_where_conditions(self, sql: str) -> Dict[str, List[str]]:
+        """Very simple parser to map table -> condition columns (equality preferred)."""
+        try:
+            where_match = re.search(r"where\s+(.+)$", sql, re.IGNORECASE | re.DOTALL)
+            if not where_match:
+                return {}
+            where = where_match.group(1)
+            # stop at ORDER BY / GROUP BY / LIMIT
+            where = re.split(r"\border\s+by\b|\bgroup\s+by\b|\blimit\b", where, flags=re.IGNORECASE)[0]
+            conds = re.split(r"\band\b|\bor\b", where, flags=re.IGNORECASE)
+            table_to_cols: Dict[str, List[str]] = {}
+            for c in conds:
+                # match alias.column or table.column
+                m = re.search(r"([a-zA-Z_][\w]*)\.([a-zA-Z_][\w]*)\s*(=|>|<|>=|<=|in\b)", c)
+                if m:
+                    table, col = m.group(1), m.group(2)
+                    table_to_cols.setdefault(table, []).append(col)
+                else:
+                    # match standalone column names (less precise)
+                    m2 = re.search(r"\b([a-zA-Z_][\w]*)\s*(=|>|<|>=|<=|in\b)", c)
+                    if m2:
+                        col = m2.group(1)
+                        table_to_cols.setdefault("", []).append(col)
+            return table_to_cols
+        except Exception:
+            return {}
+
+    def _extract_order_by_columns(self, sql: str) -> List[str]:
+        try:
+            m = re.search(r"order\s+by\s+(.+)$", sql, re.IGNORECASE)
+            if not m:
+                return []
+            expr = m.group(1)
+            expr = re.split(r"\blimit\b|\bwhere\b|\bgroup\s+by\b", expr, flags=re.IGNORECASE)[0]
+            cols = []
+            for part in expr.split(','):
+                name = part.strip().split()[0]
+                # remove alias qualifier if present
+                if '.' in name:
+                    name = name.split('.')[-1]
+                # remove function wrappers
+                name = re.sub(r"[()`]", "", name)
+                cols.append(name)
+            return [c for c in cols if c]
+        except Exception:
+            return []
+
+    def _extract_join_columns(self, sql: str, table_name: str) -> List[str]:
+        try:
+            cols: List[str] = []
+            # Find ON clauses referencing the table
+            for m in re.finditer(r"join\s+([a-zA-Z_][\w]*)\s*(?:as\s*[a-zA-Z_][\w]*)?\s*on\s*([^\n]+)", sql, re.IGNORECASE):
+                join_tbl, on_expr = m.group(1), m.group(2)
+                if join_tbl.lower() == table_name.lower() or table_name.lower() in on_expr.lower():
+                    # capture equality columns: a.col = b.col
+                    for eq in re.finditer(r"([a-zA-Z_][\w]*)\.([a-zA-Z_][\w]*)\s*=\s*([a-zA-Z_][\w]*)\.([a-zA-Z_][\w]*)", on_expr):
+                        # add the column that belongs to the current table
+                        if eq.group(1).lower() == table_name.lower():
+                            cols.append(eq.group(2))
+                        if eq.group(3).lower() == table_name.lower():
+                            cols.append(eq.group(4))
+            return cols
+        except Exception:
+            return []
+
+    def _build_index_ddl(self, table: str, columns: List[str]) -> str:
+        cols = ", ".join(f"`{c}`" for c in columns if c)
+        idx_name = f"idx_{table}_{'_'.join(columns)[:40]}".replace("`", "")
+        return f"CREATE INDEX `{idx_name}` ON `{table}` ({cols});"
+
     async def _get_mysql_recommendations(self, metrics: Dict[str, Any]) -> List[str]:
         """Get MySQL specific recommendations"""
         recommendations = []

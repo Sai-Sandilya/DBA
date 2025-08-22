@@ -1,0 +1,181 @@
+# Production Configuration for DBA-GPT
+# Copy this file and customize for your production environment
+
+environment: "production"
+debug: false
+
+# Security Settings
+security:
+  enable_auth: true
+  jwt_secret: "${JWT_SECRET}"  # Set this environment variable
+  admin_users: 
+    - "admin@yourcompany.com"
+    - "dba-team@yourcompany.com"
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 100
+    burst_limit: 20
+  cors:
+    allowed_origins: ["https://yourdomain.com"]
+    allowed_methods: ["GET", "POST", "PUT", "DELETE"]
+
+# Database Connections (Production)
+databases:
+  production_mysql:
+    db_type: "mysql"
+    host: "${MYSQL_HOST}"
+    port: 3306
+    database: "${MYSQL_DATABASE}"
+    username: "${MYSQL_USERNAME}"
+    password: "${MYSQL_PASSWORD}"
+    ssl_mode: "REQUIRED"
+    connection_pool_size: 10
+    timeout: 30
+    max_connections: 100
+    
+  production_postgresql:
+    db_type: "postgresql"
+    host: "${POSTGRES_HOST}"
+    port: 5432
+    database: "${POSTGRES_DATABASE}"
+    username: "${POSTGRES_USERNAME}"
+    password: "${POSTGRES_PASSWORD}"
+    ssl_mode: "require"
+    connection_pool_size: 15
+    timeout: 30
+    max_connections: 150
+
+# AI Model Configuration
+ai:
+  default_model: "gpt-4"  # or your preferred model
+  fallback_model: "gpt-3.5-turbo"
+  max_tokens: 4000
+  temperature: 0.1
+  api_key: "${OPENAI_API_KEY}"
+  
+  # Ollama Configuration (if using local models)
+  ollama:
+    base_url: "http://localhost:11434"
+    model: "llama2:13b"
+    timeout: 60
+
+# Monitoring and Logging
+monitoring:
+  enabled: true
+  log_level: "INFO"
+  log_file: "/var/log/dba-gpt/app.log"
+  log_rotation: "1 day"
+  log_retention: "30 days"
+  
+  # Prometheus metrics
+  prometheus:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+  
+  # Health checks
+  health_checks:
+    enabled: true
+    interval: 30
+    timeout: 10
+    
+  # Alerting
+  alerts:
+    enabled: true
+    slack_webhook: "${SLACK_WEBHOOK_URL}"
+    email:
+      smtp_server: "${SMTP_SERVER}"
+      smtp_port: 587
+      username: "${SMTP_USERNAME}"
+      password: "${SMTP_PASSWORD}"
+      from_email: "dba-gpt@yourcompany.com"
+      to_emails: ["dba-team@yourcompany.com"]
+
+# Web Interface
+web:
+  interface: "streamlit"
+  port: 8501
+  host: "0.0.0.0"
+  enable_https: true
+  ssl_cert: "/etc/ssl/certs/dba-gpt.crt"
+  ssl_key: "/etc/ssl/private/dba-gpt.key"
+  
+  # Session management
+  session_timeout: 3600  # 1 hour
+  max_sessions_per_user: 5
+
+# Performance and Scaling
+performance:
+  max_concurrent_queries: 50
+  query_timeout: 300  # 5 minutes
+  cache_enabled: true
+  cache_ttl: 3600  # 1 hour
+  
+  # Database query optimization
+  query_optimization:
+    enabled: true
+    max_execution_time: 60
+    enable_query_planning: true
+
+# Backup and Recovery
+backup:
+  enabled: true
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  retention_days: 30
+  storage_path: "/var/backups/dba-gpt"
+  
+  # Database backups
+  databases:
+    enabled: true
+    include_schemas: true
+    compression: true
+
+# Error Handling and Auto-Resolution
+error_handling:
+  auto_resolution: true
+  max_retry_attempts: 3
+  retry_delay: 5  # seconds
+  
+  # Error notification
+  notify_on_critical: true
+  critical_error_threshold: 5  # errors per hour
+  
+  # Error logging
+  log_all_errors: true
+  error_retention_days: 90
+
+# External Integrations
+integrations:
+  # Slack notifications
+  slack:
+    enabled: true
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+    channel: "#dba-alerts"
+    
+  # Jira integration
+  jira:
+    enabled: false
+    url: "${JIRA_URL}"
+    username: "${JIRA_USERNAME}"
+    api_token: "${JIRA_API_TOKEN}"
+    project_key: "DBA"
+    
+  # PagerDuty
+  pagerduty:
+    enabled: false
+    api_key: "${PAGERDUTY_API_KEY}"
+    service_id: "${PAGERDUTY_SERVICE_ID}"
+
+# Compliance and Audit
+compliance:
+  audit_logging: true
+  data_retention_days: 2555  # 7 years
+  gdpr_compliance: true
+  data_encryption: true
+  
+  # Access logging
+  access_logs:
+    enabled: true
+    log_user_actions: true
+    log_query_executions: true
+    log_schema_changes: true

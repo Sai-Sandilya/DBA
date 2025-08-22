@@ -1,0 +1,12 @@
+{
+  "collections": {
+    "user_profiles": 50,
+    "product_catalog": 100,
+    "order_transactions": 200,
+    "analytics_events": 300,
+    "content_management": 75
+  },
+  "total_documents": 725,
+  "created_at": "2025-08-16T12:14:30.165626",
+  "description": "MongoDB NoSQL Collections Demo - Showcasing nested documents, arrays, and flexible schemas"
+}

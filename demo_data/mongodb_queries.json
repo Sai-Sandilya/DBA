@@ -1,0 +1,87 @@
+{
+  "user_profiles": {
+    "find_users_by_city": {
+      "description": "Find all users in a specific city",
+      "query": "db.user_profiles.find({\"profile.location.city\": \"New York\"})",
+      "explanation": "Uses dot notation to query nested document fields"
+    },
+    "find_users_by_interests": {
+      "description": "Find users with specific interests",
+      "query": "db.user_profiles.find({\"profile.interests\": {\"$in\": [\"technology\", \"sports\"]}})",
+      "explanation": "Uses $in operator to find documents with array values"
+    },
+    "find_premium_users": {
+      "description": "Find users with premium tags",
+      "query": "db.user_profiles.find({\"tags\": \"premium\"})",
+      "explanation": "Simple array element matching"
+    }
+  },
+  "product_catalog": {
+    "find_products_by_category": {
+      "description": "Find products in a specific category",
+      "query": "db.product_catalog.find({\"category\": \"electronics\"})",
+      "explanation": "Basic field matching"
+    },
+    "find_products_by_price_range": {
+      "description": "Find products within a price range",
+      "query": "db.product_catalog.find({\"pricing.base_price\": {\"$gte\": 100, \"$lte\": 500}})",
+      "explanation": "Uses $gte and $lte operators with dot notation"
+    },
+    "find_products_with_variants": {
+      "description": "Find products with specific color variants",
+      "query": "db.product_catalog.find({\"variants.color\": \"red\"})",
+      "explanation": "Array element matching in nested documents"
+    }
+  },
+  "order_transactions": {
+    "find_orders_by_status": {
+      "description": "Find orders by status",
+      "query": "db.order_transactions.find({\"status\": \"delivered\"})",
+      "explanation": "Simple field matching"
+    },
+    "find_high_value_orders": {
+      "description": "Find orders above a certain value",
+      "query": "db.order_transactions.find({\"pricing.total\": {\"$gt\": 1000}})",
+      "explanation": "Uses $gt operator for comparison"
+    },
+    "find_orders_by_customer": {
+      "description": "Find all orders for a specific customer",
+      "query": "db.order_transactions.find({\"customer_id\": \"user_0001\"})",
+      "explanation": "Basic field matching"
+    }
+  },
+  "analytics_events": {
+    "find_events_by_type": {
+      "description": "Find events of a specific type",
+      "query": "db.analytics_events.find({\"event_type\": \"purchase\"})",
+      "explanation": "Simple field matching"
+    },
+    "find_recent_events": {
+      "description": "Find events from the last 24 hours",
+      "query": "db.analytics_events.find({\"timestamp\": {\"$gte\": \"2024-01-15T00:00:00Z\"}})",
+      "explanation": "Date range querying"
+    },
+    "find_events_by_device": {
+      "description": "Find events from mobile devices",
+      "query": "db.analytics_events.find({\"device.type\": \"mobile\"})",
+      "explanation": "Nested document field matching"
+    }
+  },
+  "content_management": {
+    "find_published_content": {
+      "description": "Find all published content",
+      "query": "db.content_management.find({\"status\": \"published\"})",
+      "explanation": "Simple field matching"
+    },
+    "find_content_by_author": {
+      "description": "Find content by specific author",
+      "query": "db.content_management.find({\"author.id\": \"author_01\"})",
+      "explanation": "Nested document field matching"
+    },
+    "find_content_by_tags": {
+      "description": "Find content with specific tags",
+      "query": "db.content_management.find({\"tags\": {\"$in\": [\"featured\", \"trending\"]}})",
+      "explanation": "Array element matching with $in operator"
+    }
+  }
+}

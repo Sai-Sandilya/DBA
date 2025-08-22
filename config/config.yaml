@@ -24,13 +24,112 @@ monitoring:
 
 # Database Connections
 databases:
-  mysql:
+  mysql_dbt:
     host: "localhost"
     port: 3306
     database: "DBT"
     username: "sandy"
     password: "sandy@123"
     db_type: "mysql"
+    connection_pool_size: 10
+    timeout: 30
+  sqlite_demo:
+    host: "localhost"
+    port: 0
+    database: "demo.db"
+    username: ""
+    password: ""
+    db_type: "sqlite"
+    connection_pool_size: 10
+    timeout: 30
+  # NoSQL Database Examples (uncomment and configure as needed)
+  mongodb_demo:
+    host: "localhost"
+    port: 27017
+    database: "testdb"
+    username: "admin"
+    password: "password"
+    db_type: "mongodb"
+    connection_pool_size: 10
+    timeout: 30
+  redis_demo:
+    host: "localhost"
+    port: 6379
+    database: "0"
+    username: ""
+    password: ""
+    db_type: "redis"
+    connection_pool_size: 10
+    timeout: 30
+  # elasticsearch_example:
+  #   host: "localhost"
+  #   port: 9200
+  #   database: ""
+  #   username: "elastic"
+  #   password: "password"
+  #   db_type: "elasticsearch"
+  #   connection_pool_size: 10
+  #   timeout: 30
+  neo4j_demo:
+    host: "localhost"
+    port: 7687
+    database: "neo4j"
+    username: "neo4j"
+    password: "neo4j"
+    db_type: "neo4j"
+    connection_pool_size: 10
+    timeout: 30
+  # cassandra_example:
+  #   host: "localhost"
+  #   port: 9042
+  #   database: "test_keyspace"
+  #   username: "cassandra"
+  #   password: "password"
+  #   db_type: "cassandra"
+  #   connection_pool_size: 10
+  #   timeout: 30
+  # influxdb_example:
+  #   host: "localhost"
+  #   port: 8086
+  #   database: "test_bucket"
+  #   username: "admin"
+  #   password: "password"
+  #   db_type: "influxdb"
+  #   connection_pool_size: 10
+  #   timeout: 30
+
+  # Cloud Database Examples
+  athena_analytics:
+    host: "athena.amazonaws.com"
+    port: 443
+    database: "analytics_db"
+    username: ""
+    password: ""
+    db_type: "athena"
+    region: "us-east-1"
+    s3_staging_dir: "s3://my-bucket/athena-staging/"
+    work_group: "analytics"
+    catalog: "awsdatacatalog"
+    aws_access_key_id: "${AWS_ACCESS_KEY_ID}"
+    aws_secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
+    # Or use profile: "profile_name"
+    connection_pool_size: 5
+    timeout: 60
+
+  azure_production:
+    host: "my-server.database.windows.net"
+    port: 1433
+    database: "production_db"
+    username: "${DB_USERNAME}"
+    password: "${DB_PASSWORD}"
+    db_type: "azure_sql"
+    authentication: "sql"  # sql, msi, service_principal
+    # For Azure AD authentication:
+    # authentication: "msi"  # Managed Identity
+    # authentication: "service_principal"
+    # tenant_id: "${AZURE_TENANT_ID}"
+    # client_id: "${AZURE_CLIENT_ID}"
+    # client_secret: "${AZURE_CLIENT_SECRET}"
     connection_pool_size: 10
     timeout: 30
 

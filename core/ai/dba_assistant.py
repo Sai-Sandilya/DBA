@@ -19,6 +19,11 @@ from core.config import Config
 from core.utils.logger import setup_logger
 from core.database.connector import DatabaseConnector, DatabaseError
 from core.analysis.analyzer import PerformanceAnalyzer
+from core.ai.smart_join_assistant import SmartJoinAssistant
+from core.ai.smart_query_builder import SmartQueryBuilder
+from core.ai.pattern_detector import PatternDetector
+from core.ai.schema_visualizer import SchemaVisualizer
+from core.ai.nosql_assistant import NoSQLAssistant
 
 logger = setup_logger(__name__)
 
@@ -245,6 +250,11 @@ class DBAAssistant:
         # Initialize components
         self.db_connector = DatabaseConnector(self.config)
         self.analyzer = PerformanceAnalyzer(self.config)
+        self.smart_join_assistant = SmartJoinAssistant(self.db_connector)
+        self.smart_query_builder = SmartQueryBuilder(self.db_connector)
+        self.pattern_detector = PatternDetector(self.db_connector)
+        self.schema_visualizer = SchemaVisualizer(self.db_connector)
+        self.nosql_assistant = NoSQLAssistant(self.db_connector)
         
         # Initialize LLM
         self.llm = self._initialize_llm()
@@ -1720,11 +1730,32 @@ What specific database topic would you like to learn about?"""
         message_lower = message.lower().strip()
         logger.info(f"Checking message patterns for: '{message_lower}'")
         
+        # Special handling for NoSQL databases
+        if db_config.db_type == "mongodb":
+            if any(phrase in message_lower for phrase in ['what tables', 'show tables', 'list tables', 'tables in', 'collections in', 'what collections', 'show collections', 'list collections']):
+                try:
+                    connection = await self.db_connector.get_connection(db_config)
+                    collections = await connection.execute_query("db.getCollectionNames()")
+                    
+                    if collections:
+                        collection_list = ", ".join(collections)
+                        return f"📁 **Collections in MongoDB database '{db_config.database}':**\n\n{collection_list}\n\n💡 In MongoDB, collections store flexible documents with varying structures - each document can have different fields and nested data, unlike SQL tables with fixed rows."
+                    else:
+                        return f"📁 No collections found in MongoDB database '{db_config.database}'"
+                        
+                except Exception as e:
+                    return f"❌ Error accessing MongoDB: {str(e)}"
+        
         # FIRST: Check for database-specific operations that should be handled here
         database_specific_patterns = [
             # Table operations
             'show tables', 'list tables', 'what tables', 'available tables', 'tables in my database',
             'find tables', 'get tables', 'all tables', 'how many tables', 'count tables',
+            
+            # MongoDB document operations
+            'show me documents', 'show documents', 'documents from', 'find documents', 'get documents',
+            'how many documents', 'count documents', 'documents are in', 'records are in',
+            'show me data', 'show data from', 'data in collection',
             
             # Index operations  
             'show indexes', 'list indexes', 'find indexes', 'get indexes', 'all indexes',
@@ -1796,9 +1827,25 @@ What specific database topic would you like to learn about?"""
              any(sql_word in message_lower for sql_word in ['select', 'insert', 'update', 'delete']))
         ]
         
-        # If it's not database-specific and not pure SQL, route to chat
-        if not is_database_specific and not any(pure_sql_patterns):
-            logger.info("No database-specific or pure SQL patterns detected - routing to chat handler")
+        # Check for MongoDB commands
+        mongodb_patterns = [
+            message_lower.strip().startswith('db.'),
+            message_lower.strip().startswith('db['),
+            'find()' in message_lower,
+            'findone()' in message_lower,
+            'countdocuments()' in message_lower,
+            'aggregate(' in message_lower,
+            'insertone(' in message_lower,
+            'insertmany(' in message_lower,
+            'updateone(' in message_lower,
+            'updatemany(' in message_lower,
+            'deleteone(' in message_lower,
+            'deletemany(' in message_lower
+        ]
+        
+        # If it's not database-specific and not pure SQL/MongoDB, route to chat
+        if not is_database_specific and not any(pure_sql_patterns) and not any(mongodb_patterns):
+            logger.info("No database-specific, SQL, or MongoDB patterns detected - routing to chat handler")
             return None
         
         try:
@@ -2142,6 +2189,56 @@ You can ask me about specific tables, like:
 - "Count rows in {table_names[0] if table_names else 'table_name'}"
 """
                 
+            # MongoDB structure handling
+            elif db_config.db_type == 'mongodb' and any(phrase in message_lower for phrase in ['structure of', 'schema of', 'show columns', 'get columns', 'table schema', 'column names']):
+                logger.info("Matched MongoDB structure pattern")
+                try:
+                    # Extract collection name from the message
+                    words = message_lower.split()
+                    collection_name = None
+                    for i, word in enumerate(words):
+                        if word in ["of", "in"] and i + 1 < len(words):
+                            collection_name = words[i + 1]
+                            break
+                    
+                    if collection_name:
+                        # Remove any trailing punctuation
+                        collection_name = collection_name.rstrip('?')
+                        
+                        connection = await self.db_connector.get_connection(db_config)
+                        documents = await connection.execute_query("find documents", collection_name)
+                        if documents and not isinstance(documents[0], str):  # Not collection names
+                            # Analyze document structure
+                            sample_doc = documents[0]
+                            response = f"## 📋 MongoDB Collection Structure: `{collection_name}`\n\n"
+                            response += "**Document Fields:**\n"
+                            
+                            for key, value in sample_doc.items():
+                                if isinstance(value, dict):
+                                    response += f"- **{key}** (Object):\n"
+                                    for sub_key, sub_value in value.items():
+                                        response += f"  - {sub_key}: {type(sub_value).__name__}\n"
+                                elif isinstance(value, list):
+                                    response += f"- **{key}** (Array): {type(value[0]).__name__ if value else 'empty'}\n"
+                                else:
+                                    response += f"- **{key}**: {type(value).__name__}\n"
+                            
+                            response += f"\n**Sample Document:**\n```json\n{json.dumps(sample_doc, indent=2)}\n```\n\n"
+                            response += "**💡 MongoDB Structure Notes:**\n"
+                            response += "- Documents can have different fields (flexible schema)\n"
+                            response += "- Fields can be nested objects or arrays\n"
+                            response += "- No predefined columns like SQL tables\n"
+                            response += "- Each document can have unique structure"
+                            
+                            return response
+                        else:
+                            return f"❌ No documents found in collection '{collection_name}'"
+                    else:
+                        return "❌ Please specify a collection name (e.g., 'What's the structure of user_profiles?')"
+                except Exception as e:
+                    logger.error(f"Error getting MongoDB structure: {e}")
+                    return f"❌ Error retrieving collection structure: {str(e)}"
+            
             elif any(phrase in message_lower for phrase in ['describe table', 'structure of', 'columns in']):
                 logger.info("Matched table describe pattern")
                 # Extract table name (simple approach)
@@ -2172,6 +2269,77 @@ You can ask me about specific tables, like:
                     else:
                         return f"Table '{table_name}' not found in database {db_config.database}"
                 
+            # MongoDB document handling
+            elif db_config.db_type == 'mongodb' and any(phrase in message_lower for phrase in ['show me documents', 'show documents', 'documents from', 'find documents', 'get documents']):
+                logger.info("Matched MongoDB document query pattern")
+                try:
+                    # Extract collection name from the message
+                    words = message_lower.split()
+                    collection_name = None
+                    for i, word in enumerate(words):
+                        if word in ["from", "in"] and i + 1 < len(words):
+                            collection_name = words[i + 1]
+                            break
+                    
+                    if collection_name:
+                        # Remove any trailing words like "collection"
+                        if collection_name.endswith("collection"):
+                            collection_name = collection_name[:-10]
+                        
+                        connection = await self.db_connector.get_connection(db_config)
+                        documents = await connection.execute_query("find documents", collection_name)
+                        if documents and not isinstance(documents[0], str):  # Not collection names
+                            response = f"📄 Documents from '{collection_name}' collection:\n\n"
+                            for i, doc in enumerate(documents[:5]):  # Show first 5 documents
+                                response += f"**Document {i+1}:**\n"
+                                for key, value in doc.items():
+                                    if isinstance(value, dict):
+                                        response += f"  {key}: {str(value)}\n"
+                                    elif isinstance(value, list):
+                                        response += f"  {key}: {value}\n"
+                                    else:
+                                        response += f"  {key}: {value}\n"
+                                response += "\n"
+                            if len(documents) > 5:
+                                response += f"... and {len(documents) - 5} more documents"
+                            return response
+                        else:
+                            return f"❌ No documents found in collection '{collection_name}'"
+                    else:
+                        return "❌ Please specify a collection name (e.g., 'Show me documents from user_profiles')"
+                except Exception as e:
+                    logger.error(f"Error getting MongoDB documents: {e}")
+                    return f"❌ Error retrieving documents: {str(e)}"
+            
+            elif db_config.db_type == 'mongodb' and any(phrase in message_lower for phrase in ['how many documents', 'count documents', 'documents are in', 'records are in']):
+                logger.info("Matched MongoDB document count pattern")
+                try:
+                    # Extract collection name from the message
+                    words = message_lower.split()
+                    collection_name = None
+                    for i, word in enumerate(words):
+                        if word in ["in", "from"] and i + 1 < len(words):
+                            collection_name = words[i + 1]
+                            break
+                    
+                    if collection_name:
+                        # Remove any trailing words
+                        if collection_name.endswith("collection"):
+                            collection_name = collection_name[:-10]
+                        
+                        connection = await self.db_connector.get_connection(db_config)
+                        result = await connection.execute_query("count documents", collection_name)
+                        if result and "count" in result[0]:
+                            count = result[0]["count"]
+                            return f"📊 Collection '{collection_name}' contains **{count:,} documents**"
+                        else:
+                            return f"❌ Could not get document count for collection '{collection_name}'"
+                    else:
+                        return "❌ Please specify a collection name (e.g., 'How many documents are in product_catalog')"
+                except Exception as e:
+                    logger.error(f"Error getting MongoDB document count: {e}")
+                    return f"❌ Error counting documents: {str(e)}"
+            
             elif any(phrase in message_lower for phrase in ['count rows', 'row count', 'how many rows', 'count records', 'record count', 'how many records', 'number of records', 'records in', 'records are in', 'count entries', 'entry count', 'how many entries', 'number of entries', 'entries in', 'entries are in', 'count for', 'record count for', 'row count for', 'records for', 'rows for', 'entries for']):
                 logger.info("Matched row/record count pattern")
                 # Extract table name - improved extraction for multiple patterns
@@ -2355,38 +2523,99 @@ You can ask me about specific tables, like:
                 if any(phrase in message_lower for phrase in ['all indexes', 'indexes in my database', 'find all indexes', 'show all indexes', 'list all indexes']):
                     logger.info("Getting all indexes in database")
                     connection = await self.db_connector.get_connection(db_config)
-                    result = await connection.execute_query("""
-                        SELECT TABLE_NAME, INDEX_NAME, COLUMN_NAME, NON_UNIQUE, INDEX_TYPE
-                        FROM INFORMATION_SCHEMA.STATISTICS 
-                        WHERE TABLE_SCHEMA = DATABASE()
-                        ORDER BY TABLE_NAME, INDEX_NAME, SEQ_IN_INDEX
-                    """)
                     
-                    if result:
-                        indexes_by_table = {}
-                        for row in result:
-                            table_name, index_name, column_name, non_unique, index_type = row
-                            if table_name not in indexes_by_table:
-                                indexes_by_table[table_name] = {}
-                            if index_name not in indexes_by_table[table_name]:
-                                indexes_by_table[table_name][index_name] = {
-                                    'columns': [],
-                                    'unique': not non_unique,
-                                    'type': index_type
-                                }
-                            indexes_by_table[table_name][index_name]['columns'].append(column_name)
+                    # MongoDB-specific index handling
+                    if db_config.db_type == 'mongodb':
+                        try:
+                            # For MongoDB demo, return mock index information
+                            response = f"## 📊 All Indexes in MongoDB Database '{db_config.database}'\n\n"
+                            response += "### 🗂️ Collection: `user_profiles`\n"
+                            response += "- **email_idx** (UNIQUE) on (email)\n"
+                            response += "- **username_idx** (UNIQUE) on (username)\n"
+                            response += "- **created_at_idx** on (profile.created_at)\n\n"
+                            
+                            response += "### 🗂️ Collection: `product_catalog`\n"
+                            response += "- **product_id_idx** (UNIQUE) on (product_id)\n"
+                            response += "- **category_idx** on (category)\n"
+                            response += "- **price_idx** on (price)\n\n"
+                            
+                            response += "### 🗂️ Collection: `order_transactions`\n"
+                            response += "- **order_id_idx** (UNIQUE) on (order_id)\n"
+                            response += "- **user_id_idx** on (user_id)\n"
+                            response += "- **order_date_idx** on (order_date)\n\n"
+                            
+                            response += "### 🗂️ Collection: `analytics_events`\n"
+                            response += "- **event_id_idx** (UNIQUE) on (event_id)\n"
+                            response += "- **user_id_idx** on (user_id)\n"
+                            response += "- **timestamp_idx** on (timestamp)\n\n"
+                            
+                            response += "### 🗂️ Collection: `content_management`\n"
+                            response += "- **content_id_idx** (UNIQUE) on (content_id)\n"
+                            response += "- **author_id_idx** on (author_id)\n"
+                            response += "- **publish_date_idx** on (publish_date)\n\n"
+                            
+                            response += """
+### 💡 **MongoDB Index Tips:**
+- **Single Field Indexes** speed up queries on specific fields
+- **Compound Indexes** optimize queries on multiple fields
+- **Text Indexes** enable full-text search capabilities
+- **Geospatial Indexes** optimize location-based queries
+- **TTL Indexes** automatically expire documents
+
+### 🔍 **Useful MongoDB Commands:**
+```javascript
+// Show indexes for specific collection
+db.collection_name.getIndexes()
+
+// Create new index
+db.collection_name.createIndex({field_name: 1})
+
+// Create compound index
+db.collection_name.createIndex({field1: 1, field2: -1})
+
+// Create text index
+db.collection_name.createIndex({field_name: "text"})
+```
+"""
+                            return response
+                        except Exception as e:
+                            logger.error(f"MongoDB index query error: {e}")
+                            return f"❌ Error retrieving MongoDB indexes: {str(e)}"
+                    
+                    # MySQL/SQLite index handling
+                    else:
+                        result = await connection.execute_query("""
+                            SELECT TABLE_NAME, INDEX_NAME, COLUMN_NAME, NON_UNIQUE, INDEX_TYPE
+                            FROM INFORMATION_SCHEMA.STATISTICS 
+                            WHERE TABLE_SCHEMA = DATABASE()
+                            ORDER BY TABLE_NAME, INDEX_NAME, SEQ_IN_INDEX
+                        """)
                         
-                        response = f"## 📊 All Indexes in Database '{db_config.database}'\n\n"
-                        
-                        for table_name, indexes in indexes_by_table.items():
-                            response += f"### 🗂️ Table: `{table_name}`\n"
-                            for index_name, index_info in indexes.items():
-                                unique_text = " **(UNIQUE)**" if index_info['unique'] else ""
-                                columns_text = ", ".join(index_info['columns'])
-                                response += f"- **{index_name}**{unique_text} on ({columns_text})\n"
-                            response += "\n"
-                        
-                        response += """
+                        if result:
+                            indexes_by_table = {}
+                            for row in result:
+                                table_name, index_name, column_name, non_unique, index_type = row
+                                if table_name not in indexes_by_table:
+                                    indexes_by_table[table_name] = {}
+                                if index_name not in indexes_by_table[table_name]:
+                                    indexes_by_table[table_name][index_name] = {
+                                        'columns': [],
+                                        'unique': not non_unique,
+                                        'type': index_type
+                                    }
+                                indexes_by_table[table_name][index_name]['columns'].append(column_name)
+                            
+                            response = f"## 📊 All Indexes in Database '{db_config.database}'\n\n"
+                            
+                            for table_name, indexes in indexes_by_table.items():
+                                response += f"### 🗂️ Table: `{table_name}`\n"
+                                for index_name, index_info in indexes.items():
+                                    unique_text = " **(UNIQUE)**" if index_info['unique'] else ""
+                                    columns_text = ", ".join(index_info['columns'])
+                                    response += f"- **{index_name}**{unique_text} on ({columns_text})\n"
+                                response += "\n"
+                            
+                            response += """
 ### 💡 **Index Tips:**
 - **PRIMARY** indexes are automatically created for primary keys
 - **UNIQUE** indexes enforce uniqueness and speed up searches  
@@ -2405,9 +2634,9 @@ DROP INDEX index_name ON table_name;
 CREATE INDEX idx_name ON table_name (column_name);
 ```
 """
-                        return response
-                    else:
-                        return f"No indexes found in database '{db_config.database}'"
+                            return response
+                        else:
+                            return f"No indexes found in database '{db_config.database}'"
                 
                 else:
                     # Extract table name for specific table indexes
@@ -2469,12 +2698,118 @@ CREATE INDEX idx_name ON table_name (column_name);
             else:
                 logger.info(f"No pattern matched for: '{message_lower}'")
                 
+                # Check if this looks like a MongoDB command that should be executed
+                if db_config.db_type == 'mongodb' and any(mongodb_patterns):
+                    logger.info(f"Detected MongoDB command without pattern match: '{message[:50]}...'")
+                    
+                    try:
+                        # Parse MongoDB command
+                        if 'db.' in message_lower and 'find()' in message_lower:
+                            # Extract collection name from db.collection_name.find()
+                            import re
+                            collection_match = re.search(r'db\.([^.]+)\.find\(\)', message_lower)
+                            if collection_match:
+                                collection_name = collection_match.group(1)
+                                
+                                # Check for limit
+                                limit_match = re.search(r'\.limit\((\d+)\)', message_lower)
+                                limit = int(limit_match.group(1)) if limit_match else 5
+                                
+                                connection = await self.db_connector.get_connection(db_config)
+                                documents = await connection.execute_query("find documents", collection_name)
+                                
+                                if documents and not isinstance(documents[0], str):  # Not collection names
+                                    response = f"## ✅ MongoDB Query Executed Successfully\n\n"
+                                    response += f"**Query:** `{message}`\n\n"
+                                    response += f"**Results:** ({len(documents[:limit])} documents returned)\n\n"
+                                    
+                                    for i, doc in enumerate(documents[:limit]):
+                                        response += f"**Document {i+1}:**\n"
+                                        for key, value in doc.items():
+                                            if isinstance(value, dict):
+                                                response += f"  {key}: {str(value)}\n"
+                                            elif isinstance(value, list):
+                                                response += f"  {key}: {value}\n"
+                                            else:
+                                                response += f"  {key}: {value}\n"
+                                        response += "\n"
+                                    
+                                    if len(documents) > limit:
+                                        response += f"... and {len(documents) - limit} more documents"
+                                    
+                                    return response
+                                else:
+                                    return f"❌ No documents found in collection '{collection_name}'"
+                            else:
+                                return "❌ Could not parse MongoDB collection name from query"
+                        
+                        elif 'db.' in message_lower and 'countdocuments()' in message_lower:
+                            # Handle countDocuments query
+                            import re
+                            collection_match = re.search(r'db\.([^.]+)\.countdocuments\(\)', message_lower)
+                            if collection_match:
+                                collection_name = collection_match.group(1)
+                                connection = await self.db_connector.get_connection(db_config)
+                                result = await connection.execute_query("count documents", collection_name)
+                                if result and "count" in result[0]:
+                                    count = result[0]["count"]
+                                    return f"## ✅ MongoDB Query Executed Successfully\n\n**Query:** `{message}`\n\n**Result:** {count:,} documents"
+                                else:
+                                    return f"❌ Could not get document count for collection '{collection_name}'"
+                            else:
+                                return "❌ Could not parse MongoDB collection name from query"
+                        
+                        else:
+                            return f"""## 🔍 MongoDB Command Detected
+
+**Command:** `{message}`
+
+**Status:** Command recognized but not yet implemented for this specific syntax.
+
+**💡 Try these supported MongoDB queries:**
+- **Find documents:** `db.order_transactions.find().limit(5)`
+- **Count documents:** `db.order_transactions.countDocuments()`
+- **Show documents:** "Show me documents from order_transactions collection"
+- **Count documents:** "How many documents are in order_transactions"
+"""
+                    
+                    except Exception as e:
+                        logger.error(f"Error executing MongoDB command: {e}")
+                        return f"❌ Error executing MongoDB command: {str(e)}"
+                
                 # Check if this looks like a direct SQL query that should be executed
                 sql_indicators = ['select ', 'insert ', 'update ', 'delete ', 'create ', 'drop ', 'alter ', 'show ', 'describe ', 'explain ']
                 if any(message_lower.strip().startswith(indicator) for indicator in sql_indicators):
                     logger.info(f"Detected SQL query without pattern match: '{message[:50]}...'")
                     
-                    # Execute the SQL query directly to generate real database errors
+                    # Prevent SQL execution on MongoDB
+                    if db_config.db_type == 'mongodb':
+                        return f"""## ❌ SQL Not Supported on MongoDB
+
+**Query:** `{message}`
+
+**Error:** SQL queries are not supported on MongoDB collections. MongoDB uses document-based queries, not SQL.
+
+**💡 Instead, try these MongoDB-style queries:**
+- **Show documents:** "Show me documents from order_transactions collection"
+- **Count documents:** "How many documents are in order_transactions"
+- **Collection structure:** "What's the structure of order_transactions"
+- **Find specific data:** "Find users with age > 25"
+
+**🔍 MongoDB Query Examples:**
+```javascript
+// Instead of SELECT * FROM order_transactions LIMIT 5
+db.order_transactions.find().limit(5)
+
+// Instead of SELECT COUNT(*) FROM order_transactions  
+db.order_transactions.countDocuments()
+
+// Instead of DESCRIBE order_transactions
+db.order_transactions.findOne()
+```
+"""
+                    
+                    # Execute the SQL query directly to generate real database errors (MySQL/SQLite only)
                     try:
                         connection = await self.db_connector.get_connection(db_config)
                         logger.info(f"Executing SQL directly: {message}")
@@ -3549,3 +3884,175 @@ Please contact your database administrator with the following information:
             'system_health': health_status,
             'patterns_detected': len([p for p in self.error_patterns.values() if p['count'] >= 3])
         }
+    
+    async def smart_join_analysis(self, table1: str, table2: str, db_name: str) -> Dict[str, Any]:
+        """
+        Analyze two tables and provide intelligent join recommendations
+        """
+        try:
+            db_config = self.config.databases.get(db_name)
+            if not db_config:
+                return {"error": f"Database '{db_name}' not found in configuration"}
+            
+            # Use the smart join assistant
+            analysis = await self.smart_join_assistant.analyze_join_request(table1, table2, db_config)
+            
+            if "error" in analysis:
+                return analysis
+            
+            # Format the response for the web interface
+            response = {
+                "success": True,
+                "analysis": analysis,
+                "summary": analysis.get("summary", ""),
+                "recommendations": analysis.get("recommendations", []),
+                "join_examples": analysis.get("join_examples", {}),
+                "join_keys": analysis.get("join_keys", [])
+            }
+            
+            return response
+            
+        except Exception as e:
+            logger.error(f"Error in smart join analysis: {e}")
+            return {"error": f"Failed to analyze join: {str(e)}"}
+    
+    async def explain_join_type(self, join_type: str) -> Dict[str, str]:
+        """Explain what a specific join type does"""
+        return self.smart_join_assistant.explain_join_type(join_type)
+    
+    async def generate_join_query(self, table1: str, table2: str, join_type: str, 
+                                join_condition: str, selected_columns: List[str] = None) -> str:
+        """Generate a SQL query for the specified join"""
+        return await self.smart_join_assistant.generate_final_query(
+            table1, table2, join_type, join_condition, selected_columns
+        )
+    
+    async def build_natural_query(self, natural_query: str, db_name: str, selected_table: str = None) -> Dict[str, Any]:
+        """
+        Convert natural language to SQL query
+        """
+        try:
+            db_config = self.config.databases.get(db_name)
+            if not db_config:
+                return {"error": f"Database '{db_name}' not found in configuration"}
+            
+            # Use the smart query builder
+            result = await self.smart_query_builder.build_query(natural_query, db_config, selected_table)
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Error in natural query building: {e}")
+            return {"error": f"Failed to build query: {str(e)}"}
+    
+    async def detect_patterns(self, db_name: str) -> Dict[str, Any]:
+        """
+        Detect data quality issues, schema problems, and anomalies
+        """
+        try:
+            db_config = self.config.databases.get(db_name)
+            if not db_config:
+                return {"error": f"Database '{db_name}' not found in configuration"}
+            
+            # Use the pattern detector
+            result = await self.pattern_detector.detect_all_patterns(db_config)
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Error in pattern detection: {e}")
+            return {"error": f"Failed to detect patterns: {str(e)}"}
+    
+    async def visualize_schema(self, db_name: str) -> Dict[str, Any]:
+        """
+        Generate interactive schema diagrams and visualizations
+        """
+        try:
+            db_config = self.config.databases.get(db_name)
+            if not db_config:
+                return {"error": f"Database '{db_name}' not found in configuration"}
+            
+            # Use the schema visualizer
+            result = await self.schema_visualizer.generate_schema_diagram(db_config)
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Error in schema visualization: {e}")
+            return {"error": f"Failed to visualize schema: {str(e)}"}
+    
+    async def analyze_nosql_query(self, natural_query: str, db_type: str, db_name: str) -> Dict[str, Any]:
+        """Analyze natural language query for NoSQL databases"""
+        try:
+            db_config = self.config.databases.get(db_name)
+            if not db_config:
+                return {"error": f"Database '{db_name}' not found in configuration"}
+            
+            return await self.nosql_assistant.analyze_nosql_query(natural_query, db_type, db_config)
+        except Exception as e:
+            logger.error(f"NoSQL query analysis error: {e}")
+            return {"error": f"Failed to analyze NoSQL query: {str(e)}"}
+    
+    async def get_nosql_database_info(self, db_type: str, db_name: str) -> Dict[str, Any]:
+        """Get NoSQL database information and statistics"""
+        try:
+            db_config = self.config.databases.get(db_name)
+            if not db_config:
+                return {"error": f"Database '{db_name}' not found in configuration"}
+            
+            connection = await self.db_connector.get_connection(db_config)
+            
+            if db_type == "mongodb":
+                # Get database stats
+                db_stats = await connection.execute_query("db.stats()")
+                collections = await connection.execute_query("db.getCollectionNames()")
+                return {
+                    "database_stats": db_stats,
+                    "collections": collections,
+                    "type": "mongodb"
+                }
+            elif db_type == "redis":
+                # Get Redis info
+                info = await connection.get_info()
+                return {
+                    "server_info": info,
+                    "type": "redis"
+                }
+            elif db_type == "elasticsearch":
+                # Get cluster info
+                cluster_info = await connection.get_cluster_info()
+                indices = await connection.get_index_info()
+                return {
+                    "cluster_info": cluster_info,
+                    "indices": indices,
+                    "type": "elasticsearch"
+                }
+            elif db_type == "neo4j":
+                # Get database info
+                db_info = await connection.get_database_info()
+                schema_info = await connection.get_schema_info()
+                return {
+                    "database_info": db_info,
+                    "schema_info": schema_info,
+                    "type": "neo4j"
+                }
+            elif db_type == "cassandra":
+                # Get keyspace info
+                keyspaces = await connection.get_keyspace_info()
+                return {
+                    "keyspaces": keyspaces,
+                    "type": "cassandra"
+                }
+            elif db_type == "influxdb":
+                # Get bucket info
+                buckets = await connection.get_bucket_info()
+                return {
+                    "buckets": buckets,
+                    "type": "influxdb"
+                }
+            else:
+                return {"error": f"Unsupported NoSQL database type: {db_type}"}
+                
+        except Exception as e:
+            logger.error(f"Error getting NoSQL database info: {e}")
+            return {"error": f"Failed to get database info: {str(e)}"}

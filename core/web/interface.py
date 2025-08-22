@@ -85,7 +85,7 @@ def main_interface(assistant: DBAAssistant):
         # Navigation
         page = st.selectbox(
             "Navigation",
-            ["Chat", "Monitoring", "Analysis", "Configuration", "About"]
+            ["Chat", "Smart Join", "Smart Query", "Pattern Detection", "Schema Visualizer", "NoSQL Assistant", "Monitoring", "Analysis", "Configuration", "About"]
         )
         
         # Database selection
@@ -93,17 +93,109 @@ def main_interface(assistant: DBAAssistant):
         available_dbs = db_keys + ["oracle"]  # Add Oracle as a knowledge-based option
         
         if assistant.config.databases:
+            # Create display names with database types
+            db_display_names = []
+            for db_key in available_dbs:
+                if db_key == "oracle":
+                    db_display_names.append(f"📚 {db_key} (Knowledge Base)")
+                else:
+                    # Get database type from configuration
+                    db_config = assistant.config.databases.get(db_key)
+                    if db_config:
+                        db_type = db_config.db_type.lower()
+                        if db_type == "mongodb":
+                            db_display_names.append(f"🍃 {db_key} (MongoDB)")
+                        elif db_type == "sqlite":
+                            db_display_names.append(f"💾 {db_key} (SQLite)")
+                        elif db_type == "postgresql":
+                            db_display_names.append(f"🐘 {db_key} (PostgreSQL)")
+                        elif db_type == "mysql":
+                            db_display_names.append(f"🗄️ {db_key} (MySQL)")
+                        elif db_type == "redis":
+                            db_display_names.append(f"🔴 {db_key} (Redis)")
+                        elif db_type == "elasticsearch":
+                            db_display_names.append(f"🔍 {db_key} (Elasticsearch)")
+                        elif db_type == "neo4j":
+                            db_display_names.append(f"🕸️ {db_key} (Neo4j)")
+                        elif db_type == "cassandra":
+                            db_display_names.append(f"🗿 {db_key} (Cassandra)")
+                        elif db_type == "influxdb":
+                            db_display_names.append(f"📊 {db_key} (InfluxDB)")
+                        elif db_type == "athena":
+                            db_display_names.append(f"☁️ {db_key} (AWS Athena)")
+                        elif db_type == "azure_sql":
+                            db_display_names.append(f"🔵 {db_key} (Azure SQL)")
+                        else:
+                            db_display_names.append(f"🗄️ {db_key} ({db_type.title()})")
+                    else:
+                        db_display_names.append(f"🗄️ {db_key}")
+            
             selected_db = st.selectbox(
                 "Select Database Context",
                 available_dbs,
+                format_func=lambda x: db_display_names[available_dbs.index(x)],
                 help="Select a live database or a knowledge base."
             )
+            
+            # Show database status
+            if selected_db and selected_db != "oracle":
+                db_config = assistant.config.databases.get(selected_db)
+                if db_config:
+                    st.markdown(f"**Status:** 🟢 Connected to {db_config.host}")
+                    st.markdown(f"**Type:** {db_config.db_type.upper()}")
+                    st.markdown(f"**Database:** {db_config.database}")
+                else:
+                    st.markdown("**Status:** 🔴 Not configured")
+            elif selected_db == "oracle":
+                st.markdown("**Status:** 📚 Knowledge Base Mode")
+                st.markdown("**Type:** Oracle (Knowledge)")
+                st.markdown("**Mode:** Educational Content")
+            else:
+                st.markdown("**Status:** ⚪ No database selected")
         else:
             selected_db = None
+        
+        # Show available database types that can be added
+        st.markdown("---")
+        st.markdown("### 📋 Available Database Types")
+        st.markdown("**SQL Databases:**")
+        st.markdown("- 🗄️ **MySQL** - Relational database")
+        st.markdown("- 🐘 **PostgreSQL** - Advanced relational database")
+        st.markdown("- 💾 **SQLite** - Lightweight embedded database")
+        st.markdown("- 🔵 **Oracle** - Enterprise database (Knowledge Base)")
+        st.markdown("- 🟦 **SQL Server** - Microsoft database")
+        
+        st.markdown("**NoSQL Databases:**")
+        st.markdown("- 🍃 **MongoDB** - Document database")
+        st.markdown("- 🔴 **Redis** - In-memory key-value store")
+        st.markdown("- 🔍 **Elasticsearch** - Search engine")
+        st.markdown("- 🕸️ **Neo4j** - Graph database")
+        st.markdown("- 🗿 **Cassandra** - Wide-column database")
+        st.markdown("- 📊 **InfluxDB** - Time series database")
+        
+        st.markdown("**Cloud Databases:**")
+        st.markdown("- ☁️ **AWS Athena** - Serverless query service")
+        st.markdown("- 🔵 **Azure SQL** - Microsoft cloud database")
+        st.markdown("- 🟢 **Google BigQuery** - Data warehouse")
+        
+        st.markdown("**To add a database:**")
+        st.markdown("1. Edit `config/config.yaml`")
+        st.markdown("2. Add database configuration")
+        st.markdown("3. Restart the application")
             
     # Main content
     if page == "Chat":
         chat_interface(assistant, selected_db)
+    elif page == "Smart Join":
+        run_async_in_thread(smart_join_interface, assistant, selected_db)
+    elif page == "Smart Query":
+        run_async_in_thread(smart_query_interface, assistant, selected_db)
+    elif page == "Pattern Detection":
+        run_async_in_thread(pattern_detection_interface, assistant, selected_db)
+    elif page == "Schema Visualizer":
+        run_async_in_thread(schema_visualizer_interface, assistant, selected_db)
+    elif page == "NoSQL Assistant":
+        run_async_in_thread(nosql_assistant_interface, assistant, selected_db)
     elif page == "Monitoring":
         monitoring_interface(assistant)
     elif page == "Analysis":
@@ -128,7 +220,7 @@ def chat_interface(assistant: DBAAssistant, selected_db: Optional[str]):
     col1, col2 = st.columns(2)
     
     with col1:
-        if st.button("🗄️ **MySQL Database Mode**", 
+        if st.button("🗄️ **Database Mode**", 
                      type="primary" if st.session_state.chat_mode == "database" else "secondary",
                      use_container_width=True):
             st.session_state.chat_mode = "database"
@@ -144,26 +236,179 @@ def chat_interface(assistant: DBAAssistant, selected_db: Optional[str]):
     # Display current mode info
     if st.session_state.chat_mode == "database":
         if selected_db and selected_db != "oracle":
-            st.success(f"🗄️ **MySQL Database Mode** - Connected to: **{selected_db}**")
-            st.info("💡 Ask questions about YOUR database: tables, schema, data, queries, etc.")
+            if "mongodb" in selected_db.lower():
+                st.success(f"🗄️ **MongoDB NoSQL Mode** - Connected to: **{selected_db}**")
+                st.info("💡 Ask questions about YOUR MongoDB collections: documents, schema, data, queries, etc.")
+            elif "sqlite" in selected_db.lower():
+                st.success(f"🗄️ **SQLite Database Mode** - Connected to: **{selected_db}**")
+                st.info("💡 Ask questions about YOUR SQLite database: tables, schema, data, queries, etc.")
+            else:
+                st.success(f"🗄️ **MySQL Database Mode** - Connected to: **{selected_db}**")
+                st.info("💡 Ask questions about YOUR MySQL database: tables, schema, data, queries, etc.")
         else:
-            st.warning("🗄️ **MySQL Database Mode** - No MySQL database selected! Please select a database from the sidebar.")
-            st.info("💡 This mode answers questions about your specific connected MySQL database.")
+            st.warning("🗄️ **Database Mode** - No database selected! Please select a database from the sidebar.")
+            st.info("💡 This mode answers questions about your specific connected database.")
     else:
         st.success(f"🎓 **General Database Topics Mode** - Educational Content")
         st.info("💡 Ask questions about: SQL concepts, database theory, best practices, tutorials, etc.")
     
-    # Different example questions based on mode
+    # Different example questions based on mode and database type
     st.markdown("### 💡 Example Questions")
     if st.session_state.chat_mode == "database":
-        st.markdown("""
-        **MySQL Database Questions:**
-        - "What tables do I have in my database?"
-        - "Show me the schema of the users table"
-        - "How many records are in my orders table?"
-        - "Find all indexes in my database"
-        - "What's the size of my database?"
-        """)
+        if selected_db:
+            # Get database type from configuration
+            db_config = assistant.config.databases.get(selected_db)
+            db_type = db_config.db_type.lower() if db_config else "mysql"
+            
+            if db_type == "mongodb":
+                st.markdown("""
+                **MongoDB NoSQL Questions:**
+                - "What collections do I have in my database?"
+                - "Show me documents from user_profiles collection"
+                - "How many documents are in product_catalog?"
+                - "Find all indexes in my database"
+                - "What's the structure of order_transactions?"
+                - "Show me the latest orders from today"
+                - "Find users with specific criteria"
+                - "Aggregate data by category"
+                """)
+            elif db_type == "sqlite":
+                st.markdown("""
+                **SQLite Database Questions:**
+                - "What tables do I have in my database?"
+                - "Show me the schema of the users table"
+                - "How many records are in my orders table?"
+                - "Find all indexes in my database"
+                - "What's the size of my database?"
+                - "Show me recent transactions"
+                - "Find duplicate records"
+                - "Optimize my database performance"
+                """)
+            elif db_type == "postgresql":
+                st.markdown("""
+                **PostgreSQL Database Questions:**
+                - "What tables do I have in my database?"
+                - "Show me the schema of the users table"
+                - "How many records are in my orders table?"
+                - "Find all indexes in my database"
+                - "What's the size of my database?"
+                - "Show me active connections"
+                - "Check for table bloat"
+                - "Analyze query performance"
+                - "Show me recent slow queries"
+                """)
+            elif db_type == "mysql":
+                st.markdown("""
+                **MySQL Database Questions:**
+                - "What tables do I have in my database?"
+                - "Show me the schema of the users table"
+                - "How many records are in my orders table?"
+                - "Find all indexes in my database"
+                - "What's the size of my database?"
+                - "Show me active processes"
+                - "Check for slow queries"
+                - "Analyze table performance"
+                - "Show me recent errors"
+                """)
+            elif db_type == "redis":
+                st.markdown("""
+                **Redis Database Questions:**
+                - "What keys do I have in my database?"
+                - "Show me the value of a specific key"
+                - "How many keys are in my database?"
+                - "Find all keys matching a pattern"
+                - "What's the memory usage of my database?"
+                - "Show me key expiration times"
+                - "Monitor real-time operations"
+                - "Check Redis performance metrics"
+                """)
+            elif db_type == "elasticsearch":
+                st.markdown("""
+                **Elasticsearch Questions:**
+                - "What indices do I have in my cluster?"
+                - "Show me documents from a specific index"
+                - "How many documents are in my index?"
+                - "Find all mappings in my cluster"
+                - "What's the cluster health status?"
+                - "Show me search query performance"
+                - "Analyze index performance"
+                - "Check for failed shards"
+                """)
+            elif db_type == "neo4j":
+                st.markdown("""
+                **Neo4j Graph Database Questions:**
+                - "What node labels do I have in my database?"
+                - "Show me relationships between nodes"
+                - "How many nodes are in my database?"
+                - "Find all indexes in my database"
+                - "What's the database size?"
+                - "Show me the graph schema"
+                - "Find shortest paths between nodes"
+                - "Analyze graph performance"
+                """)
+            elif db_type == "cassandra":
+                st.markdown("""
+                **Cassandra Database Questions:**
+                - "What keyspaces do I have in my cluster?"
+                - "Show me tables in a keyspace"
+                - "How many rows are in my table?"
+                - "Find all indexes in my keyspace"
+                - "What's the cluster status?"
+                - "Show me table schemas"
+                - "Check for compaction status"
+                - "Analyze query performance"
+                """)
+            elif db_type == "influxdb":
+                st.markdown("""
+                **InfluxDB Time Series Questions:**
+                - "What measurements do I have in my database?"
+                - "Show me data from a specific measurement"
+                - "How many data points are in my measurement?"
+                - "Find all tags in my database"
+                - "What's the database size?"
+                - "Show me recent time series data"
+                - "Analyze data retention policies"
+                - "Check for data compression"
+                """)
+            elif db_type == "athena":
+                st.markdown("""
+                **AWS Athena Questions:**
+                - "What databases do I have in my catalog?"
+                - "Show me tables in a database"
+                - "How many rows are in my table?"
+                - "Find all partitions in my table"
+                - "What's the query execution history?"
+                - "Show me recent query results"
+                - "Analyze query performance"
+                - "Check for failed queries"
+                """)
+            elif db_type == "azure_sql":
+                st.markdown("""
+                **Azure SQL Database Questions:**
+                - "What tables do I have in my database?"
+                - "Show me the schema of the users table"
+                - "How many records are in my orders table?"
+                - "Find all indexes in my database"
+                - "What's the database size?"
+                - "Show me active connections"
+                - "Check for performance issues"
+                - "Analyze query performance"
+                """)
+            else:
+                st.markdown("""
+                **General Database Questions:**
+                - "What tables do I have in my database?"
+                - "Show me the schema of the users table"
+                - "How many records are in my orders table?"
+                - "Find all indexes in my database"
+                - "What's the size of my database?"
+                """)
+        else:
+            st.markdown("""
+            **Select a database to see specific questions:**
+            - Choose a database from the sidebar to get tailored questions
+            - Each database type has specific capabilities and query patterns
+            """)
     else:
         st.markdown("""
         **General Database Topics:**
@@ -182,12 +427,44 @@ def chat_interface(assistant: DBAAssistant, selected_db: Optional[str]):
             st.markdown(message["content"])
             
     # Chat input with mode-specific placeholder
-    placeholder_text = {
-        "database": "Ask about your MySQL database...",
-        "general": "Ask about database concepts, SQL, best practices..."
-    }
+    if st.session_state.chat_mode == "database" and selected_db:
+        if selected_db == "oracle":
+            placeholder_text = "Ask about Oracle database concepts and best practices..."
+        else:
+            # Get database type from configuration
+            db_config = assistant.config.databases.get(selected_db)
+            if db_config:
+                db_type = db_config.db_type.lower()
+                if db_type == "mongodb":
+                    placeholder_text = "Ask about your MongoDB collections and documents..."
+                elif db_type == "sqlite":
+                    placeholder_text = "Ask about your SQLite database tables and data..."
+                elif db_type == "postgresql":
+                    placeholder_text = "Ask about your PostgreSQL database and performance..."
+                elif db_type == "mysql":
+                    placeholder_text = "Ask about your MySQL database and optimization..."
+                elif db_type == "redis":
+                    placeholder_text = "Ask about your Redis keys and memory usage..."
+                elif db_type == "elasticsearch":
+                    placeholder_text = "Ask about your Elasticsearch indices and queries..."
+                elif db_type == "neo4j":
+                    placeholder_text = "Ask about your Neo4j graph database and relationships..."
+                elif db_type == "cassandra":
+                    placeholder_text = "Ask about your Cassandra keyspaces and tables..."
+                elif db_type == "influxdb":
+                    placeholder_text = "Ask about your InfluxDB measurements and time series..."
+                elif db_type == "athena":
+                    placeholder_text = "Ask about your AWS Athena queries and data..."
+                elif db_type == "azure_sql":
+                    placeholder_text = "Ask about your Azure SQL database and performance..."
+                else:
+                    placeholder_text = f"Ask about your {db_type.title()} database..."
+            else:
+                placeholder_text = "Ask about your database..."
+    else:
+        placeholder_text = "Ask about database concepts, SQL, best practices..."
     
-    if prompt := st.chat_input(placeholder_text.get(st.session_state.chat_mode, "Ask a question...")):
+    if prompt := st.chat_input(placeholder_text):
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
         
@@ -213,7 +490,7 @@ def chat_interface(assistant: DBAAssistant, selected_db: Optional[str]):
                                 conversation_history=conversation_history
                             )
                         else:
-                            response = "❌ **MySQL Database Mode requires a connected database.** Please select a MySQL database from the sidebar, or switch to 'General Database Topics' mode for educational content."
+                            response = "❌ **Database Mode requires a connected database.** Please select a database from the sidebar, or switch to 'General Database Topics' mode for educational content."
                     else:
                         # General topics mode - use educational fallbacks (no async needed)
                         response = assistant.get_general_database_response(prompt)
@@ -305,6 +582,1287 @@ def chat_interface(assistant: DBAAssistant, selected_db: Optional[str]):
             if st.button("🗑️ Clear Chat"):
                 st.session_state.messages = []
                 st.rerun()
+
+
+async def smart_join_interface(assistant: DBAAssistant, selected_db: Optional[str]):
+    """Smart Join Assistant Interface"""
+    st.title("🔗 Smart Join Assistant")
+    st.markdown("### 🤖 AI-Powered Table Join Analysis")
+    st.markdown("Don't know which join type to use? Let AI analyze your tables and show you the differences!")
+    
+    if not selected_db or selected_db == "oracle":
+        st.warning("⚠️ Please select a MySQL database from the sidebar to use the Smart Join Assistant.")
+        st.info("💡 This tool analyzes your actual database tables and shows you different join types with sample results.")
+        return
+    
+    # Table selection
+    st.markdown("### 📋 Select Tables to Join")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        table1 = st.text_input("First Table Name", placeholder="e.g., users, orders, products")
+    
+    with col2:
+        table2 = st.text_input("Second Table Name", placeholder="e.g., customers, order_items, inventory")
+    
+    # Analyze button
+    if st.button("🔍 Analyze Join Options", type="primary", use_container_width=True):
+        if table1 and table2:
+            with st.spinner("🤖 Analyzing tables and generating join examples..."):
+                try:
+                    # Get join analysis
+                    analysis = run_async_in_thread(
+                        assistant.smart_join_analysis,
+                        table1, table2, selected_db
+                    )
+                    
+                    if "error" in analysis:
+                        st.error(f"❌ Analysis failed: {analysis['error']}")
+                        return
+                    
+                    # Display results
+                    st.success("✅ Join analysis complete!")
+                    
+                    # Summary
+                    st.markdown("### 📊 Analysis Summary")
+                    st.markdown(analysis.get("summary", ""))
+                    
+                    # Join keys found
+                    join_keys = analysis.get("join_keys", [])
+                    if join_keys:
+                        st.markdown("### 🔑 Join Keys Found")
+                        for i, key in enumerate(join_keys):
+                            confidence_color = "🟢" if key["confidence"] == "high" else "🟡"
+                            st.info(f"{confidence_color} **Join Key {i+1}**: `{key['table1_column']}` = `{key['table2_column']}` ({key['confidence']} confidence)")
+                    
+                    # Recommendations
+                    recommendations = analysis.get("recommendations", [])
+                    if recommendations:
+                        st.markdown("### 💡 AI Recommendations")
+                        for rec in recommendations:
+                            if rec["type"] == "info":
+                                st.info(f"💡 {rec['message']}")
+                                st.markdown(f"**Suggestion**: {rec['suggestion']}")
+                            elif rec["type"] == "warning":
+                                st.warning(f"⚠️ {rec['message']}")
+                                st.markdown(f"**Suggestion**: {rec['suggestion']}")
+                    
+                    # Join examples
+                    join_examples = analysis.get("join_examples", {})
+                    if join_examples and "error" not in join_examples:
+                        st.markdown("### 🔄 Join Type Examples")
+                        
+                        # Create tabs for different join types
+                        tab1, tab2, tab3, tab4 = st.tabs(["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL OUTER JOIN"])
+                        
+                        with tab1:
+                            if "INNER JOIN" in join_examples:
+                                example = join_examples["INNER JOIN"]
+                                st.markdown("**INNER JOIN** - Only matching records from both tables")
+                                st.code(example["query"], language="sql")
+                                st.markdown(f"**Result**: {example['row_count']} rows")
+                                if example.get("result"):
+                                    df = pd.DataFrame(example["result"])
+                                    st.dataframe(df.head(5))
+                        
+                        with tab2:
+                            if "LEFT JOIN" in join_examples:
+                                example = join_examples["LEFT JOIN"]
+                                st.markdown("**LEFT JOIN** - All records from first table + matching from second")
+                                st.code(example["query"], language="sql")
+                                st.markdown(f"**Result**: {example['row_count']} rows")
+                                if example.get("result"):
+                                    df = pd.DataFrame(example["result"])
+                                    st.dataframe(df.head(5))
+                        
+                        with tab3:
+                            if "RIGHT JOIN" in join_examples:
+                                example = join_examples["RIGHT JOIN"]
+                                st.markdown("**RIGHT JOIN** - All records from second table + matching from first")
+                                st.code(example["query"], language="sql")
+                                st.markdown(f"**Result**: {example['row_count']} rows")
+                                if example.get("result"):
+                                    df = pd.DataFrame(example["result"])
+                                    st.dataframe(df.head(5))
+                        
+                        with tab4:
+                            if "FULL OUTER JOIN" in join_examples:
+                                example = join_examples["FULL OUTER JOIN"]
+                                st.markdown("**FULL OUTER JOIN** - All records from both tables")
+                                st.code(example["query"], language="sql")
+                                st.markdown(f"**Result**: {example['row_count']} rows")
+                                if example.get("result"):
+                                    df = pd.DataFrame(example["result"])
+                                    st.dataframe(df.head(5))
+                    
+                    # Generate final query section
+                    st.markdown("### 🎯 Generate Your Query")
+                    
+                    col1, col2 = st.columns(2)
+                    
+                    with col1:
+                        join_type = st.selectbox(
+                            "Join Type",
+                            ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL OUTER JOIN"],
+                            help="Select the join type you want to use"
+                        )
+                    
+                    with col2:
+                        if join_keys:
+                            join_condition = st.selectbox(
+                                "Join Condition",
+                                [f"t1.{key['table1_column']} = t2.{key['table2_column']}" for key in join_keys],
+                                help="Select the join condition"
+                            )
+                        else:
+                            join_condition = st.text_input(
+                                "Join Condition",
+                                placeholder="e.g., t1.id = t2.user_id",
+                                help="Enter your custom join condition"
+                            )
+                    
+                    if st.button("🚀 Generate SQL Query", type="primary"):
+                        try:
+                            final_query = run_async_in_thread(
+                                assistant.generate_join_query,
+                                table1, table2, join_type, join_condition
+                            )
+                            
+                            st.markdown("### 📝 Your Generated Query")
+                            st.code(final_query, language="sql")
+                            
+                            # Copy button
+                            st.markdown("💡 **Copy this query and use it in the Chat interface to execute it!**")
+                            
+                        except Exception as e:
+                            st.error(f"❌ Failed to generate query: {str(e)}")
+                    
+                except Exception as e:
+                    st.error(f"❌ Analysis failed: {str(e)}")
+                    logger.error(f"Smart join analysis error: {e}", exc_info=True)
+        else:
+            st.warning("⚠️ Please enter both table names to analyze.")
+    
+    # Help section
+    with st.expander("💡 How to Use Smart Join Assistant"):
+        st.markdown("""
+        ### 🎯 What This Tool Does:
+        
+        1. **Analyzes your tables** - Examines structure, data types, and relationships
+        2. **Finds join keys** - Automatically identifies potential columns to join on
+        3. **Shows examples** - Demonstrates each join type with actual results
+        4. **Provides recommendations** - Suggests the best join type based on your data
+        5. **Generates queries** - Creates the final SQL query for you
+        
+        ### 🔗 Join Types Explained:
+        
+        - **INNER JOIN**: Only records that exist in both tables
+        - **LEFT JOIN**: All records from first table + matching from second
+        - **RIGHT JOIN**: All records from second table + matching from first  
+        - **FULL OUTER JOIN**: All records from both tables
+        
+        ### 💡 Pro Tips:
+        
+        - Use this tool when you're unsure which join type to use
+        - Compare the row counts to understand the differences
+        - Check the sample data to see what each join returns
+        - Use the generated query in the Chat interface to execute it
+        """)
+    
+    # Quick examples
+    st.markdown("### ⚡ Quick Examples")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("👥 Users + Orders"):
+            st.session_state.table1 = "users"
+            st.session_state.table2 = "orders"
+            st.rerun()
+    
+    with col2:
+        if st.button("📦 Products + Inventory"):
+            st.session_state.table1 = "products"
+            st.session_state.table2 = "inventory"
+            st.rerun()
+    
+    with col3:
+        if st.button("🛒 Orders + Items"):
+            st.session_state.table1 = "orders"
+            st.session_state.table2 = "order_items"
+            st.rerun()
+
+
+async def smart_query_interface(assistant: DBAAssistant, selected_db: Optional[str]):
+    """Smart Query Builder Interface"""
+    st.title("🔍 Smart Query Builder")
+    st.markdown("### 🤖 Natural Language to SQL Converter")
+    st.markdown("Don't know SQL? Just describe what you want in plain English!")
+    
+    if not selected_db or selected_db == "oracle":
+        st.warning("⚠️ Please select a MySQL database from the sidebar to use the Smart Query Builder.")
+        st.info("💡 This tool converts your natural language into SQL queries using AI.")
+        return
+    
+    # Database and table selection
+    st.markdown("### 🗄️ Database & Table Selection")
+    
+    # Get available tables using a proper async wrapper
+    async def get_available_tables():
+        try:
+            connection = await assistant.db_connector.get_connection(assistant.config.databases[selected_db])
+            tables_result = await connection.execute_query("SHOW TABLES")
+            return [table[0] for table in tables_result] if tables_result else []
+        except Exception as e:
+            logger.error(f"Error fetching tables: {e}")
+            return []
+    
+    # Fetch tables
+    available_tables = []
+    try:
+        available_tables = run_async_in_thread(get_available_tables)
+    except Exception as e:
+        st.warning(f"⚠️ Could not fetch tables: {str(e)}")
+        available_tables = []
+    
+    # Table selector
+    if available_tables:
+        selected_table = st.selectbox(
+            "Select a table to work with:",
+            ["All Tables"] + available_tables,
+            help="Choose a specific table or 'All Tables' to let AI decide"
+        )
+    else:
+        selected_table = "All Tables"
+        st.info("ℹ️ No tables found. The AI will try to match table names from your query.")
+    
+    # Natural language input
+    st.markdown("### 💬 Describe What You Want")
+    
+    natural_query = st.text_area(
+        "Enter your query in natural language",
+        placeholder="e.g., 'Show me all customers who spent more than $1000 last month' or 'Find products with low stock levels'",
+        height=100,
+        help="Describe what data you want to see in plain English"
+    )
+    
+    # Query building button
+    if st.button("🔍 Build SQL Query", type="primary", use_container_width=True):
+        if natural_query.strip():
+            with st.spinner("🤖 Analyzing your request and building SQL query..."):
+                try:
+                    # Build the query
+                    result = run_async_in_thread(
+                        assistant.build_natural_query,
+                        natural_query, selected_db, selected_table
+                    )
+                    
+                    if "error" in result:
+                        st.error(f"❌ Query building failed: {result['error']}")
+                        return
+                    
+                    if not result.get("success", False):
+                        st.error(f"❌ Query building failed: {result.get('error', 'Unknown error')}")
+                        return
+                    
+                    # Display results
+                    st.success("✅ SQL Query Generated Successfully!")
+                    
+                    # Show the generated SQL
+                    st.markdown("### 📝 Generated SQL Query")
+                    st.code(result["sql_query"], language="sql")
+                    
+                    # Show explanation
+                    st.markdown("### 💡 What This Query Does")
+                    st.info(result["explanation"])
+                    
+                    # Show validation results
+                    validation = result.get("validation", {})
+                    if validation.get("valid", False):
+                        st.success(f"✅ Query is valid! Estimated {validation.get('estimated_rows', 0)} rows will be returned.")
+                    else:
+                        st.warning(f"⚠️ Query validation failed: {validation.get('error', 'Unknown error')}")
+                    
+                    # Show suggestions
+                    suggestions = result.get("suggestions", [])
+                    if suggestions:
+                        st.markdown("### 💡 Suggestions")
+                        for suggestion in suggestions:
+                            st.info(suggestion)
+                    
+                    # Show analysis details in expandable section
+                    with st.expander("🔍 Query Analysis Details"):
+                        analysis = result.get("analysis", {})
+                        st.markdown(f"**Intent**: {analysis.get('intent', 'unknown')}")
+                        
+                        if analysis.get("entities"):
+                            st.markdown("**Entities Found**:")
+                            for entity in analysis["entities"]:
+                                st.markdown(f"- {entity['type']}: {entity['name']}")
+                        
+                        if analysis.get("filters"):
+                            st.markdown("**Filters Applied**:")
+                            for filter_item in analysis["filters"]:
+                                st.markdown(f"- {filter_item['table']}.{filter_item['column']} {filter_item['operator']} {filter_item['value']}")
+                        
+                        if analysis.get("aggregations"):
+                            st.markdown("**Aggregations**:")
+                            for agg in analysis["aggregations"]:
+                                st.markdown(f"- {agg['function']}({agg['column']})")
+                    
+                    # Execute button
+                    st.markdown("### 🚀 Execute Query")
+                    if st.button("▶️ Execute This Query", type="secondary"):
+                        try:
+                            with st.spinner("🔄 Executing query..."):
+                                # Execute the generated query using proper async wrapper
+                                async def execute_query():
+                                    try:
+                                        connection = await assistant.db_connector.get_connection(assistant.config.databases[selected_db])
+                                        
+                                        # Limit results for display
+                                        display_query = result["sql_query"]
+                                        if "LIMIT" not in display_query.upper():
+                                            display_query += " LIMIT 50"
+                                        
+                                        query_result = await connection.execute_query(display_query)
+                                        return query_result
+                                    except Exception as e:
+                                        logger.error(f"Error executing query: {e}")
+                                        raise e
+                                
+                                query_result = run_async_in_thread(execute_query)
+                                
+                                if query_result:
+                                    st.markdown("### 📊 Query Results")
+                                    import pandas as pd
+                                    
+                                    # Get column names from the query
+                                    try:
+                                        # Try to get column names from the connection
+                                        if hasattr(connection, 'cursor') and connection.cursor:
+                                            columns = [desc[0] for desc in connection.cursor.description]
+                                        else:
+                                            # Fallback: use generic column names
+                                            columns = [f"Column_{i}" for i in range(len(query_result[0]))]
+                                    except:
+                                        columns = [f"Column_{i}" for i in range(len(query_result[0]))]
+                                    
+                                    df = pd.DataFrame(query_result, columns=columns)
+                                    st.dataframe(df, use_container_width=True)
+                                    
+                                    # Show statistics
+                                    col1, col2, col3 = st.columns(3)
+                                    with col1:
+                                        st.metric("Total Rows", len(df))
+                                    with col2:
+                                        st.metric("Total Columns", len(df.columns))
+                                    with col3:
+                                        st.metric("Query Status", "✅ Success")
+                                    
+                                    # Download button
+                                    csv = df.to_csv(index=False)
+                                    st.download_button(
+                                        label="📥 Download Results as CSV",
+                                        data=csv,
+                                        file_name=f"query_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                                        mime="text/csv"
+                                    )
+                                    
+                                else:
+                                    st.info("ℹ️ Query executed successfully but returned no results.")
+                                    
+                        except Exception as e:
+                            st.error(f"❌ Query execution failed: {str(e)}")
+                            st.error("💡 Try modifying your natural language query to be more specific.")
+                    
+                except Exception as e:
+                    st.error(f"❌ Query building failed: {str(e)}")
+                    logger.error(f"Smart query building error: {e}", exc_info=True)
+        else:
+            st.warning("⚠️ Please enter a natural language query.")
+    
+    # Help section
+    with st.expander("💡 How to Use Smart Query Builder"):
+        st.markdown("""
+        ### 🎯 What This Tool Does:
+        
+        The Smart Query Builder converts your natural language into SQL queries using AI analysis of your database schema.
+        
+        ### 📝 Example Queries:
+        
+        **Simple Queries:**
+        - "Show me all customers"
+        - "Get all products"
+        - "List all orders"
+        
+        **Filtered Queries:**
+        - "Customers with age greater than 25"
+        - "Products with price less than 100"
+        - "Orders with status equal to completed"
+        
+        **Top N Queries:**
+        - "Top 10 customers by total spent"
+        - "5 best performing products"
+        - "Top 20 orders by amount"
+        
+        **Aggregate Queries:**
+        - "How many customers do we have?"
+        - "What is the total sales amount?"
+        - "Show me the average order value"
+        
+        **Date Range Queries:**
+        - "Orders from last month"
+        - "Customers created in the past 30 days"
+        - "Sales between January and March"
+        
+        ### 💡 Pro Tips:
+        
+        - Be specific about table names (customers, orders, products)
+        - Use clear column names (age, price, status, amount)
+        - Specify conditions clearly (greater than, less than, equal to)
+        - The AI will suggest improvements and optimizations
+        """)
+    
+    # Quick examples
+    st.markdown("### ⚡ Quick Examples")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("👥 Show All Customers"):
+            st.session_state.natural_query = "Show me all customers"
+            st.rerun()
+    
+    with col2:
+        if st.button("💰 High Value Orders"):
+            st.session_state.natural_query = "Show me orders with amount greater than 500"
+            st.rerun()
+    
+    with col3:
+        if st.button("📊 Total Sales"):
+            st.session_state.natural_query = "What is the total amount of all orders?"
+            st.rerun()
+
+
+async def pattern_detection_interface(assistant: DBAAssistant, selected_db: Optional[str]):
+    """Pattern Detection Interface"""
+    st.title("🔍 Pattern Detection")
+    st.markdown("### 🤖 AI-Powered Data Quality & Anomaly Detection")
+    st.markdown("Automatically scan your database for data quality issues, schema problems, and anomalies!")
+    
+    if not selected_db or selected_db == "oracle":
+        st.warning("⚠️ Please select a MySQL database from the sidebar to use Pattern Detection.")
+        st.info("💡 This tool automatically finds data quality issues, schema problems, and anomalies.")
+        return
+    
+    # Database health overview
+    st.markdown("### 📊 Database Health Overview")
+    
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.metric("Database", selected_db)
+    with col2:
+        st.metric("Status", "🟡 Ready to Scan")
+    with col3:
+        st.metric("Last Scan", "Never")
+    with col4:
+        st.metric("Health Score", "N/A")
+    
+    # Scan button
+    st.markdown("### 🔍 Start Pattern Detection Scan")
+    
+    if st.button("🚀 Run Full Database Scan", type="primary", use_container_width=True):
+        with st.spinner("🔍 Scanning database for patterns and issues..."):
+            try:
+                # Run pattern detection
+                result = run_async_in_thread(
+                    assistant.detect_patterns,
+                    selected_db
+                )
+                
+                if "error" in result:
+                    st.error(f"❌ Pattern detection failed: {result['error']}")
+                    return
+                
+                # Display results
+                st.success("✅ Pattern Detection Complete!")
+                
+                # Show summary
+                summary = result.get("summary", {})
+                if summary:
+                    st.markdown("### 📈 Scan Summary")
+                    
+                    col1, col2, col3, col4 = st.columns(4)
+                    
+                    with col1:
+                        health_score = summary.get("health_score", 0)
+                        if health_score >= 80:
+                            st.metric("Health Score", f"{health_score}/100", delta="🟢 Excellent")
+                        elif health_score >= 60:
+                            st.metric("Health Score", f"{health_score}/100", delta="🟡 Good")
+                        else:
+                            st.metric("Health Score", f"{health_score}/100", delta="🔴 Needs Attention")
+                    
+                    with col2:
+                        total_issues = summary.get("total_issues", 0)
+                        st.metric("Total Issues", total_issues)
+                    
+                    with col3:
+                        severity_counts = summary.get("severity_breakdown", {})
+                        critical_count = severity_counts.get("critical", 0)
+                        st.metric("Critical Issues", critical_count)
+                    
+                    with col4:
+                        scan_time = summary.get("scan_timestamp", datetime.now())
+                        st.metric("Scan Time", scan_time.strftime("%H:%M:%S"))
+                
+                # Show issues by category
+                st.markdown("### 🚨 Issues Found")
+                
+                # Data Quality Issues
+                quality_issues = result.get("data_quality_issues", [])
+                if quality_issues:
+                    st.markdown("#### 📊 Data Quality Issues")
+                    for issue in quality_issues[:5]:  # Show first 5
+                        severity_color = {
+                            "critical": "🔴",
+                            "high": "🟠", 
+                            "medium": "🟡",
+                            "low": "🟢"
+                        }.get(issue.get("severity", "medium"), "🟡")
+                        
+                        with st.expander(f"{severity_color} {issue['description']}"):
+                            st.markdown(f"**Table**: {issue.get('table', 'N/A')}")
+                            if issue.get('column'):
+                                st.markdown(f"**Column**: {issue['column']}")
+                            st.markdown(f"**Severity**: {issue.get('severity', 'medium').title()}")
+                            st.markdown(f"**Recommendation**: {issue.get('recommendation', 'N/A')}")
+                            
+                            if issue.get('details'):
+                                st.markdown("**Details**:")
+                                for key, value in issue['details'].items():
+                                    st.markdown(f"- {key}: {value}")
+                
+                # Schema Problems
+                schema_problems = result.get("schema_problems", [])
+                if schema_problems:
+                    st.markdown("#### 🔧 Schema Problems")
+                    for issue in schema_problems[:5]:  # Show first 5
+                        severity_color = {
+                            "critical": "🔴",
+                            "high": "🟠", 
+                            "medium": "🟡",
+                            "low": "🟢"
+                        }.get(issue.get("severity", "medium"), "🟡")
+                        
+                        with st.expander(f"{severity_color} {issue['description']}"):
+                            st.markdown(f"**Table**: {issue.get('table', 'N/A')}")
+                            if issue.get('column'):
+                                st.markdown(f"**Column**: {issue['column']}")
+                            st.markdown(f"**Severity**: {issue.get('severity', 'medium').title()}")
+                            st.markdown(f"**Recommendation**: {issue.get('recommendation', 'N/A')}")
+                
+                # Performance Issues
+                performance_issues = result.get("performance_issues", [])
+                if performance_issues:
+                    st.markdown("#### ⚡ Performance Issues")
+                    for issue in performance_issues[:5]:  # Show first 5
+                        severity_color = {
+                            "critical": "🔴",
+                            "high": "🟠", 
+                            "medium": "🟡",
+                            "low": "🟢"
+                        }.get(issue.get("severity", "medium"), "🟡")
+                        
+                        with st.expander(f"{severity_color} {issue['description']}"):
+                            st.markdown(f"**Table**: {issue.get('table', 'N/A')}")
+                            if issue.get('column'):
+                                st.markdown(f"**Column**: {issue['column']}")
+                            st.markdown(f"**Severity**: {issue.get('severity', 'medium').title()}")
+                            st.markdown(f"**Recommendation**: {issue.get('recommendation', 'N/A')}")
+                
+                # Anomalies
+                anomalies = result.get("anomalies", [])
+                if anomalies:
+                    st.markdown("#### 🚨 Anomalies")
+                    for issue in anomalies[:5]:  # Show first 5
+                        severity_color = {
+                            "critical": "🔴",
+                            "high": "🟠", 
+                            "medium": "🟡",
+                            "low": "🟢"
+                        }.get(issue.get("severity", "medium"), "🟡")
+                        
+                        with st.expander(f"{severity_color} {issue['description']}"):
+                            st.markdown(f"**Table**: {issue.get('table', 'N/A')}")
+                            if issue.get('column'):
+                                st.markdown(f"**Column**: {issue['column']}")
+                            st.markdown(f"**Severity**: {issue.get('severity', 'medium').title()}")
+                            st.markdown(f"**Recommendation**: {issue.get('recommendation', 'N/A')}")
+                
+                # Show recommendations
+                recommendations = result.get("recommendations", [])
+                if recommendations:
+                    st.markdown("### 💡 Recommendations")
+                    
+                    for rec in recommendations:
+                        priority_color = {
+                            "critical": "🔴",
+                            "high": "🟠",
+                            "medium": "🟡",
+                            "low": "🟢",
+                            "general": "💡"
+                        }.get(rec.get("priority", "medium"), "💡")
+                        
+                        with st.expander(f"{priority_color} {rec['title']}"):
+                            st.markdown(f"**{rec['description']}**")
+                            st.markdown("**Actions:**")
+                            for action in rec.get("actions", []):
+                                st.markdown(f"- {action}")
+                
+                # Show detailed results in expandable section
+                with st.expander("🔍 Detailed Scan Results"):
+                    st.json(result)
+                
+            except Exception as e:
+                st.error(f"❌ Pattern detection failed: {str(e)}")
+                logger.error(f"Pattern detection error: {e}", exc_info=True)
+    
+    # Help section
+    with st.expander("💡 How Pattern Detection Works"):
+        st.markdown("""
+        ### 🎯 What Pattern Detection Does:
+        
+        The Pattern Detection system automatically scans your database for:
+        
+        **📊 Data Quality Issues:**
+        - High percentage of NULL values
+        - Duplicate records
+        - Statistical outliers
+        - Data type mismatches
+        
+        **🔧 Schema Problems:**
+        - Missing primary keys
+        - Missing indexes on frequently queried columns
+        - Missing foreign key constraints
+        - Missing NOT NULL constraints
+        
+        **⚡ Performance Issues:**
+        - Large tables that might need partitioning
+        - Missing constraints
+        - Inefficient table structures
+        
+        **🚨 Anomalies:**
+        - Unusual data patterns
+        - Highly skewed distributions
+        - Unexpected value distributions
+        
+        ### 📈 Health Score:
+        
+        The system calculates a health score (0-100) based on:
+        - **Critical Issues**: -10 points each
+        - **High Issues**: -5 points each  
+        - **Medium Issues**: -2 points each
+        - **Low Issues**: -1 point each
+        
+        ### 💡 Recommendations:
+        
+        Each issue comes with specific, actionable recommendations to improve your database health.
+        """)
+    
+    # Quick scan options
+    st.markdown("### ⚡ Quick Scan Options")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("📊 Data Quality Only"):
+            st.info("🔧 Feature coming soon: Targeted data quality scans")
+    
+    with col2:
+        if st.button("🔧 Schema Only"):
+            st.info("🔧 Feature coming soon: Targeted schema analysis")
+    
+    with col3:
+        if st.button("🚨 Anomalies Only"):
+            st.info("🔧 Feature coming soon: Targeted anomaly detection")
+
+
+async def schema_visualizer_interface(assistant: DBAAssistant, selected_db: Optional[str]):
+    """Schema Visualizer Interface"""
+    st.title("🔧 Schema Visualizer")
+    st.markdown("### 📊 Interactive Table Relationship Diagrams")
+    st.markdown("Visualize your database schema with beautiful, interactive diagrams!")
+    
+    if not selected_db or selected_db == "oracle":
+        st.warning("⚠️ Please select a MySQL database from the sidebar to use Schema Visualizer.")
+        st.info("💡 This tool creates interactive diagrams showing table relationships, ERDs, and schema structure.")
+        return
+    
+    # Schema overview
+    st.markdown("### 📈 Database Schema Overview")
+    
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.metric("Database", selected_db)
+    with col2:
+        st.metric("Status", "🟡 Ready to Visualize")
+    with col3:
+        st.metric("Last Scan", "Never")
+    with col4:
+        st.metric("Tables", "N/A")
+    
+    # Generate visualization button
+    st.markdown("### 🔧 Generate Schema Visualization")
+    
+    if st.button("🎨 Create Interactive Diagrams", type="primary", use_container_width=True):
+        with st.spinner("🔧 Analyzing database schema and generating visualizations..."):
+            try:
+                # Generate schema visualization
+                result = run_async_in_thread(
+                    assistant.visualize_schema,
+                    selected_db
+                )
+                
+                if "error" in result:
+                    st.error(f"❌ Schema visualization failed: {result['error']}")
+                    return
+                
+                # Display results
+                st.success("✅ Schema Visualization Complete!")
+                
+                # Show statistics
+                stats = result.get("statistics", {})
+                if stats:
+                    st.markdown("### 📊 Schema Statistics")
+                    
+                    col1, col2, col3, col4 = st.columns(4)
+                    
+                    with col1:
+                        overview = stats.get("overview", {})
+                        st.metric("Total Tables", overview.get("total_tables", 0))
+                    
+                    with col2:
+                        st.metric("Total Columns", overview.get("total_columns", 0))
+                    
+                    with col3:
+                        relationships = stats.get("relationships", {})
+                        st.metric("Foreign Keys", relationships.get("total_foreign_keys", 0))
+                    
+                    with col4:
+                        st.metric("Total Size", f"{overview.get('total_size_mb', 0):.1f} MB")
+                
+                # Show different diagram types
+                diagrams = result.get("diagrams", {})
+                
+                # ERD Diagram
+                if "erd" in diagrams:
+                    st.markdown("### 🔗 Entity Relationship Diagram (ERD)")
+                    erd = diagrams["erd"]
+                    
+                    st.markdown(f"**Title**: {erd.get('title', 'Entity Relationship Diagram')}")
+                    st.markdown(f"**Description**: {erd.get('description', 'Shows tables and their relationships')}")
+                    
+                    # Show entities
+                    entities = erd.get("elements", {}).get("entities", [])
+                    if entities:
+                        st.markdown("#### 🏗️ Entities (Tables)")
+                        for entity in entities:
+                            st.markdown(f"**📋 {entity['name']}** ({len(entity['attributes'])} columns)")
+                            # Show attributes in a container instead of expander
+                            with st.container():
+                                for attr in entity["attributes"]:
+                                    icon = "🔑" if attr["primary_key"] else "🔗" if attr["foreign_key"] else "📝"
+                                    nullable = "NULL" if attr["nullable"] else "NOT NULL"
+                                    st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;{icon} **{attr['name']}** ({attr['type']}) - {nullable}")
+                    
+                    # Show relationships
+                    relationships = erd.get("elements", {}).get("relationships", [])
+                    if relationships:
+                        st.markdown("#### 🔗 Relationships")
+                        for rel in relationships:
+                            st.markdown(f"**{rel['from_entity']}** ({rel['from_attribute']}) → **{rel['to_entity']}** ({rel['to_attribute']}) - {rel['type']}")
+                
+                # Network Diagram
+                if "network" in diagrams:
+                    st.markdown("### 🌐 Table Relationship Network")
+                    network = diagrams["network"]
+                    
+                    st.markdown(f"**Title**: {network.get('title', 'Table Relationship Network')}")
+                    st.markdown(f"**Description**: {network.get('description', 'Shows how tables are connected')}")
+                    
+                    # Show nodes (tables)
+                    nodes = network.get("nodes", [])
+                    if nodes:
+                        st.markdown("#### 📊 Tables")
+                        for node in nodes:
+                            data = node.get("data", {})
+                            st.markdown(f"**{node['label']}** - {data.get('row_count', 0)} rows, {data.get('size_mb', 0):.1f} MB, {data.get('column_count', 0)} columns")
+                    
+                    # Show edges (relationships)
+                    edges = network.get("edges", [])
+                    if edges:
+                        st.markdown("#### 🔗 Connections")
+                        for edge in edges:
+                            st.markdown(f"**{edge['source']}** → **{edge['target']}** ({edge['label']})")
+                
+                # Hierarchy Diagram
+                if "hierarchy" in diagrams:
+                    st.markdown("### 📊 Table Dependency Hierarchy")
+                    hierarchy = diagrams["hierarchy"]
+                    
+                    st.markdown(f"**Title**: {hierarchy.get('title', 'Table Dependency Hierarchy')}")
+                    st.markdown(f"**Description**: {hierarchy.get('description', 'Shows table dependencies in hierarchical structure')}")
+                    
+                    # Show levels
+                    levels = hierarchy.get("levels", [])
+                    if levels:
+                        st.markdown("#### 📈 Dependency Levels")
+                        for level in levels:
+                            st.markdown(f"**Level {level['level']}**: {', '.join(level['tables'])}")
+                
+                # Summary Diagram
+                if "summary" in diagrams:
+                    st.markdown("### 📋 Schema Summary")
+                    summary = diagrams["summary"]
+                    
+                    st.markdown(f"**Title**: {summary.get('title', 'Database Schema Summary')}")
+                    st.markdown(f"**Description**: {summary.get('description', 'Overview of database structure and statistics')}")
+                    
+                    # Show statistics
+                    summary_stats = summary.get("statistics", {})
+                    if summary_stats:
+                        col1, col2, col3 = st.columns(3)
+                        with col1:
+                            st.metric("Total Tables", summary_stats.get("total_tables", 0))
+                        with col2:
+                            st.metric("Total Columns", summary_stats.get("total_columns", 0))
+                        with col3:
+                            st.metric("Total Rows", f"{summary_stats.get('total_rows', 0):,}")
+                    
+                    # Show largest tables
+                    largest_tables = summary.get("largest_tables", [])
+                    if largest_tables:
+                        st.markdown("#### 📊 Largest Tables")
+                        for table_name, size_mb in largest_tables:
+                            st.markdown(f"**{table_name}**: {size_mb:.1f} MB")
+                    
+                    # Show most connected tables
+                    most_connected = summary.get("most_connected_tables", [])
+                    if most_connected:
+                        st.markdown("#### 🔗 Most Connected Tables")
+                        for table_name, connections in most_connected:
+                            st.markdown(f"**{table_name}**: {connections} connections")
+                
+                # Show relationship analysis
+                relationships = result.get("relationships", {})
+                if relationships:
+                    st.markdown("### 🔍 Relationship Analysis")
+                    
+                    col1, col2, col3, col4 = st.columns(4)
+                    
+                    with col1:
+                        st.metric("Foreign Keys", len(relationships.get("foreign_keys", [])))
+                    
+                    with col2:
+                        st.metric("Potential Relationships", len(relationships.get("potential_relationships", [])))
+                    
+                    with col3:
+                        st.metric("Orphaned Tables", len(relationships.get("orphaned_tables", [])))
+                    
+                    with col4:
+                        st.metric("Circular Dependencies", len(relationships.get("circular_dependencies", [])))
+                    
+                    # Show orphaned tables
+                    orphaned_tables = relationships.get("orphaned_tables", [])
+                    if orphaned_tables:
+                        st.warning(f"⚠️ Found {len(orphaned_tables)} orphaned tables: {', '.join(orphaned_tables)}")
+                    
+                    # Show circular dependencies
+                    circular_deps = relationships.get("circular_dependencies", [])
+                    if circular_deps:
+                        st.error(f"🚨 Found {len(circular_deps)} circular dependencies:")
+                        for cycle in circular_deps:
+                            st.markdown(f"**Cycle**: {' → '.join(cycle)}")
+                    
+                    # Show potential relationships
+                    potential_rels = relationships.get("potential_relationships", [])
+                    if potential_rels:
+                        st.info(f"💡 Found {len(potential_rels)} potential relationships:")
+                        for rel in potential_rels[:5]:  # Show first 5
+                            st.markdown(f"**{rel['from_table']}.{rel['from_column']}** → **{rel['to_table']}.{rel['to_column']}** (confidence: {rel['confidence']})")
+                
+                # Show detailed results in expandable section
+                with st.expander("🔍 Detailed Schema Analysis"):
+                    st.json(result)
+                
+            except Exception as e:
+                st.error(f"❌ Schema visualization failed: {str(e)}")
+                logger.error(f"Schema visualization error: {e}", exc_info=True)
+    
+    # Help section
+    with st.expander("💡 How Schema Visualizer Works"):
+        st.markdown("""
+        ### 🎯 What Schema Visualizer Does:
+        
+        The Schema Visualizer creates multiple types of interactive diagrams:
+        
+        **🔗 Entity Relationship Diagram (ERD):**
+        - Shows tables as entities with their attributes
+        - Displays relationships between tables
+        - Highlights primary and foreign keys
+        
+        **🌐 Table Relationship Network:**
+        - Visualizes how tables are connected
+        - Node size based on table size/row count
+        - Shows connection strength and types
+        
+        **📊 Table Dependency Hierarchy:**
+        - Shows table dependencies in levels
+        - Identifies root tables (no dependencies)
+        - Helps understand data flow
+        
+        **📋 Schema Summary:**
+        - Overview of database structure
+        - Key statistics and metrics
+        - Largest and most connected tables
+        
+        ### 🔍 Relationship Analysis:
+        
+        - **Foreign Keys**: Actual defined relationships
+        - **Potential Relationships**: Suggested relationships based on naming conventions
+        - **Orphaned Tables**: Tables with no relationships
+        - **Circular Dependencies**: Tables that reference each other in cycles
+        
+        ### 💡 Benefits:
+        
+        - **Understand Database Structure**: Visual representation of your schema
+        - **Identify Issues**: Find orphaned tables and circular dependencies
+        - **Optimize Design**: See relationship patterns and opportunities
+        - **Documentation**: Generate visual documentation of your database
+        """)
+    
+    # Quick visualization options
+    st.markdown("### ⚡ Quick Visualization Options")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("🔗 ERD Only"):
+            st.info("🔧 Feature coming soon: Targeted ERD generation")
+    
+    with col2:
+        if st.button("🌐 Network Only"):
+            st.info("🔧 Feature coming soon: Targeted network diagram")
+    
+    with col3:
+        if st.button("📊 Hierarchy Only"):
+            st.info("🔧 Feature coming soon: Targeted hierarchy diagram")
+
+
+async def nosql_assistant_interface(assistant: DBAAssistant, selected_db: Optional[str]):
+    """NoSQL Assistant Interface"""
+    st.title("🗄️ NoSQL Assistant")
+    st.markdown("### 🔍 AI-Powered NoSQL Database Management")
+    st.markdown("Manage MongoDB, Cassandra, Redis, Elasticsearch, Neo4j, and InfluxDB with natural language!")
+    
+    if not selected_db or selected_db == "oracle":
+        st.warning("⚠️ Please select a NoSQL database from the sidebar to use the NoSQL Assistant.")
+        st.info("💡 This tool helps you manage non-relational databases with natural language queries.")
+        return
+    
+    # Database type detection
+    st.markdown("### 🗄️ Database Information")
+    
+    # Get database type from config
+    db_config = assistant.config.databases.get(selected_db)
+    if not db_config:
+        st.error(f"❌ Database '{selected_db}' not found in configuration")
+        return
+    
+    db_type = db_config.db_type.lower()
+    
+    # Show database info
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.metric("Database", selected_db)
+    with col2:
+        st.metric("Type", db_type.upper())
+    with col3:
+        st.metric("Host", db_config.host)
+    with col4:
+        st.metric("Port", db_config.port)
+    
+    # NoSQL Query Builder
+    st.markdown("### 🔍 Natural Language Query Builder")
+    st.markdown("Ask questions about your NoSQL database in plain English!")
+    
+    # Query input
+    natural_query = st.text_area(
+        "Enter your NoSQL query in natural language:",
+        placeholder="Examples:\n• Find all users in MongoDB\n• Get Redis keys matching 'user:*'\n• Search for documents in Elasticsearch\n• Find all Person nodes in Neo4j\n• Query measurements from InfluxDB",
+        height=120
+    )
+    
+    # Execute query button
+    if st.button("🔍 Analyze & Execute Query", type="primary", use_container_width=True):
+        if not natural_query.strip():
+            st.warning("⚠️ Please enter a query to analyze")
+            return
+        
+        with st.spinner(f"🔍 Analyzing {db_type} query..."):
+            try:
+                # Analyze the NoSQL query
+                result = await assistant.analyze_nosql_query(natural_query, db_type, selected_db)
+                
+                if "error" in result:
+                    st.error(f"❌ Query analysis failed: {result['error']}")
+                    return
+                
+                # Display results
+                st.success("✅ Query Analysis Complete!")
+                
+                # Show analysis
+                analysis = result.get("analysis", {})
+                if analysis:
+                    st.markdown("### 📊 Query Analysis")
+                    
+                    col1, col2 = st.columns(2)
+                    
+                    with col1:
+                        st.markdown(f"**Intent**: {analysis.get('intent', 'Unknown')}")
+                        if analysis.get('collection'):
+                            st.markdown(f"**Collection/Table**: {analysis['collection']}")
+                        if analysis.get('key'):
+                            st.markdown(f"**Key**: {analysis['key']}")
+                        if analysis.get('index'):
+                            st.markdown(f"**Index**: {analysis['index']}")
+                    
+                    with col2:
+                        if analysis.get('filter'):
+                            st.markdown(f"**Filter**: {analysis['filter']}")
+                        if analysis.get('aggregation'):
+                            st.markdown(f"**Aggregation**: {analysis['aggregation']}")
+                        if analysis.get('limit'):
+                            st.markdown(f"**Limit**: {analysis['limit']}")
+                
+                # Show generated query/command
+                if "query" in result:
+                    st.markdown("### 🔧 Generated Query")
+                    st.code(result["query"], language="javascript" if db_type == "mongodb" else "sql")
+                
+                if "command" in result:
+                    st.markdown("### 🔧 Generated Command")
+                    st.code(result["command"], language="bash")
+                
+                # Show explanation
+                if "explanation" in result:
+                    st.markdown("### 💡 What This Query Does")
+                    st.info(result["explanation"])
+                
+                # Show suggestions
+                suggestions = result.get("suggestions", [])
+                if suggestions:
+                    st.markdown("### 💡 Suggestions")
+                    for suggestion in suggestions:
+                        st.markdown(f"• {suggestion}")
+                
+                # Execute the query if user wants
+                st.markdown("### ⚡ Execute Query")
+                if st.button("🚀 Execute Query", type="secondary"):
+                    with st.spinner("Executing query..."):
+                        try:
+                            # Execute the query based on database type
+                            if db_type == "mongodb":
+                                # For MongoDB, we'd need to implement actual execution
+                                st.info("🔧 MongoDB query execution coming soon!")
+                            elif db_type == "redis":
+                                # For Redis, execute the command
+                                connection = await assistant.db_connector.get_connection(db_config)
+                                if "command" in result:
+                                    command_result = await connection.execute_command(result["command"])
+                                    st.success(f"✅ Command executed: {command_result}")
+                            else:
+                                st.info(f"🔧 {db_type.upper()} query execution coming soon!")
+                                
+                        except Exception as e:
+                            st.error(f"❌ Query execution failed: {str(e)}")
+                
+            except Exception as e:
+                st.error(f"❌ Query analysis failed: {str(e)}")
+                logger.error(f"NoSQL query analysis error: {e}", exc_info=True)
+    
+    # Database Information
+    st.markdown("### 📊 Database Information")
+    
+    if st.button("📊 Get Database Info", type="secondary"):
+        with st.spinner("🔍 Gathering database information..."):
+            try:
+                info = await assistant.get_nosql_database_info(db_type, selected_db)
+                
+                if "error" in info:
+                    st.error(f"❌ Failed to get database info: {info['error']}")
+                    return
+                
+                st.success("✅ Database Information Retrieved!")
+                
+                # Display info based on database type
+                if db_type == "mongodb":
+                    if "collections" in info:
+                        st.markdown("#### 📁 Collections")
+                        collections = info["collections"]
+                        if collections:
+                            for collection in collections[:10]:  # Show first 10
+                                st.markdown(f"• **{collection}**")
+                            if len(collections) > 10:
+                                st.info(f"... and {len(collections) - 10} more collections")
+                        else:
+                            st.info("No collections found")
+                
+                elif db_type == "redis":
+                    if "server_info" in info:
+                        st.markdown("#### 🔧 Server Information")
+                        server_info = info["server_info"]
+                        
+                        col1, col2, col3, col4 = st.columns(4)
+                        
+                        with col1:
+                            st.metric("Redis Version", server_info.get("server", {}).get("redis_version", "Unknown"))
+                        with col2:
+                            st.metric("Connected Clients", server_info.get("clients", {}).get("connected_clients", 0))
+                        with col3:
+                            st.metric("Used Memory", f"{server_info.get('memory', {}).get('used_memory_human', 'Unknown')}")
+                        with col4:
+                            st.metric("Total Commands", server_info.get("stats", {}).get("total_commands_processed", 0))
+                
+                elif db_type == "elasticsearch":
+                    if "cluster_info" in info:
+                        st.markdown("#### 🌐 Cluster Information")
+                        cluster_info = info["cluster_info"]
+                        
+                        col1, col2, col3, col4 = st.columns(4)
+                        
+                        with col1:
+                            st.metric("Cluster Name", cluster_info.get("health", {}).get("cluster_name", "Unknown"))
+                        with col2:
+                            st.metric("Status", cluster_info.get("health", {}).get("status", "Unknown"))
+                        with col3:
+                            st.metric("Number of Nodes", cluster_info.get("health", {}).get("number_of_nodes", 0))
+                        with col4:
+                            st.metric("Active Shards", cluster_info.get("health", {}).get("active_shards", 0))
+                
+                elif db_type == "neo4j":
+                    if "database_info" in info:
+                        st.markdown("#### 🕸️ Graph Database Information")
+                        db_info = info["database_info"]
+                        
+                        col1, col2, col3, col4 = st.columns(4)
+                        
+                        with col1:
+                            st.metric("Nodes", db_info.get("node_count", 0))
+                        with col2:
+                            st.metric("Relationships", db_info.get("relationship_count", 0))
+                        with col3:
+                            st.metric("Labels", db_info.get("label_count", 0))
+                        with col4:
+                            st.metric("Database Size", "N/A")
+                
+                elif db_type == "cassandra":
+                    if "keyspaces" in info:
+                        st.markdown("#### 🗂️ Keyspaces")
+                        keyspaces = info["keyspaces"]
+                        if keyspaces and "keyspaces" in keyspaces:
+                            for keyspace in keyspaces["keyspaces"][:10]:  # Show first 10
+                                st.markdown(f"• **{keyspace.get('keyspace_name', 'Unknown')}**")
+                        else:
+                            st.info("No keyspaces found")
+                
+                elif db_type == "influxdb":
+                    if "buckets" in info:
+                        st.markdown("#### 🪣 Buckets")
+                        buckets = info["buckets"]
+                        if buckets and "buckets" in buckets:
+                            for bucket in buckets["buckets"][:10]:  # Show first 10
+                                st.markdown(f"• **{bucket.get('name', 'Unknown')}**")
+                        else:
+                            st.info("No buckets found")
+                
+            except Exception as e:
+                st.error(f"❌ Failed to get database info: {str(e)}")
+                logger.error(f"Database info error: {e}", exc_info=True)
+    
+    # Help section
+    with st.expander("💡 How NoSQL Assistant Works"):
+        st.markdown("""
+        ### 🎯 What NoSQL Assistant Does:
+        
+        The NoSQL Assistant helps you manage non-relational databases using natural language:
+        
+        **🗄️ Supported Databases:**
+        - **MongoDB**: Document database queries and operations
+        - **Redis**: Key-value store commands and operations
+        - **Elasticsearch**: Search and analytics queries
+        - **Neo4j**: Graph database traversals and queries
+        - **Cassandra**: Wide-column store queries
+        - **InfluxDB**: Time-series database queries
+        
+        **🔍 Natural Language Examples:**
+        
+        **MongoDB:**
+        - "Find all users where age > 25"
+        - "Count documents in orders collection"
+        - "Show me users with email containing '@gmail.com'"
+        
+        **Redis:**
+        - "Get value for key 'user:123'"
+        - "Set key 'session:456' to 'active'"
+        - "Find all keys matching 'user:*'"
+        
+        **Elasticsearch:**
+        - "Search for documents in 'products' index"
+        - "Find products with price > 100"
+        - "Analyze index 'logs'"
+        
+        **Neo4j:**
+        - "Find all Person nodes"
+        - "Find relationships between users"
+        - "Find shortest path from User to Product"
+        
+        **Cassandra:**
+        - "Select from users table"
+        - "Show all keyspaces"
+        - "Query users where id = 123"
+        
+        **InfluxDB:**
+        - "Query measurements from cpu bucket"
+        - "Show all buckets"
+        - "Get temperature data from sensors"
+        
+        ### 💡 Benefits:
+        
+        - **Natural Language**: No need to learn specific query languages
+        - **Multi-Database Support**: Manage different NoSQL databases with one interface
+        - **AI-Powered Analysis**: Intelligent query understanding and optimization
+        - **Real-time Execution**: Execute queries directly from the interface
+        - **Database Insights**: Get comprehensive information about your NoSQL databases
+        """)
+    
+    # Quick actions
+    st.markdown("### ⚡ Quick Actions")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("📊 Database Stats"):
+            st.info("🔧 Feature coming soon: Quick database statistics")
+    
+    with col2:
+        if st.button("🔍 Schema Explorer"):
+            st.info("🔧 Feature coming soon: Interactive schema exploration")
+    
+    with col3:
+        if st.button("⚡ Performance Monitor"):
+            st.info("🔧 Feature coming soon: Real-time performance monitoring")
 
 
 def monitoring_interface(assistant: DBAAssistant):
@@ -648,6 +2206,120 @@ async def analysis_interface(assistant: DBAAssistant, selected_db: Optional[str]
             except Exception as e:
                 st.error(f"An error occurred during analysis: {e}")
 
+    st.divider()
+
+    # --- MySQL Query Performance & Optimization Tools ---
+    db_config = assistant.config.get_database_config(selected_db)
+    if not db_config:
+        return
+
+    if db_config.db_type.lower() == 'mysql':
+        st.subheader("⚡ MySQL Top Queries & Optimization")
+
+        col_a, col_b, col_c = st.columns([1, 1, 2])
+        with col_a:
+            top_n = st.number_input("Top N", min_value=5, max_value=100, value=10, step=5, help="Number of queries to fetch from Performance Schema")
+        with col_b:
+            sort_by = st.selectbox("Sort by", ["total_time_ms", "avg_time_ms", "calls", "rows_examined", "rows_sent"], index=0)
+        with col_c:
+            go = st.button("Fetch Top Queries")
+
+        if go:
+            try:
+                with st.spinner("Fetching top queries from Performance Schema..."):
+                    top_queries = run_async_in_thread(assistant.analyzer.optimizer.get_top_queries, db_config, top_n, sort_by)
+
+                if not top_queries:
+                    st.info("No data from Performance Schema. Ensure it is enabled and consumers for statements digest are ON.")
+                else:
+                    for i, q in enumerate(top_queries):
+                        with st.expander(f"[{i+1}] {q.get('query', '')[:120]}..."):
+                            m1, m2, m3, m4, m5 = st.columns(5)
+                            m1.metric("Calls", q.get("calls", 0))
+                            m2.metric("Total ms", f"{q.get('total_time_ms', 0):.1f}")
+                            m3.metric("Avg ms", f"{q.get('avg_time_ms', 0):.2f}")
+                            m4.metric("Rows Examined", q.get("rows_examined", 0))
+                            m5.metric("Rows Sent", q.get("rows_sent", 0))
+
+                            st.caption(f"First seen: {q.get('first_seen', '-')}, Last seen: {q.get('last_seen', '-')}")
+                            st.code(q.get("query", ""), language="sql")
+
+                            b1, b2 = st.columns(2)
+                            with b1:
+                                if st.button("Explain", key=f"explain_{i}"):
+                                    with st.spinner("Running EXPLAIN FORMAT=JSON..."):
+                                        plan = run_async_in_thread(assistant.analyzer.optimizer.explain_query, db_config, q.get("query", ""), False)
+                                    if plan and not plan.get("error"):
+                                        st.json(plan.get("raw", {}))
+                                        # Quick table summary
+                                        tbl = plan.get("tables", [])
+                                        if tbl:
+                                            st.table(pd.DataFrame(tbl))
+                                    else:
+                                        st.error(plan.get("error", "Unknown error"))
+
+                            with b2:
+                                if st.button("Optimize", key=f"opt_{i}"):
+                                    with st.spinner("Analyzing query and generating suggestions..."):
+                                        analysis = run_async_in_thread(assistant.analyzer.optimizer.analyze_query, db_config, q.get("query", ""))
+                                    issues = analysis.get("issues", [])
+                                    rewrites = analysis.get("suggested_rewrites", [])
+                                    indexes = analysis.get("suggested_indexes", [])
+
+                                    if issues:
+                                        st.subheader("Issues Detected")
+                                        for it in issues:
+                                            st.warning(it)
+                                    if rewrites:
+                                        st.subheader("Suggested Rewrites")
+                                        for r in rewrites:
+                                            st.info(r)
+                                    if indexes:
+                                        st.subheader("Suggested Indexes")
+                                        for idx in indexes:
+                                            st.code(idx.get("ddl", ""), language="sql")
+                                            st.caption(idx.get("reason", ""))
+            except Exception as e:
+                st.error(f"Error fetching top queries: {e}")
+
+        st.markdown("---")
+        st.subheader("🧪 Explain / Optimize a Custom SQL")
+        sql_text = st.text_area("SQL", value="SELECT * FROM orders WHERE user_id = 42 ORDER BY id DESC LIMIT 50", height=120)
+        c1, c2 = st.columns(2)
+        with c1:
+            if st.button("Explain SQL"):
+                with st.spinner("Running EXPLAIN FORMAT=JSON..."):
+                    plan = run_async_in_thread(assistant.analyzer.optimizer.explain_query, db_config, sql_text, False)
+                if plan and not plan.get("error"):
+                    st.json(plan.get("raw", {}))
+                    tbl = plan.get("tables", [])
+                    if tbl:
+                        st.table(pd.DataFrame(tbl))
+                else:
+                    st.error(plan.get("error", "Unknown error"))
+        with c2:
+            if st.button("Optimize SQL"):
+                with st.spinner("Analyzing SQL..."):
+                    analysis = run_async_in_thread(assistant.analyzer.optimizer.analyze_query, db_config, sql_text)
+                issues = analysis.get("issues", [])
+                rewrites = analysis.get("suggested_rewrites", [])
+                indexes = analysis.get("suggested_indexes", [])
+                if issues:
+                    st.subheader("Issues Detected")
+                    for it in issues:
+                        st.warning(it)
+                if rewrites:
+                    st.subheader("Suggested Rewrites")
+                    for r in rewrites:
+                        st.info(r)
+                if indexes:
+                    st.subheader("Suggested Indexes")
+                    for idx in indexes:
+                        st.code(idx.get("ddl", ""), language="sql")
+                        st.caption(idx.get("reason", ""))
+    else:
+        st.info("MySQL-specific query optimization tools are available when a MySQL database is selected.")
+
 
 def display_analysis_report(report: Dict[str, Any], use_expanders: bool = True):
     """Displays the analysis report in a user-friendly way."""
@@ -736,7 +2408,88 @@ def configuration_interface(assistant: DBAAssistant):
         st.success("AI settings saved!")
         
     st.subheader("Database Connections")
-    st.warning("Database configuration is managed in the config.yaml file.")
+    
+    # Show currently configured databases
+    if assistant.config.databases:
+        st.success(f"✅ **{len(assistant.config.databases)} databases configured**")
+        
+        # Create a table of configured databases
+        db_data = []
+        for db_name, db_config in assistant.config.databases.items():
+            db_data.append({
+                "Name": db_name,
+                "Type": db_config.db_type.upper(),
+                "Host": db_config.host,
+                "Database": db_config.database,
+                "Status": "🟢 Configured"
+            })
+        
+        st.dataframe(pd.DataFrame(db_data), use_container_width=True)
+    else:
+        st.warning("⚠️ **No databases configured**")
+    
+    st.markdown("---")
+    st.subheader("📋 Available Database Types")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown("**SQL Databases:**")
+        st.markdown("- 🗄️ **MySQL** - Relational database")
+        st.markdown("- 🐘 **PostgreSQL** - Advanced relational database")
+        st.markdown("- 💾 **SQLite** - Lightweight embedded database")
+        st.markdown("- 🔵 **Oracle** - Enterprise database")
+        st.markdown("- 🟦 **SQL Server** - Microsoft database")
+    
+    with col2:
+        st.markdown("**NoSQL Databases:**")
+        st.markdown("- 🍃 **MongoDB** - Document database")
+        st.markdown("- 🔴 **Redis** - In-memory key-value store")
+        st.markdown("- 🔍 **Elasticsearch** - Search engine")
+        st.markdown("- 🕸️ **Neo4j** - Graph database")
+        st.markdown("- 🗿 **Cassandra** - Wide-column database")
+        st.markdown("- 📊 **InfluxDB** - Time series database")
+    
+    with col3:
+        st.markdown("**Cloud Databases:**")
+        st.markdown("- ☁️ **AWS Athena** - Serverless query service")
+        st.markdown("- 🔵 **Azure SQL** - Microsoft cloud database")
+        st.markdown("- 🟢 **Google BigQuery** - Data warehouse")
+    
+    st.markdown("---")
+    st.subheader("🔧 How to Add a Database")
+    
+    st.markdown("""
+    **To add a new database:**
+    
+    1. **Edit the configuration file:**
+       ```bash
+       # Open config/config.yaml
+       ```
+    
+    2. **Add database configuration:**
+       ```yaml
+       databases:
+         your_database_name:
+           host: "your-host"
+           port: 3306
+           database: "your_database"
+           username: "your_username"
+           password: "your_password"
+           db_type: "mysql"  # or postgresql, mongodb, etc.
+           connection_pool_size: 10
+           timeout: 30
+       ```
+    
+    3. **Restart the application:**
+       ```bash
+       # Stop and restart DBA-GPT
+       ```
+    
+    4. **Test the connection** in the Chat interface
+    """)
+    
+    st.warning("⚠️ **Security Note:** Store sensitive credentials in environment variables or use a secure configuration management system.")
     
     st.subheader("Monitoring Settings")
     

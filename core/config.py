@@ -22,6 +22,7 @@ class DatabaseConfig:
     ssl_mode: str = "prefer"
     connection_pool_size: int = 10
     timeout: int = 30
+    db_name: str = ""  # Add db_name attribute
 
 
 @dataclass
@@ -167,7 +168,8 @@ class Config:
                     db_type=db_data.get("db_type", "postgresql"),
                     ssl_mode=db_data.get("ssl_mode", "prefer"),
                     connection_pool_size=db_data.get("connection_pool_size", 10),
-                    timeout=db_data.get("timeout", 30)
+                    timeout=db_data.get("timeout", 30),
+                    db_name=db_name  # Set the db_name from the config key
                 )
         
         # Other configurations

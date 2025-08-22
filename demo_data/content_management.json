@@ -1,0 +1,4686 @@
+[
+  {
+    "_id": "content_000001",
+    "title": "News Item 1",
+    "slug": "news-item-1",
+    "content_type": "news_item",
+    "status": "archived",
+    "author": {
+      "name": "Jane Doe",
+      "id": "author_06",
+      "email": "author5@example.com"
+    },
+    "content": {
+      "body": "Content for news_item with relevant information and details.",
+      "excerpt": "Content for news_item with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for News Item 1",
+      "meta_description": "SEO description for News Item 1 with relevant keywords",
+      "keywords": [
+        "travel",
+        "lifestyle",
+        "education",
+        "business"
+      ],
+      "canonical_url": "https://example.com/news/item/1"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/news_item_1.jpg",
+      "gallery": [
+        "https://example.com/images/news_item_1_1.jpg",
+        "https://example.com/images/news_item_1_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-01-15T12:14:30.131470",
+      "published_at": "2025-08-14T12:14:30.131470",
+      "scheduled_for": "2025-09-12T12:14:30.131470",
+      "last_modified": "2025-08-13T12:14:30.131470"
+    },
+    "categories": [
+      "education",
+      "health"
+    ],
+    "tags": [
+      "popular",
+      "trending",
+      "exclusive"
+    ],
+    "engagement": {
+      "views": 4710,
+      "likes": 152,
+      "shares": 71,
+      "comments": 14
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": [
+        "guest",
+        "admin",
+        "premium"
+      ]
+    }
+  },
+  {
+    "_id": "content_000002",
+    "title": "Product Page for Gaming Console",
+    "slug": "product-page-for-gaming-console",
+    "content_type": "product_page",
+    "status": "draft",
+    "author": {
+      "name": "Sarah Wilson",
+      "id": "author_02",
+      "email": "author3@example.com"
+    },
+    "content": {
+      "body": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "excerpt": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "word_count": 14,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Product Page for Gaming Console",
+      "meta_description": "SEO description for Product Page for Gaming Console with relevant keywords",
+      "keywords": [
+        "health",
+        "business",
+        "technology",
+        "education",
+        "fitness"
+      ],
+      "canonical_url": "https://example.com/product/page/2"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/product_page_2.jpg",
+      "gallery": [
+        "https://example.com/images/product_page_2_1.jpg",
+        "https://example.com/images/product_page_2_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-01-29T12:14:30.131470",
+      "published_at": null,
+      "scheduled_for": "2025-08-21T12:14:30.131470",
+      "last_modified": "2025-08-09T12:14:30.131470"
+    },
+    "categories": [
+      "business",
+      "fitness"
+    ],
+    "tags": [
+      "popular",
+      "trending"
+    ],
+    "engagement": {
+      "views": 5570,
+      "likes": 214,
+      "shares": 31,
+      "comments": 41
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000003",
+    "title": "Amazing Blog Post About Food 3",
+    "slug": "amazing-blog-post-about-food-3",
+    "content_type": "blog_post",
+    "status": "published",
+    "author": {
+      "name": "Jane Doe",
+      "id": "author_03",
+      "email": "author3@example.com"
+    },
+    "content": {
+      "body": "This is a detailed blog post about business strategies. It contains multiple paragraphs with valuable information for our readers.",
+      "excerpt": "This is a detailed blog post about business strategies. It contains multiple paragraphs with valuable information for our readers.",
+      "word_count": 19,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Amazing Blog Post About Food 3",
+      "meta_description": "SEO description for Amazing Blog Post About Food 3 with relevant keywords",
+      "keywords": [
+        "business",
+        "lifestyle",
+        "food"
+      ],
+      "canonical_url": "https://example.com/blog/post/3"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/blog_post_3.jpg",
+      "gallery": [
+        "https://example.com/images/blog_post_3_1.jpg",
+        "https://example.com/images/blog_post_3_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-08-21T12:14:30.131470",
+      "published_at": "2025-07-26T12:14:30.131470",
+      "scheduled_for": "2025-09-14T12:14:30.131470",
+      "last_modified": "2025-08-15T12:14:30.131470"
+    },
+    "categories": [
+      "education",
+      "technology",
+      "business"
+    ],
+    "tags": [
+      "exclusive",
+      "new"
+    ],
+    "engagement": {
+      "views": 9547,
+      "likes": 37,
+      "shares": 73,
+      "comments": 27
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000004",
+    "title": "Landing Page 4",
+    "slug": "landing-page-4",
+    "content_type": "landing_page",
+    "status": "draft",
+    "author": {
+      "name": "Lisa Garcia",
+      "id": "author_03",
+      "email": "author2@example.com"
+    },
+    "content": {
+      "body": "Content for landing_page with relevant information and details.",
+      "excerpt": "Content for landing_page with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Landing Page 4",
+      "meta_description": "SEO description for Landing Page 4 with relevant keywords",
+      "keywords": [
+        "travel",
+        "health",
+        "business",
+        "fitness"
+      ],
+      "canonical_url": "https://example.com/landing/page/4"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/landing_page_4.jpg",
+      "gallery": [
+        "https://example.com/images/landing_page_4_1.jpg",
+        "https://example.com/images/landing_page_4_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-09-24T12:14:30.131470",
+      "published_at": "2025-07-28T12:14:30.131470",
+      "scheduled_for": "2025-08-29T12:14:30.131470",
+      "last_modified": "2025-08-11T12:14:30.131470"
+    },
+    "categories": [
+      "lifestyle"
+    ],
+    "tags": [
+      "trending"
+    ],
+    "engagement": {
+      "views": 3342,
+      "likes": 99,
+      "shares": 94,
+      "comments": 12
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000005",
+    "title": "Amazing Blog Post About Technology 5",
+    "slug": "amazing-blog-post-about-technology-5",
+    "content_type": "blog_post",
+    "status": "scheduled",
+    "author": {
+      "name": "David Brown",
+      "id": "author_01",
+      "email": "author5@example.com"
+    },
+    "content": {
+      "body": "This is a detailed blog post about cooking recipes. It contains multiple paragraphs with valuable information for our readers.",
+      "excerpt": "This is a detailed blog post about cooking recipes. It contains multiple paragraphs with valuable information for our readers.",
+      "word_count": 19,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Amazing Blog Post About Technology 5",
+      "meta_description": "SEO description for Amazing Blog Post About Technology 5 with relevant keywords",
+      "keywords": [
+        "business",
+        "lifestyle",
+        "education",
+        "health",
+        "travel",
+        "fitness"
+      ],
+      "canonical_url": "https://example.com/blog/post/5"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/blog_post_5.jpg",
+      "gallery": [
+        "https://example.com/images/blog_post_5_1.jpg",
+        "https://example.com/images/blog_post_5_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-04-08T12:14:30.131470",
+      "published_at": "2025-07-19T12:14:30.131470",
+      "scheduled_for": "2025-08-17T12:14:30.131470",
+      "last_modified": "2025-08-15T12:14:30.131470"
+    },
+    "categories": [
+      "travel"
+    ],
+    "tags": [
+      "popular",
+      "trending"
+    ],
+    "engagement": {
+      "views": 1358,
+      "likes": 54,
+      "shares": 97,
+      "comments": 1
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": [
+        "premium"
+      ]
+    }
+  },
+  {
+    "_id": "content_000006",
+    "title": "Landing Page 6",
+    "slug": "landing-page-6",
+    "content_type": "landing_page",
+    "status": "scheduled",
+    "author": {
+      "name": "Sarah Wilson",
+      "id": "author_02",
+      "email": "author4@example.com"
+    },
+    "content": {
+      "body": "Content for landing_page with relevant information and details.",
+      "excerpt": "Content for landing_page with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Landing Page 6",
+      "meta_description": "SEO description for Landing Page 6 with relevant keywords",
+      "keywords": [
+        "technology",
+        "education",
+        "lifestyle",
+        "travel",
+        "business",
+        "food"
+      ],
+      "canonical_url": "https://example.com/landing/page/6"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/landing_page_6.jpg",
+      "gallery": [
+        "https://example.com/images/landing_page_6_1.jpg",
+        "https://example.com/images/landing_page_6_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-01-08T12:14:30.131470",
+      "published_at": null,
+      "scheduled_for": "2025-08-31T12:14:30.131470",
+      "last_modified": "2025-08-15T12:14:30.131470"
+    },
+    "categories": [
+      "food",
+      "education"
+    ],
+    "tags": [
+      "updated"
+    ],
+    "engagement": {
+      "views": 5848,
+      "likes": 16,
+      "shares": 50,
+      "comments": 40
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": true,
+      "user_groups": [
+        "moderator",
+        "premium"
+      ]
+    }
+  },
+  {
+    "_id": "content_000007",
+    "title": "Amazing Blog Post About Technology 7",
+    "slug": "amazing-blog-post-about-technology-7",
+    "content_type": "blog_post",
+    "status": "scheduled",
+    "author": {
+      "name": "David Brown",
+      "id": "author_06",
+      "email": "author5@example.com"
+    },
+    "content": {
+      "body": "This is a detailed blog post about cooking recipes. It contains multiple paragraphs with valuable information for our readers.",
+      "excerpt": "This is a detailed blog post about cooking recipes. It contains multiple paragraphs with valuable information for our readers.",
+      "word_count": 19,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Amazing Blog Post About Technology 7",
+      "meta_description": "SEO description for Amazing Blog Post About Technology 7 with relevant keywords",
+      "keywords": [
+        "education",
+        "food",
+        "lifestyle",
+        "business",
+        "health",
+        "technology"
+      ],
+      "canonical_url": "https://example.com/blog/post/7"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/blog_post_7.jpg",
+      "gallery": [
+        "https://example.com/images/blog_post_7_1.jpg",
+        "https://example.com/images/blog_post_7_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-12-04T12:14:30.131470",
+      "published_at": null,
+      "scheduled_for": "2025-08-29T12:14:30.131470",
+      "last_modified": "2025-08-10T12:14:30.131470"
+    },
+    "categories": [
+      "technology",
+      "lifestyle"
+    ],
+    "tags": [
+      "updated"
+    ],
+    "engagement": {
+      "views": 2025,
+      "likes": 475,
+      "shares": 67,
+      "comments": 36
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000008",
+    "title": "Product Page for Gaming Console",
+    "slug": "product-page-for-gaming-console",
+    "content_type": "product_page",
+    "status": "draft",
+    "author": {
+      "name": "David Brown",
+      "id": "author_02",
+      "email": "author6@example.com"
+    },
+    "content": {
+      "body": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "excerpt": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "word_count": 14,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Product Page for Gaming Console",
+      "meta_description": "SEO description for Product Page for Gaming Console with relevant keywords",
+      "keywords": [
+        "health",
+        "food",
+        "business",
+        "fitness",
+        "education"
+      ],
+      "canonical_url": "https://example.com/product/page/8"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/product_page_8.jpg",
+      "gallery": [
+        "https://example.com/images/product_page_8_1.jpg",
+        "https://example.com/images/product_page_8_2.jpg"
+      ],
+      "video_url": "https://example.com/videos/product_page_8.mp4"
+    },
+    "publishing": {
+      "created_at": "2025-01-23T12:14:30.131470",
+      "published_at": "2025-07-31T12:14:30.131470",
+      "scheduled_for": "2025-09-05T12:14:30.131470",
+      "last_modified": "2025-08-10T12:14:30.131470"
+    },
+    "categories": [
+      "food",
+      "education"
+    ],
+    "tags": [
+      "new",
+      "featured",
+      "popular"
+    ],
+    "engagement": {
+      "views": 562,
+      "likes": 268,
+      "shares": 59,
+      "comments": 44
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000009",
+    "title": "Landing Page 9",
+    "slug": "landing-page-9",
+    "content_type": "landing_page",
+    "status": "scheduled",
+    "author": {
+      "name": "David Brown",
+      "id": "author_02",
+      "email": "author4@example.com"
+    },
+    "content": {
+      "body": "Content for landing_page with relevant information and details.",
+      "excerpt": "Content for landing_page with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Landing Page 9",
+      "meta_description": "SEO description for Landing Page 9 with relevant keywords",
+      "keywords": [
+        "lifestyle",
+        "fitness",
+        "business",
+        "food",
+        "technology",
+        "education"
+      ],
+      "canonical_url": "https://example.com/landing/page/9"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/landing_page_9.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-05-12T12:14:30.131470",
+      "published_at": "2025-08-13T12:14:30.131470",
+      "scheduled_for": "2025-09-09T12:14:30.131470",
+      "last_modified": "2025-08-09T12:14:30.131470"
+    },
+    "categories": [
+      "business",
+      "technology"
+    ],
+    "tags": [
+      "new"
+    ],
+    "engagement": {
+      "views": 8705,
+      "likes": 197,
+      "shares": 62,
+      "comments": 21
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000010",
+    "title": "Product Page for Smart Watch",
+    "slug": "product-page-for-smart-watch",
+    "content_type": "product_page",
+    "status": "draft",
+    "author": {
+      "name": "David Brown",
+      "id": "author_05",
+      "email": "author2@example.com"
+    },
+    "content": {
+      "body": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "excerpt": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "word_count": 14,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Product Page for Smart Watch",
+      "meta_description": "SEO description for Product Page for Smart Watch with relevant keywords",
+      "keywords": [
+        "health",
+        "lifestyle",
+        "education"
+      ],
+      "canonical_url": "https://example.com/product/page/10"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/product_page_10.jpg",
+      "gallery": [
+        "https://example.com/images/product_page_10_1.jpg",
+        "https://example.com/images/product_page_10_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-06-07T12:14:30.131470",
+      "published_at": "2025-08-01T12:14:30.131470",
+      "scheduled_for": "2025-09-04T12:14:30.131470",
+      "last_modified": "2025-08-13T12:14:30.131470"
+    },
+    "categories": [
+      "health"
+    ],
+    "tags": [
+      "popular",
+      "featured",
+      "trending"
+    ],
+    "engagement": {
+      "views": 9359,
+      "likes": 396,
+      "shares": 76,
+      "comments": 22
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000011",
+    "title": "Landing Page 11",
+    "slug": "landing-page-11",
+    "content_type": "landing_page",
+    "status": "scheduled",
+    "author": {
+      "name": "Lisa Garcia",
+      "id": "author_03",
+      "email": "author1@example.com"
+    },
+    "content": {
+      "body": "Content for landing_page with relevant information and details.",
+      "excerpt": "Content for landing_page with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Landing Page 11",
+      "meta_description": "SEO description for Landing Page 11 with relevant keywords",
+      "keywords": [
+        "technology",
+        "fitness",
+        "travel"
+      ],
+      "canonical_url": "https://example.com/landing/page/11"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/landing_page_11.jpg",
+      "gallery": [],
+      "video_url": "https://example.com/videos/landing_page_11.mp4"
+    },
+    "publishing": {
+      "created_at": "2025-07-04T12:14:30.131470",
+      "published_at": null,
+      "scheduled_for": "2025-08-25T12:14:30.131470",
+      "last_modified": "2025-08-10T12:14:30.131470"
+    },
+    "categories": [
+      "travel"
+    ],
+    "tags": [
+      "premium",
+      "exclusive"
+    ],
+    "engagement": {
+      "views": 2210,
+      "likes": 258,
+      "shares": 21,
+      "comments": 23
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000012",
+    "title": "News Item 12",
+    "slug": "news-item-12",
+    "content_type": "news_item",
+    "status": "scheduled",
+    "author": {
+      "name": "David Brown",
+      "id": "author_04",
+      "email": "author2@example.com"
+    },
+    "content": {
+      "body": "Content for news_item with relevant information and details.",
+      "excerpt": "Content for news_item with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for News Item 12",
+      "meta_description": "SEO description for News Item 12 with relevant keywords",
+      "keywords": [
+        "health",
+        "fitness",
+        "technology",
+        "travel",
+        "business"
+      ],
+      "canonical_url": "https://example.com/news/item/12"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/news_item_12.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-12-06T12:14:30.131470",
+      "published_at": "2025-07-17T12:14:30.131470",
+      "scheduled_for": "2025-08-30T12:14:30.131470",
+      "last_modified": "2025-08-14T12:14:30.131470"
+    },
+    "categories": [
+      "business"
+    ],
+    "tags": [
+      "updated",
+      "trending"
+    ],
+    "engagement": {
+      "views": 8295,
+      "likes": 117,
+      "shares": 48,
+      "comments": 47
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000013",
+    "title": "Help Article 13",
+    "slug": "help-article-13",
+    "content_type": "help_article",
+    "status": "published",
+    "author": {
+      "name": "Jane Doe",
+      "id": "author_04",
+      "email": "author6@example.com"
+    },
+    "content": {
+      "body": "Content for help_article with relevant information and details.",
+      "excerpt": "Content for help_article with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Help Article 13",
+      "meta_description": "SEO description for Help Article 13 with relevant keywords",
+      "keywords": [
+        "food",
+        "travel",
+        "technology"
+      ],
+      "canonical_url": "https://example.com/help/article/13"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/help_article_13.jpg",
+      "gallery": [
+        "https://example.com/images/help_article_13_1.jpg",
+        "https://example.com/images/help_article_13_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-10-18T12:14:30.131470",
+      "published_at": "2025-07-29T12:14:30.131470",
+      "scheduled_for": null,
+      "last_modified": "2025-08-10T12:14:30.131470"
+    },
+    "categories": [
+      "business",
+      "fitness",
+      "travel"
+    ],
+    "tags": [
+      "updated",
+      "popular"
+    ],
+    "engagement": {
+      "views": 8230,
+      "likes": 469,
+      "shares": 73,
+      "comments": 22
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000014",
+    "title": "Tutorial 14",
+    "slug": "tutorial-14",
+    "content_type": "tutorial",
+    "status": "scheduled",
+    "author": {
+      "name": "Lisa Garcia",
+      "id": "author_01",
+      "email": "author6@example.com"
+    },
+    "content": {
+      "body": "Content for tutorial with relevant information and details.",
+      "excerpt": "Content for tutorial with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Tutorial 14",
+      "meta_description": "SEO description for Tutorial 14 with relevant keywords",
+      "keywords": [
+        "health",
+        "education",
+        "business",
+        "lifestyle",
+        "fitness",
+        "technology"
+      ],
+      "canonical_url": "https://example.com/tutorial/14"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/tutorial_14.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-07-06T12:14:30.131470",
+      "published_at": "2025-08-05T12:14:30.131470",
+      "scheduled_for": null,
+      "last_modified": "2025-08-11T12:14:30.131470"
+    },
+    "categories": [
+      "education"
+    ],
+    "tags": [
+      "popular",
+      "trending"
+    ],
+    "engagement": {
+      "views": 5534,
+      "likes": 118,
+      "shares": 86,
+      "comments": 17
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000015",
+    "title": "Tutorial 15",
+    "slug": "tutorial-15",
+    "content_type": "tutorial",
+    "status": "published",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_02",
+      "email": "author1@example.com"
+    },
+    "content": {
+      "body": "Content for tutorial with relevant information and details.",
+      "excerpt": "Content for tutorial with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Tutorial 15",
+      "meta_description": "SEO description for Tutorial 15 with relevant keywords",
+      "keywords": [
+        "food",
+        "health",
+        "travel"
+      ],
+      "canonical_url": "https://example.com/tutorial/15"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/tutorial_15.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-03-26T12:14:30.131470",
+      "published_at": null,
+      "scheduled_for": "2025-08-27T12:14:30.131470",
+      "last_modified": "2025-08-12T12:14:30.131470"
+    },
+    "categories": [
+      "business",
+      "fitness",
+      "food"
+    ],
+    "tags": [
+      "exclusive",
+      "new",
+      "updated"
+    ],
+    "engagement": {
+      "views": 734,
+      "likes": 297,
+      "shares": 64,
+      "comments": 24
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": true,
+      "user_groups": [
+        "regular",
+        "moderator",
+        "admin"
+      ]
+    }
+  },
+  {
+    "_id": "content_000016",
+    "title": "Product Page for Wireless Headphones",
+    "slug": "product-page-for-wireless-headphones",
+    "content_type": "product_page",
+    "status": "archived",
+    "author": {
+      "name": "Lisa Garcia",
+      "id": "author_06",
+      "email": "author2@example.com"
+    },
+    "content": {
+      "body": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "excerpt": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "word_count": 14,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Product Page for Wireless Headphones",
+      "meta_description": "SEO description for Product Page for Wireless Headphones with relevant keywords",
+      "keywords": [
+        "health",
+        "technology",
+        "education",
+        "business",
+        "fitness"
+      ],
+      "canonical_url": "https://example.com/product/page/16"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/product_page_16.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-12-27T12:14:30.131470",
+      "published_at": "2025-08-08T12:14:30.131470",
+      "scheduled_for": null,
+      "last_modified": "2025-08-12T12:14:30.131470"
+    },
+    "categories": [
+      "health"
+    ],
+    "tags": [
+      "premium"
+    ],
+    "engagement": {
+      "views": 7949,
+      "likes": 61,
+      "shares": 44,
+      "comments": 38
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000017",
+    "title": "Help Article 17",
+    "slug": "help-article-17",
+    "content_type": "help_article",
+    "status": "published",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_04",
+      "email": "author3@example.com"
+    },
+    "content": {
+      "body": "Content for help_article with relevant information and details.",
+      "excerpt": "Content for help_article with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Help Article 17",
+      "meta_description": "SEO description for Help Article 17 with relevant keywords",
+      "keywords": [
+        "lifestyle",
+        "travel",
+        "fitness",
+        "food"
+      ],
+      "canonical_url": "https://example.com/help/article/17"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/help_article_17.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-11-15T12:14:30.131470",
+      "published_at": "2025-08-04T12:14:30.131470",
+      "scheduled_for": "2025-08-25T12:14:30.131470",
+      "last_modified": "2025-08-12T12:14:30.131470"
+    },
+    "categories": [
+      "education",
+      "business",
+      "travel"
+    ],
+    "tags": [
+      "exclusive",
+      "premium",
+      "updated"
+    ],
+    "engagement": {
+      "views": 2963,
+      "likes": 313,
+      "shares": 17,
+      "comments": 7
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000018",
+    "title": "News Item 18",
+    "slug": "news-item-18",
+    "content_type": "news_item",
+    "status": "archived",
+    "author": {
+      "name": "Lisa Garcia",
+      "id": "author_06",
+      "email": "author2@example.com"
+    },
+    "content": {
+      "body": "Content for news_item with relevant information and details.",
+      "excerpt": "Content for news_item with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for News Item 18",
+      "meta_description": "SEO description for News Item 18 with relevant keywords",
+      "keywords": [
+        "fitness",
+        "health",
+        "food",
+        "business",
+        "technology",
+        "travel"
+      ],
+      "canonical_url": "https://example.com/news/item/18"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/news_item_18.jpg",
+      "gallery": [
+        "https://example.com/images/news_item_18_1.jpg",
+        "https://example.com/images/news_item_18_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-09-26T12:14:30.131470",
+      "published_at": "2025-08-01T12:14:30.131470",
+      "scheduled_for": "2025-09-15T12:14:30.131470",
+      "last_modified": "2025-08-13T12:14:30.131470"
+    },
+    "categories": [
+      "food",
+      "education",
+      "health"
+    ],
+    "tags": [
+      "trending"
+    ],
+    "engagement": {
+      "views": 1940,
+      "likes": 199,
+      "shares": 15,
+      "comments": 39
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": true,
+      "user_groups": [
+        "guest"
+      ]
+    }
+  },
+  {
+    "_id": "content_000019",
+    "title": "Tutorial 19",
+    "slug": "tutorial-19",
+    "content_type": "tutorial",
+    "status": "archived",
+    "author": {
+      "name": "David Brown",
+      "id": "author_06",
+      "email": "author2@example.com"
+    },
+    "content": {
+      "body": "Content for tutorial with relevant information and details.",
+      "excerpt": "Content for tutorial with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Tutorial 19",
+      "meta_description": "SEO description for Tutorial 19 with relevant keywords",
+      "keywords": [
+        "technology",
+        "lifestyle",
+        "food",
+        "education",
+        "travel",
+        "fitness"
+      ],
+      "canonical_url": "https://example.com/tutorial/19"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/tutorial_19.jpg",
+      "gallery": [
+        "https://example.com/images/tutorial_19_1.jpg",
+        "https://example.com/images/tutorial_19_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-04-16T12:14:30.131470",
+      "published_at": "2025-08-06T12:14:30.131470",
+      "scheduled_for": "2025-08-29T12:14:30.131470",
+      "last_modified": "2025-08-14T12:14:30.131470"
+    },
+    "categories": [
+      "health",
+      "business"
+    ],
+    "tags": [
+      "popular"
+    ],
+    "engagement": {
+      "views": 324,
+      "likes": 27,
+      "shares": 20,
+      "comments": 28
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000020",
+    "title": "Product Page for Wireless Headphones",
+    "slug": "product-page-for-wireless-headphones",
+    "content_type": "product_page",
+    "status": "archived",
+    "author": {
+      "name": "Sarah Wilson",
+      "id": "author_01",
+      "email": "author6@example.com"
+    },
+    "content": {
+      "body": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "excerpt": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "word_count": 14,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Product Page for Wireless Headphones",
+      "meta_description": "SEO description for Product Page for Wireless Headphones with relevant keywords",
+      "keywords": [
+        "technology",
+        "business",
+        "lifestyle"
+      ],
+      "canonical_url": "https://example.com/product/page/20"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/product_page_20.jpg",
+      "gallery": [
+        "https://example.com/images/product_page_20_1.jpg",
+        "https://example.com/images/product_page_20_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-11-07T12:14:30.131470",
+      "published_at": null,
+      "scheduled_for": "2025-08-28T12:14:30.131470",
+      "last_modified": "2025-08-13T12:14:30.131470"
+    },
+    "categories": [
+      "fitness"
+    ],
+    "tags": [
+      "new",
+      "trending"
+    ],
+    "engagement": {
+      "views": 8037,
+      "likes": 415,
+      "shares": 100,
+      "comments": 26
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000021",
+    "title": "Help Article 21",
+    "slug": "help-article-21",
+    "content_type": "help_article",
+    "status": "archived",
+    "author": {
+      "name": "David Brown",
+      "id": "author_01",
+      "email": "author1@example.com"
+    },
+    "content": {
+      "body": "Content for help_article with relevant information and details.",
+      "excerpt": "Content for help_article with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Help Article 21",
+      "meta_description": "SEO description for Help Article 21 with relevant keywords",
+      "keywords": [
+        "food",
+        "business",
+        "technology",
+        "travel",
+        "fitness",
+        "education"
+      ],
+      "canonical_url": "https://example.com/help/article/21"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/help_article_21.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-05-18T12:14:30.131470",
+      "published_at": null,
+      "scheduled_for": "2025-08-23T12:14:30.131470",
+      "last_modified": "2025-08-09T12:14:30.131470"
+    },
+    "categories": [
+      "business",
+      "education"
+    ],
+    "tags": [
+      "featured",
+      "new",
+      "premium"
+    ],
+    "engagement": {
+      "views": 8874,
+      "likes": 204,
+      "shares": 9,
+      "comments": 36
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": [
+        "regular"
+      ]
+    }
+  },
+  {
+    "_id": "content_000022",
+    "title": "News Item 22",
+    "slug": "news-item-22",
+    "content_type": "news_item",
+    "status": "published",
+    "author": {
+      "name": "David Brown",
+      "id": "author_04",
+      "email": "author5@example.com"
+    },
+    "content": {
+      "body": "Content for news_item with relevant information and details.",
+      "excerpt": "Content for news_item with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for News Item 22",
+      "meta_description": "SEO description for News Item 22 with relevant keywords",
+      "keywords": [
+        "business",
+        "travel",
+        "lifestyle",
+        "health"
+      ],
+      "canonical_url": "https://example.com/news/item/22"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/news_item_22.jpg",
+      "gallery": [
+        "https://example.com/images/news_item_22_1.jpg",
+        "https://example.com/images/news_item_22_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-04-02T12:14:30.131470",
+      "published_at": null,
+      "scheduled_for": "2025-08-24T12:14:30.131470",
+      "last_modified": "2025-08-11T12:14:30.131470"
+    },
+    "categories": [
+      "travel",
+      "education",
+      "health"
+    ],
+    "tags": [
+      "exclusive",
+      "trending",
+      "popular"
+    ],
+    "engagement": {
+      "views": 8265,
+      "likes": 23,
+      "shares": 41,
+      "comments": 6
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000023",
+    "title": "News Item 23",
+    "slug": "news-item-23",
+    "content_type": "news_item",
+    "status": "scheduled",
+    "author": {
+      "name": "Lisa Garcia",
+      "id": "author_05",
+      "email": "author1@example.com"
+    },
+    "content": {
+      "body": "Content for news_item with relevant information and details.",
+      "excerpt": "Content for news_item with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for News Item 23",
+      "meta_description": "SEO description for News Item 23 with relevant keywords",
+      "keywords": [
+        "food",
+        "travel",
+        "education",
+        "health"
+      ],
+      "canonical_url": "https://example.com/news/item/23"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/news_item_23.jpg",
+      "gallery": [
+        "https://example.com/images/news_item_23_1.jpg",
+        "https://example.com/images/news_item_23_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-08-12T12:14:30.131470",
+      "published_at": "2025-07-29T12:14:30.131470",
+      "scheduled_for": "2025-09-08T12:14:30.131470",
+      "last_modified": "2025-08-10T12:14:30.131470"
+    },
+    "categories": [
+      "food",
+      "fitness",
+      "lifestyle"
+    ],
+    "tags": [
+      "popular",
+      "updated"
+    ],
+    "engagement": {
+      "views": 6997,
+      "likes": 477,
+      "shares": 76,
+      "comments": 18
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000024",
+    "title": "Landing Page 24",
+    "slug": "landing-page-24",
+    "content_type": "landing_page",
+    "status": "archived",
+    "author": {
+      "name": "John Smith",
+      "id": "author_06",
+      "email": "author5@example.com"
+    },
+    "content": {
+      "body": "Content for landing_page with relevant information and details.",
+      "excerpt": "Content for landing_page with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Landing Page 24",
+      "meta_description": "SEO description for Landing Page 24 with relevant keywords",
+      "keywords": [
+        "education",
+        "lifestyle",
+        "business",
+        "travel",
+        "food",
+        "health"
+      ],
+      "canonical_url": "https://example.com/landing/page/24"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/landing_page_24.jpg",
+      "gallery": [
+        "https://example.com/images/landing_page_24_1.jpg",
+        "https://example.com/images/landing_page_24_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-08-18T12:14:30.131470",
+      "published_at": "2025-07-31T12:14:30.131470",
+      "scheduled_for": "2025-08-26T12:14:30.131470",
+      "last_modified": "2025-08-13T12:14:30.131470"
+    },
+    "categories": [
+      "technology",
+      "travel"
+    ],
+    "tags": [
+      "popular"
+    ],
+    "engagement": {
+      "views": 8846,
+      "likes": 112,
+      "shares": 88,
+      "comments": 29
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000025",
+    "title": "Product Page for Premium Laptop",
+    "slug": "product-page-for-premium-laptop",
+    "content_type": "product_page",
+    "status": "archived",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_05",
+      "email": "author1@example.com"
+    },
+    "content": {
+      "body": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "excerpt": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "word_count": 14,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Product Page for Premium Laptop",
+      "meta_description": "SEO description for Product Page for Premium Laptop with relevant keywords",
+      "keywords": [
+        "travel",
+        "fitness",
+        "health",
+        "food",
+        "technology"
+      ],
+      "canonical_url": "https://example.com/product/page/25"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/product_page_25.jpg",
+      "gallery": [
+        "https://example.com/images/product_page_25_1.jpg",
+        "https://example.com/images/product_page_25_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-07-12T12:14:30.131470",
+      "published_at": null,
+      "scheduled_for": "2025-08-23T12:14:30.131470",
+      "last_modified": "2025-08-11T12:14:30.131470"
+    },
+    "categories": [
+      "lifestyle",
+      "education",
+      "fitness"
+    ],
+    "tags": [
+      "premium"
+    ],
+    "engagement": {
+      "views": 5497,
+      "likes": 450,
+      "shares": 58,
+      "comments": 3
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000026",
+    "title": "Landing Page 26",
+    "slug": "landing-page-26",
+    "content_type": "landing_page",
+    "status": "draft",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_05",
+      "email": "author2@example.com"
+    },
+    "content": {
+      "body": "Content for landing_page with relevant information and details.",
+      "excerpt": "Content for landing_page with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Landing Page 26",
+      "meta_description": "SEO description for Landing Page 26 with relevant keywords",
+      "keywords": [
+        "lifestyle",
+        "food",
+        "health"
+      ],
+      "canonical_url": "https://example.com/landing/page/26"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/landing_page_26.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-11-29T12:14:30.131470",
+      "published_at": null,
+      "scheduled_for": "2025-08-22T12:14:30.131470",
+      "last_modified": "2025-08-13T12:14:30.131470"
+    },
+    "categories": [
+      "technology",
+      "food",
+      "travel"
+    ],
+    "tags": [
+      "premium"
+    ],
+    "engagement": {
+      "views": 550,
+      "likes": 232,
+      "shares": 11,
+      "comments": 35
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000027",
+    "title": "Amazing Blog Post About Business 27",
+    "slug": "amazing-blog-post-about-business-27",
+    "content_type": "blog_post",
+    "status": "scheduled",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_06",
+      "email": "author2@example.com"
+    },
+    "content": {
+      "body": "This is a detailed blog post about travel destinations. It contains multiple paragraphs with valuable information for our readers.",
+      "excerpt": "This is a detailed blog post about travel destinations. It contains multiple paragraphs with valuable information for our readers.",
+      "word_count": 19,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Amazing Blog Post About Business 27",
+      "meta_description": "SEO description for Amazing Blog Post About Business 27 with relevant keywords",
+      "keywords": [
+        "business",
+        "travel",
+        "fitness",
+        "food",
+        "health",
+        "lifestyle"
+      ],
+      "canonical_url": "https://example.com/blog/post/27"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/blog_post_27.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-06-28T12:14:30.131470",
+      "published_at": null,
+      "scheduled_for": "2025-08-19T12:14:30.131470",
+      "last_modified": "2025-08-09T12:14:30.131470"
+    },
+    "categories": [
+      "lifestyle"
+    ],
+    "tags": [
+      "premium",
+      "new",
+      "exclusive"
+    ],
+    "engagement": {
+      "views": 3500,
+      "likes": 334,
+      "shares": 79,
+      "comments": 19
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000028",
+    "title": "Landing Page 28",
+    "slug": "landing-page-28",
+    "content_type": "landing_page",
+    "status": "draft",
+    "author": {
+      "name": "David Brown",
+      "id": "author_06",
+      "email": "author2@example.com"
+    },
+    "content": {
+      "body": "Content for landing_page with relevant information and details.",
+      "excerpt": "Content for landing_page with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Landing Page 28",
+      "meta_description": "SEO description for Landing Page 28 with relevant keywords",
+      "keywords": [
+        "health",
+        "technology",
+        "business",
+        "lifestyle",
+        "travel",
+        "fitness"
+      ],
+      "canonical_url": "https://example.com/landing/page/28"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/landing_page_28.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-01-05T12:14:30.131470",
+      "published_at": "2025-08-13T12:14:30.131470",
+      "scheduled_for": "2025-09-02T12:14:30.131470",
+      "last_modified": "2025-08-09T12:14:30.131470"
+    },
+    "categories": [
+      "technology",
+      "business"
+    ],
+    "tags": [
+      "new"
+    ],
+    "engagement": {
+      "views": 4395,
+      "likes": 400,
+      "shares": 25,
+      "comments": 6
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000029",
+    "title": "Tutorial 29",
+    "slug": "tutorial-29",
+    "content_type": "tutorial",
+    "status": "archived",
+    "author": {
+      "name": "John Smith",
+      "id": "author_01",
+      "email": "author3@example.com"
+    },
+    "content": {
+      "body": "Content for tutorial with relevant information and details.",
+      "excerpt": "Content for tutorial with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Tutorial 29",
+      "meta_description": "SEO description for Tutorial 29 with relevant keywords",
+      "keywords": [
+        "health",
+        "technology",
+        "education",
+        "lifestyle",
+        "travel"
+      ],
+      "canonical_url": "https://example.com/tutorial/29"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/tutorial_29.jpg",
+      "gallery": [],
+      "video_url": "https://example.com/videos/tutorial_29.mp4"
+    },
+    "publishing": {
+      "created_at": "2024-10-22T12:14:30.131470",
+      "published_at": "2025-07-25T12:14:30.131470",
+      "scheduled_for": "2025-08-17T12:14:30.131470",
+      "last_modified": "2025-08-15T12:14:30.131470"
+    },
+    "categories": [
+      "education"
+    ],
+    "tags": [
+      "trending",
+      "popular"
+    ],
+    "engagement": {
+      "views": 5446,
+      "likes": 190,
+      "shares": 91,
+      "comments": 18
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000030",
+    "title": "Landing Page 30",
+    "slug": "landing-page-30",
+    "content_type": "landing_page",
+    "status": "draft",
+    "author": {
+      "name": "Jane Doe",
+      "id": "author_01",
+      "email": "author4@example.com"
+    },
+    "content": {
+      "body": "Content for landing_page with relevant information and details.",
+      "excerpt": "Content for landing_page with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Landing Page 30",
+      "meta_description": "SEO description for Landing Page 30 with relevant keywords",
+      "keywords": [
+        "technology",
+        "lifestyle",
+        "health",
+        "fitness",
+        "business",
+        "travel"
+      ],
+      "canonical_url": "https://example.com/landing/page/30"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/landing_page_30.jpg",
+      "gallery": [],
+      "video_url": "https://example.com/videos/landing_page_30.mp4"
+    },
+    "publishing": {
+      "created_at": "2025-01-19T12:14:30.131470",
+      "published_at": null,
+      "scheduled_for": "2025-08-19T12:14:30.131470",
+      "last_modified": "2025-08-12T12:14:30.131470"
+    },
+    "categories": [
+      "travel"
+    ],
+    "tags": [
+      "popular",
+      "exclusive"
+    ],
+    "engagement": {
+      "views": 1326,
+      "likes": 283,
+      "shares": 35,
+      "comments": 30
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000031",
+    "title": "Help Article 31",
+    "slug": "help-article-31",
+    "content_type": "help_article",
+    "status": "published",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_02",
+      "email": "author6@example.com"
+    },
+    "content": {
+      "body": "Content for help_article with relevant information and details.",
+      "excerpt": "Content for help_article with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Help Article 31",
+      "meta_description": "SEO description for Help Article 31 with relevant keywords",
+      "keywords": [
+        "lifestyle",
+        "business",
+        "travel",
+        "health",
+        "fitness",
+        "technology"
+      ],
+      "canonical_url": "https://example.com/help/article/31"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/help_article_31.jpg",
+      "gallery": [
+        "https://example.com/images/help_article_31_1.jpg",
+        "https://example.com/images/help_article_31_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-05-21T12:14:30.131470",
+      "published_at": null,
+      "scheduled_for": "2025-08-29T12:14:30.131470",
+      "last_modified": "2025-08-11T12:14:30.131470"
+    },
+    "categories": [
+      "health",
+      "lifestyle"
+    ],
+    "tags": [
+      "trending",
+      "exclusive",
+      "premium"
+    ],
+    "engagement": {
+      "views": 5003,
+      "likes": 85,
+      "shares": 25,
+      "comments": 9
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": [
+        "regular",
+        "admin",
+        "guest"
+      ]
+    }
+  },
+  {
+    "_id": "content_000032",
+    "title": "Amazing Blog Post About Food 32",
+    "slug": "amazing-blog-post-about-food-32",
+    "content_type": "blog_post",
+    "status": "archived",
+    "author": {
+      "name": "John Smith",
+      "id": "author_01",
+      "email": "author4@example.com"
+    },
+    "content": {
+      "body": "This is a detailed blog post about technology trends. It contains multiple paragraphs with valuable information for our readers.",
+      "excerpt": "This is a detailed blog post about technology trends. It contains multiple paragraphs with valuable information for our readers.",
+      "word_count": 19,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Amazing Blog Post About Food 32",
+      "meta_description": "SEO description for Amazing Blog Post About Food 32 with relevant keywords",
+      "keywords": [
+        "education",
+        "travel",
+        "lifestyle",
+        "technology"
+      ],
+      "canonical_url": "https://example.com/blog/post/32"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/blog_post_32.jpg",
+      "gallery": [
+        "https://example.com/images/blog_post_32_1.jpg",
+        "https://example.com/images/blog_post_32_2.jpg"
+      ],
+      "video_url": "https://example.com/videos/blog_post_32.mp4"
+    },
+    "publishing": {
+      "created_at": "2025-02-16T12:14:30.131470",
+      "published_at": "2025-07-17T12:14:30.131470",
+      "scheduled_for": "2025-08-21T12:14:30.131470",
+      "last_modified": "2025-08-13T12:14:30.131470"
+    },
+    "categories": [
+      "technology"
+    ],
+    "tags": [
+      "popular",
+      "featured",
+      "premium"
+    ],
+    "engagement": {
+      "views": 9536,
+      "likes": 143,
+      "shares": 59,
+      "comments": 18
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000033",
+    "title": "News Item 33",
+    "slug": "news-item-33",
+    "content_type": "news_item",
+    "status": "archived",
+    "author": {
+      "name": "Sarah Wilson",
+      "id": "author_02",
+      "email": "author6@example.com"
+    },
+    "content": {
+      "body": "Content for news_item with relevant information and details.",
+      "excerpt": "Content for news_item with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for News Item 33",
+      "meta_description": "SEO description for News Item 33 with relevant keywords",
+      "keywords": [
+        "education",
+        "lifestyle",
+        "health",
+        "food"
+      ],
+      "canonical_url": "https://example.com/news/item/33"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/news_item_33.jpg",
+      "gallery": [
+        "https://example.com/images/news_item_33_1.jpg",
+        "https://example.com/images/news_item_33_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-09-27T12:14:30.131470",
+      "published_at": "2025-07-24T12:14:30.131470",
+      "scheduled_for": "2025-09-04T12:14:30.131470",
+      "last_modified": "2025-08-10T12:14:30.131470"
+    },
+    "categories": [
+      "travel",
+      "health"
+    ],
+    "tags": [
+      "new"
+    ],
+    "engagement": {
+      "views": 4217,
+      "likes": 243,
+      "shares": 35,
+      "comments": 23
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000034",
+    "title": "Tutorial 34",
+    "slug": "tutorial-34",
+    "content_type": "tutorial",
+    "status": "published",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_01",
+      "email": "author1@example.com"
+    },
+    "content": {
+      "body": "Content for tutorial with relevant information and details.",
+      "excerpt": "Content for tutorial with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Tutorial 34",
+      "meta_description": "SEO description for Tutorial 34 with relevant keywords",
+      "keywords": [
+        "technology",
+        "fitness",
+        "food",
+        "travel",
+        "health"
+      ],
+      "canonical_url": "https://example.com/tutorial/34"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/tutorial_34.jpg",
+      "gallery": [
+        "https://example.com/images/tutorial_34_1.jpg",
+        "https://example.com/images/tutorial_34_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-10-31T12:14:30.131470",
+      "published_at": "2025-08-14T12:14:30.131470",
+      "scheduled_for": "2025-08-21T12:14:30.131470",
+      "last_modified": "2025-08-15T12:14:30.131470"
+    },
+    "categories": [
+      "technology"
+    ],
+    "tags": [
+      "popular",
+      "premium"
+    ],
+    "engagement": {
+      "views": 2672,
+      "likes": 192,
+      "shares": 71,
+      "comments": 22
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000035",
+    "title": "Landing Page 35",
+    "slug": "landing-page-35",
+    "content_type": "landing_page",
+    "status": "scheduled",
+    "author": {
+      "name": "Jane Doe",
+      "id": "author_05",
+      "email": "author1@example.com"
+    },
+    "content": {
+      "body": "Content for landing_page with relevant information and details.",
+      "excerpt": "Content for landing_page with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Landing Page 35",
+      "meta_description": "SEO description for Landing Page 35 with relevant keywords",
+      "keywords": [
+        "lifestyle",
+        "travel",
+        "food",
+        "technology"
+      ],
+      "canonical_url": "https://example.com/landing/page/35"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/landing_page_35.jpg",
+      "gallery": [
+        "https://example.com/images/landing_page_35_1.jpg",
+        "https://example.com/images/landing_page_35_2.jpg"
+      ],
+      "video_url": "https://example.com/videos/landing_page_35.mp4"
+    },
+    "publishing": {
+      "created_at": "2025-06-21T12:14:30.131470",
+      "published_at": null,
+      "scheduled_for": "2025-09-02T12:14:30.131470",
+      "last_modified": "2025-08-13T12:14:30.131470"
+    },
+    "categories": [
+      "fitness",
+      "food",
+      "education"
+    ],
+    "tags": [
+      "updated",
+      "premium",
+      "trending"
+    ],
+    "engagement": {
+      "views": 5862,
+      "likes": 118,
+      "shares": 80,
+      "comments": 40
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": [
+        "guest",
+        "premium"
+      ]
+    }
+  },
+  {
+    "_id": "content_000036",
+    "title": "Tutorial 36",
+    "slug": "tutorial-36",
+    "content_type": "tutorial",
+    "status": "archived",
+    "author": {
+      "name": "John Smith",
+      "id": "author_05",
+      "email": "author3@example.com"
+    },
+    "content": {
+      "body": "Content for tutorial with relevant information and details.",
+      "excerpt": "Content for tutorial with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Tutorial 36",
+      "meta_description": "SEO description for Tutorial 36 with relevant keywords",
+      "keywords": [
+        "technology",
+        "education",
+        "lifestyle",
+        "food",
+        "travel"
+      ],
+      "canonical_url": "https://example.com/tutorial/36"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/tutorial_36.jpg",
+      "gallery": [
+        "https://example.com/images/tutorial_36_1.jpg",
+        "https://example.com/images/tutorial_36_2.jpg"
+      ],
+      "video_url": "https://example.com/videos/tutorial_36.mp4"
+    },
+    "publishing": {
+      "created_at": "2024-10-01T12:14:30.131470",
+      "published_at": "2025-08-06T12:14:30.131470",
+      "scheduled_for": null,
+      "last_modified": "2025-08-14T12:14:30.131470"
+    },
+    "categories": [
+      "health",
+      "education"
+    ],
+    "tags": [
+      "trending",
+      "new",
+      "popular"
+    ],
+    "engagement": {
+      "views": 1939,
+      "likes": 221,
+      "shares": 87,
+      "comments": 31
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000037",
+    "title": "Help Article 37",
+    "slug": "help-article-37",
+    "content_type": "help_article",
+    "status": "draft",
+    "author": {
+      "name": "Sarah Wilson",
+      "id": "author_02",
+      "email": "author6@example.com"
+    },
+    "content": {
+      "body": "Content for help_article with relevant information and details.",
+      "excerpt": "Content for help_article with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Help Article 37",
+      "meta_description": "SEO description for Help Article 37 with relevant keywords",
+      "keywords": [
+        "education",
+        "health",
+        "food",
+        "lifestyle",
+        "travel",
+        "business"
+      ],
+      "canonical_url": "https://example.com/help/article/37"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/help_article_37.jpg",
+      "gallery": [],
+      "video_url": "https://example.com/videos/help_article_37.mp4"
+    },
+    "publishing": {
+      "created_at": "2025-01-30T12:14:30.131470",
+      "published_at": "2025-07-31T12:14:30.131470",
+      "scheduled_for": "2025-09-03T12:14:30.131470",
+      "last_modified": "2025-08-10T12:14:30.131470"
+    },
+    "categories": [
+      "food",
+      "technology"
+    ],
+    "tags": [
+      "updated"
+    ],
+    "engagement": {
+      "views": 6910,
+      "likes": 124,
+      "shares": 97,
+      "comments": 48
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000038",
+    "title": "Product Page for Gaming Console",
+    "slug": "product-page-for-gaming-console",
+    "content_type": "product_page",
+    "status": "scheduled",
+    "author": {
+      "name": "John Smith",
+      "id": "author_05",
+      "email": "author2@example.com"
+    },
+    "content": {
+      "body": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "excerpt": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "word_count": 14,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Product Page for Gaming Console",
+      "meta_description": "SEO description for Product Page for Gaming Console with relevant keywords",
+      "keywords": [
+        "health",
+        "travel",
+        "education",
+        "food"
+      ],
+      "canonical_url": "https://example.com/product/page/38"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/product_page_38.jpg",
+      "gallery": [
+        "https://example.com/images/product_page_38_1.jpg",
+        "https://example.com/images/product_page_38_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-08-10T12:14:30.131470",
+      "published_at": "2025-08-11T12:14:30.131470",
+      "scheduled_for": "2025-09-10T12:14:30.131470",
+      "last_modified": "2025-08-10T12:14:30.133478"
+    },
+    "categories": [
+      "travel",
+      "health",
+      "fitness"
+    ],
+    "tags": [
+      "exclusive",
+      "new"
+    ],
+    "engagement": {
+      "views": 4102,
+      "likes": 73,
+      "shares": 36,
+      "comments": 35
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": [
+        "admin",
+        "guest"
+      ]
+    }
+  },
+  {
+    "_id": "content_000039",
+    "title": "Amazing Blog Post About Food 39",
+    "slug": "amazing-blog-post-about-food-39",
+    "content_type": "blog_post",
+    "status": "scheduled",
+    "author": {
+      "name": "David Brown",
+      "id": "author_03",
+      "email": "author5@example.com"
+    },
+    "content": {
+      "body": "This is a detailed blog post about business strategies. It contains multiple paragraphs with valuable information for our readers.",
+      "excerpt": "This is a detailed blog post about business strategies. It contains multiple paragraphs with valuable information for our readers.",
+      "word_count": 19,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Amazing Blog Post About Food 39",
+      "meta_description": "SEO description for Amazing Blog Post About Food 39 with relevant keywords",
+      "keywords": [
+        "business",
+        "food",
+        "technology"
+      ],
+      "canonical_url": "https://example.com/blog/post/39"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/blog_post_39.jpg",
+      "gallery": [
+        "https://example.com/images/blog_post_39_1.jpg",
+        "https://example.com/images/blog_post_39_2.jpg"
+      ],
+      "video_url": "https://example.com/videos/blog_post_39.mp4"
+    },
+    "publishing": {
+      "created_at": "2024-12-28T12:14:30.133478",
+      "published_at": null,
+      "scheduled_for": "2025-09-09T12:14:30.133478",
+      "last_modified": "2025-08-13T12:14:30.133478"
+    },
+    "categories": [
+      "health"
+    ],
+    "tags": [
+      "trending",
+      "updated"
+    ],
+    "engagement": {
+      "views": 1647,
+      "likes": 377,
+      "shares": 35,
+      "comments": 8
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": [
+        "guest",
+        "premium",
+        "regular"
+      ]
+    }
+  },
+  {
+    "_id": "content_000040",
+    "title": "Landing Page 40",
+    "slug": "landing-page-40",
+    "content_type": "landing_page",
+    "status": "draft",
+    "author": {
+      "name": "David Brown",
+      "id": "author_06",
+      "email": "author2@example.com"
+    },
+    "content": {
+      "body": "Content for landing_page with relevant information and details.",
+      "excerpt": "Content for landing_page with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Landing Page 40",
+      "meta_description": "SEO description for Landing Page 40 with relevant keywords",
+      "keywords": [
+        "fitness",
+        "health",
+        "education"
+      ],
+      "canonical_url": "https://example.com/landing/page/40"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/landing_page_40.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-06-29T12:14:30.133478",
+      "published_at": "2025-07-17T12:14:30.133478",
+      "scheduled_for": "2025-09-02T12:14:30.133478",
+      "last_modified": "2025-08-11T12:14:30.133478"
+    },
+    "categories": [
+      "technology",
+      "lifestyle"
+    ],
+    "tags": [
+      "featured",
+      "popular"
+    ],
+    "engagement": {
+      "views": 6940,
+      "likes": 91,
+      "shares": 64,
+      "comments": 42
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": [
+        "moderator",
+        "guest",
+        "regular"
+      ]
+    }
+  },
+  {
+    "_id": "content_000041",
+    "title": "Tutorial 41",
+    "slug": "tutorial-41",
+    "content_type": "tutorial",
+    "status": "scheduled",
+    "author": {
+      "name": "David Brown",
+      "id": "author_01",
+      "email": "author3@example.com"
+    },
+    "content": {
+      "body": "Content for tutorial with relevant information and details.",
+      "excerpt": "Content for tutorial with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Tutorial 41",
+      "meta_description": "SEO description for Tutorial 41 with relevant keywords",
+      "keywords": [
+        "business",
+        "travel",
+        "food",
+        "health",
+        "education",
+        "technology"
+      ],
+      "canonical_url": "https://example.com/tutorial/41"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/tutorial_41.jpg",
+      "gallery": [
+        "https://example.com/images/tutorial_41_1.jpg",
+        "https://example.com/images/tutorial_41_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-01-10T12:14:30.133478",
+      "published_at": "2025-07-19T12:14:30.133478",
+      "scheduled_for": "2025-08-19T12:14:30.133478",
+      "last_modified": "2025-08-10T12:14:30.133478"
+    },
+    "categories": [
+      "health",
+      "fitness",
+      "business"
+    ],
+    "tags": [
+      "premium",
+      "popular",
+      "trending"
+    ],
+    "engagement": {
+      "views": 2721,
+      "likes": 350,
+      "shares": 81,
+      "comments": 40
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000042",
+    "title": "Amazing Blog Post About Travel 42",
+    "slug": "amazing-blog-post-about-travel-42",
+    "content_type": "blog_post",
+    "status": "archived",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_06",
+      "email": "author5@example.com"
+    },
+    "content": {
+      "body": "This is a detailed blog post about cooking recipes. It contains multiple paragraphs with valuable information for our readers.",
+      "excerpt": "This is a detailed blog post about cooking recipes. It contains multiple paragraphs with valuable information for our readers.",
+      "word_count": 19,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Amazing Blog Post About Travel 42",
+      "meta_description": "SEO description for Amazing Blog Post About Travel 42 with relevant keywords",
+      "keywords": [
+        "technology",
+        "business",
+        "food",
+        "travel",
+        "education"
+      ],
+      "canonical_url": "https://example.com/blog/post/42"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/blog_post_42.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-10-07T12:14:30.133478",
+      "published_at": "2025-08-10T12:14:30.133478",
+      "scheduled_for": "2025-09-15T12:14:30.133478",
+      "last_modified": "2025-08-15T12:14:30.133478"
+    },
+    "categories": [
+      "lifestyle",
+      "travel"
+    ],
+    "tags": [
+      "popular",
+      "updated",
+      "new"
+    ],
+    "engagement": {
+      "views": 2311,
+      "likes": 442,
+      "shares": 94,
+      "comments": 25
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000043",
+    "title": "Tutorial 43",
+    "slug": "tutorial-43",
+    "content_type": "tutorial",
+    "status": "draft",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_05",
+      "email": "author6@example.com"
+    },
+    "content": {
+      "body": "Content for tutorial with relevant information and details.",
+      "excerpt": "Content for tutorial with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Tutorial 43",
+      "meta_description": "SEO description for Tutorial 43 with relevant keywords",
+      "keywords": [
+        "fitness",
+        "education",
+        "health"
+      ],
+      "canonical_url": "https://example.com/tutorial/43"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/tutorial_43.jpg",
+      "gallery": [
+        "https://example.com/images/tutorial_43_1.jpg",
+        "https://example.com/images/tutorial_43_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-05-17T12:14:30.133478",
+      "published_at": "2025-08-11T12:14:30.133478",
+      "scheduled_for": "2025-09-13T12:14:30.133478",
+      "last_modified": "2025-08-10T12:14:30.133478"
+    },
+    "categories": [
+      "food",
+      "business"
+    ],
+    "tags": [
+      "new",
+      "exclusive"
+    ],
+    "engagement": {
+      "views": 5935,
+      "likes": 443,
+      "shares": 17,
+      "comments": 15
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": [
+        "admin",
+        "guest",
+        "moderator"
+      ]
+    }
+  },
+  {
+    "_id": "content_000044",
+    "title": "Amazing Blog Post About Travel 44",
+    "slug": "amazing-blog-post-about-travel-44",
+    "content_type": "blog_post",
+    "status": "published",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_03",
+      "email": "author1@example.com"
+    },
+    "content": {
+      "body": "This is a detailed blog post about business strategies. It contains multiple paragraphs with valuable information for our readers.",
+      "excerpt": "This is a detailed blog post about business strategies. It contains multiple paragraphs with valuable information for our readers.",
+      "word_count": 19,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Amazing Blog Post About Travel 44",
+      "meta_description": "SEO description for Amazing Blog Post About Travel 44 with relevant keywords",
+      "keywords": [
+        "health",
+        "business",
+        "education"
+      ],
+      "canonical_url": "https://example.com/blog/post/44"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/blog_post_44.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-09-09T12:14:30.133478",
+      "published_at": "2025-07-30T12:14:30.133478",
+      "scheduled_for": "2025-09-15T12:14:30.133478",
+      "last_modified": "2025-08-14T12:14:30.133478"
+    },
+    "categories": [
+      "travel",
+      "fitness",
+      "health"
+    ],
+    "tags": [
+      "updated"
+    ],
+    "engagement": {
+      "views": 744,
+      "likes": 442,
+      "shares": 71,
+      "comments": 6
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000045",
+    "title": "Help Article 45",
+    "slug": "help-article-45",
+    "content_type": "help_article",
+    "status": "scheduled",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_06",
+      "email": "author4@example.com"
+    },
+    "content": {
+      "body": "Content for help_article with relevant information and details.",
+      "excerpt": "Content for help_article with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Help Article 45",
+      "meta_description": "SEO description for Help Article 45 with relevant keywords",
+      "keywords": [
+        "health",
+        "food",
+        "business",
+        "education",
+        "technology",
+        "travel"
+      ],
+      "canonical_url": "https://example.com/help/article/45"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/help_article_45.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-10-04T12:14:30.133478",
+      "published_at": null,
+      "scheduled_for": "2025-08-18T12:14:30.133478",
+      "last_modified": "2025-08-09T12:14:30.133478"
+    },
+    "categories": [
+      "travel",
+      "business",
+      "education"
+    ],
+    "tags": [
+      "trending"
+    ],
+    "engagement": {
+      "views": 8401,
+      "likes": 119,
+      "shares": 69,
+      "comments": 35
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000046",
+    "title": "News Item 46",
+    "slug": "news-item-46",
+    "content_type": "news_item",
+    "status": "archived",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_06",
+      "email": "author6@example.com"
+    },
+    "content": {
+      "body": "Content for news_item with relevant information and details.",
+      "excerpt": "Content for news_item with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for News Item 46",
+      "meta_description": "SEO description for News Item 46 with relevant keywords",
+      "keywords": [
+        "lifestyle",
+        "health",
+        "travel",
+        "business"
+      ],
+      "canonical_url": "https://example.com/news/item/46"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/news_item_46.jpg",
+      "gallery": [],
+      "video_url": "https://example.com/videos/news_item_46.mp4"
+    },
+    "publishing": {
+      "created_at": "2025-03-04T12:14:30.133478",
+      "published_at": "2025-07-26T12:14:30.133478",
+      "scheduled_for": null,
+      "last_modified": "2025-08-13T12:14:30.133478"
+    },
+    "categories": [
+      "education",
+      "technology"
+    ],
+    "tags": [
+      "updated",
+      "featured"
+    ],
+    "engagement": {
+      "views": 5753,
+      "likes": 216,
+      "shares": 23,
+      "comments": 6
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000047",
+    "title": "News Item 47",
+    "slug": "news-item-47",
+    "content_type": "news_item",
+    "status": "draft",
+    "author": {
+      "name": "Jane Doe",
+      "id": "author_04",
+      "email": "author5@example.com"
+    },
+    "content": {
+      "body": "Content for news_item with relevant information and details.",
+      "excerpt": "Content for news_item with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for News Item 47",
+      "meta_description": "SEO description for News Item 47 with relevant keywords",
+      "keywords": [
+        "technology",
+        "food",
+        "health",
+        "education",
+        "lifestyle"
+      ],
+      "canonical_url": "https://example.com/news/item/47"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/news_item_47.jpg",
+      "gallery": [
+        "https://example.com/images/news_item_47_1.jpg",
+        "https://example.com/images/news_item_47_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-05-04T12:14:30.133478",
+      "published_at": "2025-08-09T12:14:30.133478",
+      "scheduled_for": "2025-08-23T12:14:30.133478",
+      "last_modified": "2025-08-10T12:14:30.133478"
+    },
+    "categories": [
+      "fitness",
+      "travel",
+      "food"
+    ],
+    "tags": [
+      "new",
+      "trending",
+      "premium"
+    ],
+    "engagement": {
+      "views": 2593,
+      "likes": 12,
+      "shares": 94,
+      "comments": 25
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000048",
+    "title": "Landing Page 48",
+    "slug": "landing-page-48",
+    "content_type": "landing_page",
+    "status": "draft",
+    "author": {
+      "name": "Sarah Wilson",
+      "id": "author_02",
+      "email": "author5@example.com"
+    },
+    "content": {
+      "body": "Content for landing_page with relevant information and details.",
+      "excerpt": "Content for landing_page with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Landing Page 48",
+      "meta_description": "SEO description for Landing Page 48 with relevant keywords",
+      "keywords": [
+        "education",
+        "food",
+        "technology"
+      ],
+      "canonical_url": "https://example.com/landing/page/48"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/landing_page_48.jpg",
+      "gallery": [
+        "https://example.com/images/landing_page_48_1.jpg",
+        "https://example.com/images/landing_page_48_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-12-01T12:14:30.133478",
+      "published_at": null,
+      "scheduled_for": null,
+      "last_modified": "2025-08-14T12:14:30.133478"
+    },
+    "categories": [
+      "health"
+    ],
+    "tags": [
+      "new",
+      "featured",
+      "trending"
+    ],
+    "engagement": {
+      "views": 7790,
+      "likes": 217,
+      "shares": 19,
+      "comments": 50
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000049",
+    "title": "Tutorial 49",
+    "slug": "tutorial-49",
+    "content_type": "tutorial",
+    "status": "scheduled",
+    "author": {
+      "name": "Sarah Wilson",
+      "id": "author_06",
+      "email": "author3@example.com"
+    },
+    "content": {
+      "body": "Content for tutorial with relevant information and details.",
+      "excerpt": "Content for tutorial with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Tutorial 49",
+      "meta_description": "SEO description for Tutorial 49 with relevant keywords",
+      "keywords": [
+        "education",
+        "technology",
+        "health"
+      ],
+      "canonical_url": "https://example.com/tutorial/49"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/tutorial_49.jpg",
+      "gallery": [
+        "https://example.com/images/tutorial_49_1.jpg",
+        "https://example.com/images/tutorial_49_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-09-22T12:14:30.133478",
+      "published_at": "2025-07-22T12:14:30.133478",
+      "scheduled_for": "2025-08-26T12:14:30.133478",
+      "last_modified": "2025-08-15T12:14:30.133478"
+    },
+    "categories": [
+      "travel",
+      "fitness",
+      "health"
+    ],
+    "tags": [
+      "trending"
+    ],
+    "engagement": {
+      "views": 3737,
+      "likes": 253,
+      "shares": 29,
+      "comments": 16
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000050",
+    "title": "Tutorial 50",
+    "slug": "tutorial-50",
+    "content_type": "tutorial",
+    "status": "draft",
+    "author": {
+      "name": "Sarah Wilson",
+      "id": "author_03",
+      "email": "author3@example.com"
+    },
+    "content": {
+      "body": "Content for tutorial with relevant information and details.",
+      "excerpt": "Content for tutorial with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Tutorial 50",
+      "meta_description": "SEO description for Tutorial 50 with relevant keywords",
+      "keywords": [
+        "technology",
+        "lifestyle",
+        "education",
+        "business"
+      ],
+      "canonical_url": "https://example.com/tutorial/50"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/tutorial_50.jpg",
+      "gallery": [
+        "https://example.com/images/tutorial_50_1.jpg",
+        "https://example.com/images/tutorial_50_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-07-02T12:14:30.133478",
+      "published_at": "2025-08-13T12:14:30.133478",
+      "scheduled_for": "2025-08-30T12:14:30.133478",
+      "last_modified": "2025-08-12T12:14:30.133478"
+    },
+    "categories": [
+      "food",
+      "education",
+      "health"
+    ],
+    "tags": [
+      "exclusive"
+    ],
+    "engagement": {
+      "views": 7513,
+      "likes": 230,
+      "shares": 29,
+      "comments": 46
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000051",
+    "title": "News Item 51",
+    "slug": "news-item-51",
+    "content_type": "news_item",
+    "status": "published",
+    "author": {
+      "name": "Sarah Wilson",
+      "id": "author_02",
+      "email": "author3@example.com"
+    },
+    "content": {
+      "body": "Content for news_item with relevant information and details.",
+      "excerpt": "Content for news_item with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for News Item 51",
+      "meta_description": "SEO description for News Item 51 with relevant keywords",
+      "keywords": [
+        "lifestyle",
+        "technology",
+        "food",
+        "travel"
+      ],
+      "canonical_url": "https://example.com/news/item/51"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/news_item_51.jpg",
+      "gallery": [
+        "https://example.com/images/news_item_51_1.jpg",
+        "https://example.com/images/news_item_51_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-02-06T12:14:30.133478",
+      "published_at": "2025-08-08T12:14:30.133478",
+      "scheduled_for": null,
+      "last_modified": "2025-08-10T12:14:30.133478"
+    },
+    "categories": [
+      "lifestyle"
+    ],
+    "tags": [
+      "featured",
+      "trending"
+    ],
+    "engagement": {
+      "views": 7877,
+      "likes": 278,
+      "shares": 40,
+      "comments": 37
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": [
+        "admin",
+        "premium",
+        "regular"
+      ]
+    }
+  },
+  {
+    "_id": "content_000052",
+    "title": "Amazing Blog Post About Food 52",
+    "slug": "amazing-blog-post-about-food-52",
+    "content_type": "blog_post",
+    "status": "scheduled",
+    "author": {
+      "name": "David Brown",
+      "id": "author_03",
+      "email": "author2@example.com"
+    },
+    "content": {
+      "body": "This is a detailed blog post about technology trends. It contains multiple paragraphs with valuable information for our readers.",
+      "excerpt": "This is a detailed blog post about technology trends. It contains multiple paragraphs with valuable information for our readers.",
+      "word_count": 19,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Amazing Blog Post About Food 52",
+      "meta_description": "SEO description for Amazing Blog Post About Food 52 with relevant keywords",
+      "keywords": [
+        "fitness",
+        "education",
+        "business",
+        "health",
+        "travel",
+        "technology"
+      ],
+      "canonical_url": "https://example.com/blog/post/52"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/blog_post_52.jpg",
+      "gallery": [
+        "https://example.com/images/blog_post_52_1.jpg",
+        "https://example.com/images/blog_post_52_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-06-09T12:14:30.133478",
+      "published_at": "2025-07-24T12:14:30.133478",
+      "scheduled_for": null,
+      "last_modified": "2025-08-09T12:14:30.133478"
+    },
+    "categories": [
+      "education"
+    ],
+    "tags": [
+      "popular",
+      "new"
+    ],
+    "engagement": {
+      "views": 283,
+      "likes": 455,
+      "shares": 100,
+      "comments": 13
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000053",
+    "title": "Product Page for Gaming Console",
+    "slug": "product-page-for-gaming-console",
+    "content_type": "product_page",
+    "status": "scheduled",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_04",
+      "email": "author1@example.com"
+    },
+    "content": {
+      "body": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "excerpt": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "word_count": 14,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Product Page for Gaming Console",
+      "meta_description": "SEO description for Product Page for Gaming Console with relevant keywords",
+      "keywords": [
+        "technology",
+        "travel",
+        "food",
+        "lifestyle",
+        "education",
+        "health"
+      ],
+      "canonical_url": "https://example.com/product/page/53"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/product_page_53.jpg",
+      "gallery": [
+        "https://example.com/images/product_page_53_1.jpg",
+        "https://example.com/images/product_page_53_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-05-17T12:14:30.133478",
+      "published_at": "2025-07-25T12:14:30.133478",
+      "scheduled_for": "2025-09-15T12:14:30.133478",
+      "last_modified": "2025-08-12T12:14:30.133478"
+    },
+    "categories": [
+      "travel",
+      "education",
+      "technology"
+    ],
+    "tags": [
+      "featured"
+    ],
+    "engagement": {
+      "views": 7986,
+      "likes": 351,
+      "shares": 39,
+      "comments": 41
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": [
+        "admin",
+        "premium"
+      ]
+    }
+  },
+  {
+    "_id": "content_000054",
+    "title": "News Item 54",
+    "slug": "news-item-54",
+    "content_type": "news_item",
+    "status": "draft",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_02",
+      "email": "author3@example.com"
+    },
+    "content": {
+      "body": "Content for news_item with relevant information and details.",
+      "excerpt": "Content for news_item with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for News Item 54",
+      "meta_description": "SEO description for News Item 54 with relevant keywords",
+      "keywords": [
+        "food",
+        "business",
+        "health",
+        "education"
+      ],
+      "canonical_url": "https://example.com/news/item/54"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/news_item_54.jpg",
+      "gallery": [],
+      "video_url": "https://example.com/videos/news_item_54.mp4"
+    },
+    "publishing": {
+      "created_at": "2025-07-11T12:14:30.133478",
+      "published_at": "2025-08-02T12:14:30.133478",
+      "scheduled_for": "2025-09-14T12:14:30.133478",
+      "last_modified": "2025-08-14T12:14:30.133478"
+    },
+    "categories": [
+      "travel",
+      "food"
+    ],
+    "tags": [
+      "premium",
+      "new"
+    ],
+    "engagement": {
+      "views": 1109,
+      "likes": 275,
+      "shares": 51,
+      "comments": 2
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000055",
+    "title": "Landing Page 55",
+    "slug": "landing-page-55",
+    "content_type": "landing_page",
+    "status": "scheduled",
+    "author": {
+      "name": "John Smith",
+      "id": "author_06",
+      "email": "author1@example.com"
+    },
+    "content": {
+      "body": "Content for landing_page with relevant information and details.",
+      "excerpt": "Content for landing_page with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Landing Page 55",
+      "meta_description": "SEO description for Landing Page 55 with relevant keywords",
+      "keywords": [
+        "lifestyle",
+        "education",
+        "travel",
+        "food",
+        "technology"
+      ],
+      "canonical_url": "https://example.com/landing/page/55"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/landing_page_55.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-12-03T12:14:30.133478",
+      "published_at": null,
+      "scheduled_for": "2025-08-24T12:14:30.133478",
+      "last_modified": "2025-08-14T12:14:30.133478"
+    },
+    "categories": [
+      "food",
+      "health"
+    ],
+    "tags": [
+      "updated",
+      "trending"
+    ],
+    "engagement": {
+      "views": 1486,
+      "likes": 448,
+      "shares": 64,
+      "comments": 36
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": [
+        "admin",
+        "regular"
+      ]
+    }
+  },
+  {
+    "_id": "content_000056",
+    "title": "Product Page for Gaming Console",
+    "slug": "product-page-for-gaming-console",
+    "content_type": "product_page",
+    "status": "scheduled",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_04",
+      "email": "author5@example.com"
+    },
+    "content": {
+      "body": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "excerpt": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "word_count": 14,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Product Page for Gaming Console",
+      "meta_description": "SEO description for Product Page for Gaming Console with relevant keywords",
+      "keywords": [
+        "health",
+        "travel",
+        "business",
+        "food",
+        "lifestyle"
+      ],
+      "canonical_url": "https://example.com/product/page/56"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/product_page_56.jpg",
+      "gallery": [
+        "https://example.com/images/product_page_56_1.jpg",
+        "https://example.com/images/product_page_56_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-05-10T12:14:30.133478",
+      "published_at": "2025-07-29T12:14:30.133478",
+      "scheduled_for": "2025-08-31T12:14:30.133478",
+      "last_modified": "2025-08-09T12:14:30.133478"
+    },
+    "categories": [
+      "travel",
+      "lifestyle"
+    ],
+    "tags": [
+      "updated"
+    ],
+    "engagement": {
+      "views": 8407,
+      "likes": 79,
+      "shares": 40,
+      "comments": 24
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000057",
+    "title": "Product Page for Wireless Headphones",
+    "slug": "product-page-for-wireless-headphones",
+    "content_type": "product_page",
+    "status": "scheduled",
+    "author": {
+      "name": "Sarah Wilson",
+      "id": "author_05",
+      "email": "author6@example.com"
+    },
+    "content": {
+      "body": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "excerpt": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "word_count": 14,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Product Page for Wireless Headphones",
+      "meta_description": "SEO description for Product Page for Wireless Headphones with relevant keywords",
+      "keywords": [
+        "education",
+        "fitness",
+        "health",
+        "lifestyle",
+        "travel",
+        "food"
+      ],
+      "canonical_url": "https://example.com/product/page/57"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/product_page_57.jpg",
+      "gallery": [
+        "https://example.com/images/product_page_57_1.jpg",
+        "https://example.com/images/product_page_57_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-04-12T12:14:30.133478",
+      "published_at": "2025-08-10T12:14:30.133478",
+      "scheduled_for": "2025-09-15T12:14:30.133478",
+      "last_modified": "2025-08-11T12:14:30.133478"
+    },
+    "categories": [
+      "education",
+      "travel"
+    ],
+    "tags": [
+      "exclusive",
+      "new"
+    ],
+    "engagement": {
+      "views": 6185,
+      "likes": 217,
+      "shares": 8,
+      "comments": 6
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": [
+        "premium",
+        "admin",
+        "regular"
+      ]
+    }
+  },
+  {
+    "_id": "content_000058",
+    "title": "Amazing Blog Post About Lifestyle 58",
+    "slug": "amazing-blog-post-about-lifestyle-58",
+    "content_type": "blog_post",
+    "status": "draft",
+    "author": {
+      "name": "Lisa Garcia",
+      "id": "author_02",
+      "email": "author5@example.com"
+    },
+    "content": {
+      "body": "This is a detailed blog post about business strategies. It contains multiple paragraphs with valuable information for our readers.",
+      "excerpt": "This is a detailed blog post about business strategies. It contains multiple paragraphs with valuable information for our readers.",
+      "word_count": 19,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Amazing Blog Post About Lifestyle 58",
+      "meta_description": "SEO description for Amazing Blog Post About Lifestyle 58 with relevant keywords",
+      "keywords": [
+        "education",
+        "lifestyle",
+        "technology",
+        "health",
+        "travel"
+      ],
+      "canonical_url": "https://example.com/blog/post/58"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/blog_post_58.jpg",
+      "gallery": [
+        "https://example.com/images/blog_post_58_1.jpg",
+        "https://example.com/images/blog_post_58_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-01-22T12:14:30.133478",
+      "published_at": null,
+      "scheduled_for": "2025-09-07T12:14:30.133478",
+      "last_modified": "2025-08-13T12:14:30.133478"
+    },
+    "categories": [
+      "lifestyle",
+      "business"
+    ],
+    "tags": [
+      "new",
+      "popular"
+    ],
+    "engagement": {
+      "views": 5604,
+      "likes": 487,
+      "shares": 66,
+      "comments": 27
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": true,
+      "user_groups": [
+        "moderator",
+        "regular"
+      ]
+    }
+  },
+  {
+    "_id": "content_000059",
+    "title": "Help Article 59",
+    "slug": "help-article-59",
+    "content_type": "help_article",
+    "status": "published",
+    "author": {
+      "name": "Sarah Wilson",
+      "id": "author_03",
+      "email": "author6@example.com"
+    },
+    "content": {
+      "body": "Content for help_article with relevant information and details.",
+      "excerpt": "Content for help_article with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Help Article 59",
+      "meta_description": "SEO description for Help Article 59 with relevant keywords",
+      "keywords": [
+        "fitness",
+        "food",
+        "health",
+        "lifestyle"
+      ],
+      "canonical_url": "https://example.com/help/article/59"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/help_article_59.jpg",
+      "gallery": [
+        "https://example.com/images/help_article_59_1.jpg",
+        "https://example.com/images/help_article_59_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-11-10T12:14:30.133478",
+      "published_at": null,
+      "scheduled_for": "2025-08-20T12:14:30.133478",
+      "last_modified": "2025-08-11T12:14:30.133478"
+    },
+    "categories": [
+      "fitness"
+    ],
+    "tags": [
+      "trending",
+      "exclusive",
+      "premium"
+    ],
+    "engagement": {
+      "views": 7783,
+      "likes": 170,
+      "shares": 73,
+      "comments": 34
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000060",
+    "title": "Tutorial 60",
+    "slug": "tutorial-60",
+    "content_type": "tutorial",
+    "status": "archived",
+    "author": {
+      "name": "Sarah Wilson",
+      "id": "author_06",
+      "email": "author1@example.com"
+    },
+    "content": {
+      "body": "Content for tutorial with relevant information and details.",
+      "excerpt": "Content for tutorial with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Tutorial 60",
+      "meta_description": "SEO description for Tutorial 60 with relevant keywords",
+      "keywords": [
+        "education",
+        "food",
+        "fitness",
+        "technology",
+        "lifestyle",
+        "travel"
+      ],
+      "canonical_url": "https://example.com/tutorial/60"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/tutorial_60.jpg",
+      "gallery": [
+        "https://example.com/images/tutorial_60_1.jpg",
+        "https://example.com/images/tutorial_60_2.jpg"
+      ],
+      "video_url": "https://example.com/videos/tutorial_60.mp4"
+    },
+    "publishing": {
+      "created_at": "2024-12-23T12:14:30.133478",
+      "published_at": "2025-08-13T12:14:30.133478",
+      "scheduled_for": "2025-09-03T12:14:30.133478",
+      "last_modified": "2025-08-10T12:14:30.133478"
+    },
+    "categories": [
+      "education",
+      "business",
+      "fitness"
+    ],
+    "tags": [
+      "new",
+      "trending",
+      "exclusive"
+    ],
+    "engagement": {
+      "views": 3121,
+      "likes": 492,
+      "shares": 88,
+      "comments": 47
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": [
+        "premium"
+      ]
+    }
+  },
+  {
+    "_id": "content_000061",
+    "title": "News Item 61",
+    "slug": "news-item-61",
+    "content_type": "news_item",
+    "status": "published",
+    "author": {
+      "name": "David Brown",
+      "id": "author_04",
+      "email": "author5@example.com"
+    },
+    "content": {
+      "body": "Content for news_item with relevant information and details.",
+      "excerpt": "Content for news_item with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for News Item 61",
+      "meta_description": "SEO description for News Item 61 with relevant keywords",
+      "keywords": [
+        "travel",
+        "food",
+        "health",
+        "business",
+        "technology"
+      ],
+      "canonical_url": "https://example.com/news/item/61"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/news_item_61.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-07-06T12:14:30.133478",
+      "published_at": "2025-08-15T12:14:30.133478",
+      "scheduled_for": "2025-09-04T12:14:30.133478",
+      "last_modified": "2025-08-14T12:14:30.133478"
+    },
+    "categories": [
+      "food",
+      "business",
+      "education"
+    ],
+    "tags": [
+      "new",
+      "trending"
+    ],
+    "engagement": {
+      "views": 830,
+      "likes": 329,
+      "shares": 5,
+      "comments": 45
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": [
+        "moderator",
+        "regular",
+        "premium"
+      ]
+    }
+  },
+  {
+    "_id": "content_000062",
+    "title": "Amazing Blog Post About Food 62",
+    "slug": "amazing-blog-post-about-food-62",
+    "content_type": "blog_post",
+    "status": "scheduled",
+    "author": {
+      "name": "David Brown",
+      "id": "author_01",
+      "email": "author4@example.com"
+    },
+    "content": {
+      "body": "This is a detailed blog post about technology trends. It contains multiple paragraphs with valuable information for our readers.",
+      "excerpt": "This is a detailed blog post about technology trends. It contains multiple paragraphs with valuable information for our readers.",
+      "word_count": 19,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Amazing Blog Post About Food 62",
+      "meta_description": "SEO description for Amazing Blog Post About Food 62 with relevant keywords",
+      "keywords": [
+        "food",
+        "health",
+        "lifestyle"
+      ],
+      "canonical_url": "https://example.com/blog/post/62"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/blog_post_62.jpg",
+      "gallery": [],
+      "video_url": "https://example.com/videos/blog_post_62.mp4"
+    },
+    "publishing": {
+      "created_at": "2025-04-19T12:14:30.133478",
+      "published_at": null,
+      "scheduled_for": "2025-08-21T12:14:30.133478",
+      "last_modified": "2025-08-10T12:14:30.133478"
+    },
+    "categories": [
+      "travel",
+      "business",
+      "food"
+    ],
+    "tags": [
+      "featured"
+    ],
+    "engagement": {
+      "views": 2048,
+      "likes": 469,
+      "shares": 15,
+      "comments": 15
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000063",
+    "title": "Product Page for Premium Laptop",
+    "slug": "product-page-for-premium-laptop",
+    "content_type": "product_page",
+    "status": "published",
+    "author": {
+      "name": "John Smith",
+      "id": "author_02",
+      "email": "author4@example.com"
+    },
+    "content": {
+      "body": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "excerpt": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "word_count": 14,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Product Page for Premium Laptop",
+      "meta_description": "SEO description for Product Page for Premium Laptop with relevant keywords",
+      "keywords": [
+        "technology",
+        "business",
+        "travel",
+        "fitness",
+        "food",
+        "health"
+      ],
+      "canonical_url": "https://example.com/product/page/63"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/product_page_63.jpg",
+      "gallery": [],
+      "video_url": "https://example.com/videos/product_page_63.mp4"
+    },
+    "publishing": {
+      "created_at": "2024-09-17T12:14:30.133478",
+      "published_at": null,
+      "scheduled_for": "2025-09-12T12:14:30.133478",
+      "last_modified": "2025-08-10T12:14:30.133478"
+    },
+    "categories": [
+      "technology",
+      "food",
+      "health"
+    ],
+    "tags": [
+      "featured"
+    ],
+    "engagement": {
+      "views": 4885,
+      "likes": 341,
+      "shares": 84,
+      "comments": 24
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": [
+        "admin",
+        "regular"
+      ]
+    }
+  },
+  {
+    "_id": "content_000064",
+    "title": "Product Page for Gaming Console",
+    "slug": "product-page-for-gaming-console",
+    "content_type": "product_page",
+    "status": "archived",
+    "author": {
+      "name": "John Smith",
+      "id": "author_05",
+      "email": "author1@example.com"
+    },
+    "content": {
+      "body": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "excerpt": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "word_count": 14,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Product Page for Gaming Console",
+      "meta_description": "SEO description for Product Page for Gaming Console with relevant keywords",
+      "keywords": [
+        "food",
+        "fitness",
+        "health",
+        "technology",
+        "education"
+      ],
+      "canonical_url": "https://example.com/product/page/64"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/product_page_64.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-12-14T12:14:30.133478",
+      "published_at": "2025-07-27T12:14:30.133478",
+      "scheduled_for": "2025-09-06T12:14:30.133478",
+      "last_modified": "2025-08-10T12:14:30.133478"
+    },
+    "categories": [
+      "travel"
+    ],
+    "tags": [
+      "premium"
+    ],
+    "engagement": {
+      "views": 9693,
+      "likes": 173,
+      "shares": 80,
+      "comments": 31
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000065",
+    "title": "Amazing Blog Post About Lifestyle 65",
+    "slug": "amazing-blog-post-about-lifestyle-65",
+    "content_type": "blog_post",
+    "status": "archived",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_01",
+      "email": "author3@example.com"
+    },
+    "content": {
+      "body": "This is a detailed blog post about cooking recipes. It contains multiple paragraphs with valuable information for our readers.",
+      "excerpt": "This is a detailed blog post about cooking recipes. It contains multiple paragraphs with valuable information for our readers.",
+      "word_count": 19,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Amazing Blog Post About Lifestyle 65",
+      "meta_description": "SEO description for Amazing Blog Post About Lifestyle 65 with relevant keywords",
+      "keywords": [
+        "travel",
+        "food",
+        "health",
+        "lifestyle",
+        "business"
+      ],
+      "canonical_url": "https://example.com/blog/post/65"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/blog_post_65.jpg",
+      "gallery": [
+        "https://example.com/images/blog_post_65_1.jpg",
+        "https://example.com/images/blog_post_65_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-04-15T12:14:30.133478",
+      "published_at": "2025-08-02T12:14:30.133478",
+      "scheduled_for": "2025-08-31T12:14:30.133478",
+      "last_modified": "2025-08-09T12:14:30.133478"
+    },
+    "categories": [
+      "health",
+      "business"
+    ],
+    "tags": [
+      "premium",
+      "exclusive",
+      "featured"
+    ],
+    "engagement": {
+      "views": 326,
+      "likes": 414,
+      "shares": 37,
+      "comments": 8
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000066",
+    "title": "Amazing Blog Post About Food 66",
+    "slug": "amazing-blog-post-about-food-66",
+    "content_type": "blog_post",
+    "status": "scheduled",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_02",
+      "email": "author3@example.com"
+    },
+    "content": {
+      "body": "This is a detailed blog post about lifestyle tips. It contains multiple paragraphs with valuable information for our readers.",
+      "excerpt": "This is a detailed blog post about lifestyle tips. It contains multiple paragraphs with valuable information for our readers.",
+      "word_count": 19,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Amazing Blog Post About Food 66",
+      "meta_description": "SEO description for Amazing Blog Post About Food 66 with relevant keywords",
+      "keywords": [
+        "lifestyle",
+        "health",
+        "food",
+        "fitness",
+        "business"
+      ],
+      "canonical_url": "https://example.com/blog/post/66"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/blog_post_66.jpg",
+      "gallery": [],
+      "video_url": "https://example.com/videos/blog_post_66.mp4"
+    },
+    "publishing": {
+      "created_at": "2025-02-05T12:14:30.133478",
+      "published_at": "2025-08-02T12:14:30.133478",
+      "scheduled_for": "2025-09-15T12:14:30.133478",
+      "last_modified": "2025-08-13T12:14:30.133478"
+    },
+    "categories": [
+      "business",
+      "fitness",
+      "travel"
+    ],
+    "tags": [
+      "featured",
+      "premium"
+    ],
+    "engagement": {
+      "views": 159,
+      "likes": 493,
+      "shares": 78,
+      "comments": 8
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": [
+        "guest",
+        "admin"
+      ]
+    }
+  },
+  {
+    "_id": "content_000067",
+    "title": "Amazing Blog Post About Technology 67",
+    "slug": "amazing-blog-post-about-technology-67",
+    "content_type": "blog_post",
+    "status": "draft",
+    "author": {
+      "name": "John Smith",
+      "id": "author_04",
+      "email": "author2@example.com"
+    },
+    "content": {
+      "body": "This is a detailed blog post about cooking recipes. It contains multiple paragraphs with valuable information for our readers.",
+      "excerpt": "This is a detailed blog post about cooking recipes. It contains multiple paragraphs with valuable information for our readers.",
+      "word_count": 19,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Amazing Blog Post About Technology 67",
+      "meta_description": "SEO description for Amazing Blog Post About Technology 67 with relevant keywords",
+      "keywords": [
+        "education",
+        "travel",
+        "fitness",
+        "technology",
+        "health"
+      ],
+      "canonical_url": "https://example.com/blog/post/67"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/blog_post_67.jpg",
+      "gallery": [],
+      "video_url": "https://example.com/videos/blog_post_67.mp4"
+    },
+    "publishing": {
+      "created_at": "2025-07-23T12:14:30.133478",
+      "published_at": "2025-07-30T12:14:30.133478",
+      "scheduled_for": "2025-08-30T12:14:30.133478",
+      "last_modified": "2025-08-10T12:14:30.133478"
+    },
+    "categories": [
+      "health",
+      "education"
+    ],
+    "tags": [
+      "premium",
+      "exclusive",
+      "updated"
+    ],
+    "engagement": {
+      "views": 9029,
+      "likes": 345,
+      "shares": 29,
+      "comments": 26
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000068",
+    "title": "Tutorial 68",
+    "slug": "tutorial-68",
+    "content_type": "tutorial",
+    "status": "archived",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_06",
+      "email": "author4@example.com"
+    },
+    "content": {
+      "body": "Content for tutorial with relevant information and details.",
+      "excerpt": "Content for tutorial with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Tutorial 68",
+      "meta_description": "SEO description for Tutorial 68 with relevant keywords",
+      "keywords": [
+        "fitness",
+        "health",
+        "technology"
+      ],
+      "canonical_url": "https://example.com/tutorial/68"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/tutorial_68.jpg",
+      "gallery": [],
+      "video_url": "https://example.com/videos/tutorial_68.mp4"
+    },
+    "publishing": {
+      "created_at": "2024-10-15T12:14:30.133478",
+      "published_at": null,
+      "scheduled_for": "2025-09-11T12:14:30.133478",
+      "last_modified": "2025-08-12T12:14:30.133478"
+    },
+    "categories": [
+      "technology",
+      "education",
+      "travel"
+    ],
+    "tags": [
+      "updated",
+      "featured"
+    ],
+    "engagement": {
+      "views": 6303,
+      "likes": 453,
+      "shares": 93,
+      "comments": 26
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000069",
+    "title": "Product Page for Premium Laptop",
+    "slug": "product-page-for-premium-laptop",
+    "content_type": "product_page",
+    "status": "scheduled",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_05",
+      "email": "author3@example.com"
+    },
+    "content": {
+      "body": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "excerpt": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "word_count": 14,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Product Page for Premium Laptop",
+      "meta_description": "SEO description for Product Page for Premium Laptop with relevant keywords",
+      "keywords": [
+        "travel",
+        "health",
+        "technology",
+        "food",
+        "education"
+      ],
+      "canonical_url": "https://example.com/product/page/69"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/product_page_69.jpg",
+      "gallery": [],
+      "video_url": "https://example.com/videos/product_page_69.mp4"
+    },
+    "publishing": {
+      "created_at": "2024-10-26T12:14:30.133478",
+      "published_at": "2025-08-15T12:14:30.133478",
+      "scheduled_for": "2025-08-21T12:14:30.133478",
+      "last_modified": "2025-08-14T12:14:30.133478"
+    },
+    "categories": [
+      "technology",
+      "fitness"
+    ],
+    "tags": [
+      "popular"
+    ],
+    "engagement": {
+      "views": 257,
+      "likes": 142,
+      "shares": 63,
+      "comments": 28
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000070",
+    "title": "News Item 70",
+    "slug": "news-item-70",
+    "content_type": "news_item",
+    "status": "published",
+    "author": {
+      "name": "Jane Doe",
+      "id": "author_01",
+      "email": "author4@example.com"
+    },
+    "content": {
+      "body": "Content for news_item with relevant information and details.",
+      "excerpt": "Content for news_item with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for News Item 70",
+      "meta_description": "SEO description for News Item 70 with relevant keywords",
+      "keywords": [
+        "health",
+        "travel",
+        "technology",
+        "business",
+        "fitness",
+        "education"
+      ],
+      "canonical_url": "https://example.com/news/item/70"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/news_item_70.jpg",
+      "gallery": [
+        "https://example.com/images/news_item_70_1.jpg",
+        "https://example.com/images/news_item_70_2.jpg"
+      ],
+      "video_url": "https://example.com/videos/news_item_70.mp4"
+    },
+    "publishing": {
+      "created_at": "2025-01-01T12:14:30.133478",
+      "published_at": "2025-08-03T12:14:30.133478",
+      "scheduled_for": "2025-08-30T12:14:30.133478",
+      "last_modified": "2025-08-11T12:14:30.133478"
+    },
+    "categories": [
+      "lifestyle",
+      "health",
+      "fitness"
+    ],
+    "tags": [
+      "new",
+      "featured"
+    ],
+    "engagement": {
+      "views": 3915,
+      "likes": 196,
+      "shares": 76,
+      "comments": 36
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": false,
+      "user_groups": [
+        "moderator",
+        "guest",
+        "admin"
+      ]
+    }
+  },
+  {
+    "_id": "content_000071",
+    "title": "News Item 71",
+    "slug": "news-item-71",
+    "content_type": "news_item",
+    "status": "draft",
+    "author": {
+      "name": "Jane Doe",
+      "id": "author_03",
+      "email": "author4@example.com"
+    },
+    "content": {
+      "body": "Content for news_item with relevant information and details.",
+      "excerpt": "Content for news_item with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for News Item 71",
+      "meta_description": "SEO description for News Item 71 with relevant keywords",
+      "keywords": [
+        "health",
+        "technology",
+        "business",
+        "lifestyle"
+      ],
+      "canonical_url": "https://example.com/news/item/71"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/news_item_71.jpg",
+      "gallery": [
+        "https://example.com/images/news_item_71_1.jpg",
+        "https://example.com/images/news_item_71_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2024-09-20T12:14:30.133478",
+      "published_at": "2025-07-20T12:14:30.133478",
+      "scheduled_for": "2025-08-29T12:14:30.133478",
+      "last_modified": "2025-08-13T12:14:30.133478"
+    },
+    "categories": [
+      "lifestyle",
+      "business"
+    ],
+    "tags": [
+      "new"
+    ],
+    "engagement": {
+      "views": 9334,
+      "likes": 268,
+      "shares": 34,
+      "comments": 46
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000072",
+    "title": "News Item 72",
+    "slug": "news-item-72",
+    "content_type": "news_item",
+    "status": "published",
+    "author": {
+      "name": "David Brown",
+      "id": "author_01",
+      "email": "author3@example.com"
+    },
+    "content": {
+      "body": "Content for news_item with relevant information and details.",
+      "excerpt": "Content for news_item with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for News Item 72",
+      "meta_description": "SEO description for News Item 72 with relevant keywords",
+      "keywords": [
+        "business",
+        "fitness",
+        "lifestyle",
+        "health"
+      ],
+      "canonical_url": "https://example.com/news/item/72"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/news_item_72.jpg",
+      "gallery": [
+        "https://example.com/images/news_item_72_1.jpg",
+        "https://example.com/images/news_item_72_2.jpg"
+      ],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-06-19T12:14:30.133478",
+      "published_at": null,
+      "scheduled_for": "2025-09-01T12:14:30.133478",
+      "last_modified": "2025-08-09T12:14:30.133478"
+    },
+    "categories": [
+      "technology"
+    ],
+    "tags": [
+      "featured"
+    ],
+    "engagement": {
+      "views": 4243,
+      "likes": 76,
+      "shares": 14,
+      "comments": 16
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000073",
+    "title": "Landing Page 73",
+    "slug": "landing-page-73",
+    "content_type": "landing_page",
+    "status": "published",
+    "author": {
+      "name": "Mike Johnson",
+      "id": "author_02",
+      "email": "author2@example.com"
+    },
+    "content": {
+      "body": "Content for landing_page with relevant information and details.",
+      "excerpt": "Content for landing_page with relevant information and details.",
+      "word_count": 8,
+      "reading_time": 0.0
+    },
+    "seo": {
+      "meta_title": "SEO Title for Landing Page 73",
+      "meta_description": "SEO description for Landing Page 73 with relevant keywords",
+      "keywords": [
+        "business",
+        "travel",
+        "fitness",
+        "technology",
+        "food"
+      ],
+      "canonical_url": "https://example.com/landing/page/73"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/landing_page_73.jpg",
+      "gallery": [
+        "https://example.com/images/landing_page_73_1.jpg",
+        "https://example.com/images/landing_page_73_2.jpg"
+      ],
+      "video_url": "https://example.com/videos/landing_page_73.mp4"
+    },
+    "publishing": {
+      "created_at": "2025-02-05T12:14:30.133478",
+      "published_at": "2025-07-27T12:14:30.133478",
+      "scheduled_for": "2025-09-07T12:14:30.133478",
+      "last_modified": "2025-08-12T12:14:30.133478"
+    },
+    "categories": [
+      "business"
+    ],
+    "tags": [
+      "trending",
+      "updated"
+    ],
+    "engagement": {
+      "views": 6119,
+      "likes": 419,
+      "shares": 15,
+      "comments": 15
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": false,
+      "user_groups": []
+    }
+  },
+  {
+    "_id": "content_000074",
+    "title": "Product Page for Smart Watch",
+    "slug": "product-page-for-smart-watch",
+    "content_type": "product_page",
+    "status": "published",
+    "author": {
+      "name": "John Smith",
+      "id": "author_03",
+      "email": "author6@example.com"
+    },
+    "content": {
+      "body": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "excerpt": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "word_count": 14,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Product Page for Smart Watch",
+      "meta_description": "SEO description for Product Page for Smart Watch with relevant keywords",
+      "keywords": [
+        "lifestyle",
+        "education",
+        "business",
+        "travel",
+        "technology"
+      ],
+      "canonical_url": "https://example.com/product/page/74"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/product_page_74.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-03-17T12:14:30.133478",
+      "published_at": "2025-07-26T12:14:30.133478",
+      "scheduled_for": "2025-09-06T12:14:30.133478",
+      "last_modified": "2025-08-13T12:14:30.133478"
+    },
+    "categories": [
+      "business",
+      "fitness",
+      "lifestyle"
+    ],
+    "tags": [
+      "exclusive"
+    ],
+    "engagement": {
+      "views": 3305,
+      "likes": 267,
+      "shares": 97,
+      "comments": 3
+    },
+    "access_control": {
+      "is_public": false,
+      "requires_login": true,
+      "user_groups": [
+        "premium",
+        "admin",
+        "regular"
+      ]
+    }
+  },
+  {
+    "_id": "content_000075",
+    "title": "Product Page for Gaming Console",
+    "slug": "product-page-for-gaming-console",
+    "content_type": "product_page",
+    "status": "archived",
+    "author": {
+      "name": "Sarah Wilson",
+      "id": "author_04",
+      "email": "author1@example.com"
+    },
+    "content": {
+      "body": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "excerpt": "Detailed product description with features, specifications, and benefits. Includes high-quality images and customer reviews.",
+      "word_count": 14,
+      "reading_time": 0.1
+    },
+    "seo": {
+      "meta_title": "SEO Title for Product Page for Gaming Console",
+      "meta_description": "SEO description for Product Page for Gaming Console with relevant keywords",
+      "keywords": [
+        "travel",
+        "business",
+        "technology",
+        "lifestyle",
+        "food"
+      ],
+      "canonical_url": "https://example.com/product/page/75"
+    },
+    "media": {
+      "featured_image": "https://example.com/images/product_page_75.jpg",
+      "gallery": [],
+      "video_url": null
+    },
+    "publishing": {
+      "created_at": "2025-03-20T12:14:30.133478",
+      "published_at": null,
+      "scheduled_for": "2025-08-26T12:14:30.133478",
+      "last_modified": "2025-08-12T12:14:30.133478"
+    },
+    "categories": [
+      "travel",
+      "technology",
+      "health"
+    ],
+    "tags": [
+      "popular",
+      "new"
+    ],
+    "engagement": {
+      "views": 6737,
+      "likes": 171,
+      "shares": 69,
+      "comments": 42
+    },
+    "access_control": {
+      "is_public": true,
+      "requires_login": true,
+      "user_groups": []
+    }
+  }
+]

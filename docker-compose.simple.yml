@@ -1,0 +1,62 @@
+# Simplified Production Docker Compose for DBA-GPT
+# This focuses on the core system first, without nginx and monitoring
+
+version: '3.8'
+
+services:
+  dba-gpt:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    container_name: dba-gpt-production
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    environment:
+      - DBA_ENV=production
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USERNAME=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+    volumes:
+      - dba-gpt-logs:/app/logs
+      - dba-gpt-cache:/app/cache
+      - dba-gpt-temp:/app/temp
+    networks:
+      - dba-gpt-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  redis:
+    image: redis:7-alpine
+    container_name: dba-gpt-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis123}
+    volumes:
+      - redis-data:/data
+    networks:
+      - dba-gpt-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  dba-gpt-logs:
+    driver: local
+  dba-gpt-cache:
+    driver: local
+  dba-gpt-temp:
+    driver: local
+  redis-data:
+    driver: local
+
+networks:
+  dba-gpt-network:
+    driver: bridge
